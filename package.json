@@ -1,0 +1,39 @@
+{
+  "name": "my-react-app",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7",
+    "react": "*",
+    "react-dom": "*",
+    "react-scripts": "*",
+    "react-markdown" : "*",
+    "firebase": "^10.11.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "BUILD_PATH='./docs' react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "homepage": "."
+}
