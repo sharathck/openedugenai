@@ -18,24 +18,40 @@ const App = () => {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const [genaiData, setGenaiData] = useState([]);
+  const [dataLimit, setDataLimit] = useState(10);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const genaiCollection = collection(db, 'genai');
-        const genaiSnapshot = await getDocs(genaiCollection);
+        const q = query(genaiCollection, orderBy('createdDateTime', 'desc'), limit(dataLimit));
+        const genaiSnapshot = await getDocs(q);
         const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setGenaiData(genaiList);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
-
     fetchData();
-  }, []);
+  }, [dataLimit]);
+
+  const handleLimitChange = (event) => {
+    const newLimit = event.target.value ? parseInt(event.target.value) : 11;
+    setDataLimit(newLimit);
+  };
 
   return (
     <div>
+      <label>
+        Limit: 
+        <input 
+          type="number" 
+          value={dataLimit} 
+          onChange={handleLimitChange} 
+          style={{ width: "50px", margin: "0 10px" }}
+          min={1}
+        />
+      </label>      
       {genaiData.map((item) => (
         <div key={item.createdDateTime}>
           <h4 style={{ color: "brown" }}>
