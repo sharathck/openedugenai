@@ -19,6 +19,8 @@ const App = () => {
   const db = getFirestore(app);
   const [genaiData, setGenaiData] = useState([]);
   const [dataLimit, setDataLimit] = useState(10);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,9 +37,39 @@ const App = () => {
     fetchData();
   }, [dataLimit]);
 
+  useEffect(() => {
+    console.log(searchQuery);
+    const q = searchQuery.replace(/ /g, '-');
+    const queryParameter = q ? `&q=${q}` : '';
+    if (searchQuery === "") { return; }
+    else {
+    setIsLoading(true);
+    console.log('queryParametr ' + queryParameter);
+    console.log(`https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?limit=12${queryParameter}`);
+    fetch(`https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?limit=12${queryParameter}`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        try {
+          //   const parsedData = JSON.parse(data);
+          setGenaiData(data);
+          setIsLoading(false);
+        } catch (error) {
+          console.log("Invalid JSON format:", error);
+        }
+      })
+      .catch((err) => console.log(err));
+    }
+  }, [searchQuery]); 
+
   const handleLimitChange = (event) => {
     const newLimit = event.target.value ? parseInt(event.target.value) : 11;
     setDataLimit(newLimit);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
   return (
@@ -51,7 +83,11 @@ const App = () => {
           style={{ width: "50px", margin: "0 10px" }}
           min={1}
         />
-      </label>      
+      </label>     
+      <input id="searchInput" style={{ fontSizex: "24px", height: "10%", width: "60%", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)" }} type="text" onKeyDown={(event) => event.key === "Enter" && handleSearchChange(event)} placeholder="Search..." /> 
+      <div>
+        {isLoading && <p> Loading Data...</p>}
+        {!isLoading && <div>
       {genaiData.map((item) => (
         <div key={item.createdDateTime}>
           <h4 style={{ color: "brown" }}>
@@ -68,8 +104,10 @@ const App = () => {
             <ReactMarkdown>{item.answer}</ReactMarkdown>
           </div>
         </div>
-      ))}
+      ))} </div>}
     </div>
-  );
+    </div>
+);
+
 };
 export default App;
