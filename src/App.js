@@ -21,6 +21,20 @@ const App = () => {
   const [dataLimit, setDataLimit] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const getUrlParameter = (name) => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    return urlParams.get(name);
+  };
+
+  const questionLimit = getUrlParameter('question_limit');
+
+  const getQuestionSubstring = (question) => {
+    if (questionLimit) {
+      return question.substring(0, parseInt(questionLimit));
+    }
+    return question;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,7 +110,7 @@ const App = () => {
           </h4>
           <div style={{ border: "1px dotted black", padding: "2px" }}>
             <div style={{ textAlign: "center", color: "orange", fontWeight: "bold" }}>---Question--</div>
-            <ReactMarkdown>{item.question}</ReactMarkdown>
+            <ReactMarkdown>{getQuestionSubstring(item.question)}</ReactMarkdown>
           </div>
           <br />
           <div style={{ border: "1px solid black", padding: "4px" }}>
