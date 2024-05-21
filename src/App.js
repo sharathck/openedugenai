@@ -105,11 +105,11 @@ const App = () => {
           {genaiData.map((item) => (
             <div key={item.createdDateTime}>
               <h4 style={{ color: "brown" }}>
-                Time: <span style={{ color: "black", fontSize: "22px" }}>{new Date(item.createdDateTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
-                &nbsp;&nbsp;&nbsp;
+                Time: <span style={{ color: "black", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
+                &nbsp;&nbsp;
                 Date: <span style={{ color: "grey", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Model: <span style={{ color: "blue", fontSize: "14px" }}>{item.model}   </span>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                Model: <span style={{ color: "blue", fontSize: "16px" }}>{item.model}   </span>
               </h4>
               <div style={{ border: "1px dotted black", padding: "2px" }}>
                 <div style={{ textAlign: "center", color: "orange", fontWeight: "bold" }}>---Question--</div>
