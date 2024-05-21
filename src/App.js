@@ -102,26 +102,30 @@ const App = () => {
       <div>
         {isLoading && <p> Loading Data...</p>}
         {!isLoading && <div>
-      {genaiData.map((item) => (
-        <div key={item.createdDateTime}>
-          <h4 style={{ color: "brown" }}>
-            Model: <span style={{ color: "blue", fontSize: "22px" }}>{item.model}   </span>
-            Date Time: <span style={{ color: "grey", fontSize: "16px" }}>{item.createdDateTime.toString()}</span>
-          </h4>
-          <div style={{ border: "1px dotted black", padding: "2px" }}>
-            <div style={{ textAlign: "center", color: "orange", fontWeight: "bold" }}>---Question--</div>
-            <ReactMarkdown>{getQuestionSubstring(item.question)}</ReactMarkdown>
-          </div>
-          <br />
-          <div style={{ border: "1px solid black", padding: "4px" }}>
-            <div style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>---Answer--</div>
-            <ReactMarkdown>{item.answer}</ReactMarkdown>
-          </div>
-        </div>
-      ))} </div>}
+          {genaiData.map((item) => (
+            <div key={item.createdDateTime}>
+              <h4 style={{ color: "brown" }}>
+                Time: <span style={{ color: "black", fontSize: "22px" }}>{new Date(item.createdDateTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
+                &nbsp;&nbsp;&nbsp;
+                Date: <span style={{ color: "grey", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Model: <span style={{ color: "blue", fontSize: "14px" }}>{item.model}   </span>
+              </h4>
+              <div style={{ border: "1px dotted black", padding: "2px" }}>
+                <div style={{ textAlign: "center", color: "orange", fontWeight: "bold" }}>---Question--</div>
+                <ReactMarkdown>{getQuestionSubstring(item.question)}</ReactMarkdown>
+              </div>
+              <br />
+              <div style={{ border: "1px solid black", padding: "4px" }}>
+                <div style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>---Answer--</div>
+                <ReactMarkdown>{item.answer}</ReactMarkdown>
+              </div>
+            </div>
+          ))}
+        </div>}
+      </div>
     </div>
-    </div>
-);
+  );
 
 };
 export default App;
