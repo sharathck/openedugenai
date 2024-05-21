@@ -18,7 +18,7 @@ const App = () => {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const [genaiData, setGenaiData] = useState([]);
-  const [dataLimit, setDataLimit] = useState(10);
+  const [dataLimit, setDataLimit] = useState(12);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const getUrlParameter = (name) => {
