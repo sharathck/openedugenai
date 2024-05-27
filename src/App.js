@@ -86,6 +86,27 @@ const App = () => {
     setSearchQuery(event.target.value);
   };
 
+  const [showFullQuestion, setShowFullQuestion] = useState(false);
+
+  const handleShowMore = () => {
+    setShowFullQuestion(true);
+  };
+
+
+  const renderQuestion = (question) => {
+    if (showFullQuestion) {
+      return <ReactMarkdown>{question}</ReactMarkdown>;
+    } else {
+      const truncatedQuestion = getQuestionSubstring(question);
+      return (
+        <div>
+          <ReactMarkdown>{question.substring(0, parseInt(400))}</ReactMarkdown>
+          <button onClick={handleShowMore}>More</button>
+        </div>
+      );
+    }
+  };
+
   return (
     <div>
       <label>
@@ -113,7 +134,7 @@ const App = () => {
               </h4>
               <div style={{ border: "1px dotted black", padding: "2px" }}>
                 <div style={{ textAlign: "center", color: "orange", fontWeight: "bold" }}>---Question--</div>
-                <ReactMarkdown>{getQuestionSubstring(item.question)}</ReactMarkdown>
+                {renderQuestion(item.question)}
               </div>
               <br />
               <div style={{ border: "1px solid black", padding: "4px" }}>
@@ -126,6 +147,5 @@ const App = () => {
       </div>
     </div>
   );
-
 };
 export default App;
