@@ -84,7 +84,7 @@ const App = () => {
   }, [searchQuery]); 
 
   const handleLimitChange = (event) => {
-    const newLimit = event.target.value ? parseInt(event.target.value) : 11;
+    const newLimit = event.target.value ? parseInt(event.target.value) : 31;
     setDataLimit(newLimit);
   };
 
