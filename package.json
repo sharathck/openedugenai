@@ -6,6 +6,7 @@
     "firebase": "^10.11.0",
     "fs": "^0.0.1-security",
     "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
+    "react-icons": "*",
     "path": "^0.12.7",
     "react": "*",
     "react-dom": "*",
