@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { query, where, orderBy, onSnapshot, addDoc, doc, updateDoc, limit, and } from 'firebase/firestore';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 import { FaPlay, FaReadme } from 'react-icons/fa';
+import './App.css';
 
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
@@ -24,9 +24,11 @@ const App = () => {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const [genaiData, setGenaiData] = useState([]);
-  const [dataLimit, setDataLimit] = useState(31);
+  const [dataLimit, setDataLimit] = useState(11);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [lastVisible, setLastVisible] = useState(null); // State for the last visible document
+
   const getUrlParameter = (name) => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -50,6 +52,7 @@ const App = () => {
         const genaiSnapshot = await getDocs(q);
         const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setGenaiData(genaiList);
+        setLastVisible(genaiSnapshot.docs[genaiSnapshot.docs.length - 1]); // Set last visible document
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -58,33 +61,22 @@ const App = () => {
   }, [dataLimit]);
 
   useEffect(() => {
-    console.log(searchQuery);
-    const q = searchQuery.replace(/ /g, '-');
-    const queryParameter = q ? `&q=${q}` : '';
-    if (searchQuery === "") { return; }
-    else {
+    if (searchQuery === "") return;
     setIsLoading(true);
-    console.log('queryParametr ' + queryParameter);
-    console.log(`https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?limit=12${queryParameter}`);
-    fetch(`https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?limit=12${queryParameter}`)
-      .then((res) => {
-        return res.json();
-      })
+    fetch(`https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?limit=12&q=${searchQuery.replace(/ /g, '-')}`)
+      .then((res) => res.json())
       .then((data) => {
-        try {
-          //   const parsedData = JSON.parse(data);
-          setGenaiData(data);
-          setIsLoading(false);
-        } catch (error) {
-          console.log("Invalid JSON format:", error);
-        }
+        setGenaiData(data);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
-    }
+      .catch((error) => {
+        console.error("Invalid JSON format:", error);
+        setIsLoading(false);
+      });
   }, [searchQuery]); 
 
   const handleLimitChange = (event) => {
-    const newLimit = event.target.value ? parseInt(event.target.value) : 31;
+    const newLimit = event.target.value ? parseInt(event.target.value) : 11;
     setDataLimit(newLimit);
   };
 
@@ -145,6 +137,19 @@ const App = () => {
     }
   };
 
+  const fetchMoreData = async () => {
+    try {
+      const genaiCollection = collection(db, 'genai');
+      const nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), startAfter(lastVisible), limit(dataLimit));
+      const genaiSnapshot = await getDocs(nextQuery);
+      const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setGenaiData(prevData => [...prevData, ...genaiList]);
+      setLastVisible(genaiSnapshot.docs[genaiSnapshot.docs.length - 1]); // Update last visible document
+    } catch (error) {
+      console.error("Error fetching more data: ", error);
+    }
+  };
+
   return (
     <div>
       <label>
@@ -182,9 +187,11 @@ const App = () => {
               </div>
             </div>
           ))}
+          <button className="fetchButton" onClick={fetchMoreData}>Show more information</button>
         </div>}
       </div>
     </div>
   );
 };
+
 export default App;
