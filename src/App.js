@@ -113,7 +113,7 @@ const App = () => {
     const speechConfig = speechsdk.SpeechConfig.fromSubscription(speechKey, serviceRegion);
     speechConfig.speechSynthesisVoiceName = voiceName;
     if (language === "Spanish") {
-      speechConfig.speechSynthesisVoiceName = "es-ES-AlvaroNeural";
+      speechConfig.speechSynthesisVoiceName = "es-MX-DaliaNeural";
     }
     if (language === "Hindi") {
       speechConfig.speechSynthesisVoiceName = "hi-IN-SwaraNeural";
