@@ -5,7 +5,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 import { FaPlay, FaReadme } from 'react-icons/fa';
 import './App.css';
-import { getFirestore, collection, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
+import { getFirestore, collection, where, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import { SpeechSynthesisVoice } from 'microsoft-cognitiveservices-speech-sdk';
 
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
@@ -38,6 +38,8 @@ const App = () => {
   };
 
   const questionLimit = getUrlParameter('question_limit');
+  const telugu = getUrlParameter('telugu');
+  const hindi = getUrlParameter('hindi');
 
   const getQuestionSubstring = (question) => {
     if (questionLimit) {
@@ -50,7 +52,14 @@ const App = () => {
     const fetchData = async () => {
       try {
         const genaiCollection = collection(db, 'genai');
-        const q = query(genaiCollection, orderBy('createdDateTime', 'desc'), limit(dataLimit));
+        var q;
+        q = query(genaiCollection, orderBy('createdDateTime', 'desc'), limit(dataLimit));
+        if (hindi) {
+          q = query(genaiCollection, orderBy('createdDateTime', 'desc'), where ('language','==', 'Hindi'), limit(dataLimit));
+        }
+        if (telugu) {
+           q = query(genaiCollection, orderBy('createdDateTime', 'desc'), where ('language','==', 'Telugu'), limit(dataLimit));
+        }
         const genaiSnapshot = await getDocs(q);
         const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setGenaiData(genaiList);
@@ -152,7 +161,16 @@ const App = () => {
   const fetchMoreData = async () => {
     try {
       const genaiCollection = collection(db, 'genai');
-      const nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), startAfter(lastVisible), limit(dataLimit));
+
+      var nextQuery;
+      nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'),  startAfter(lastVisible), limit(dataLimit));
+      if (hindi) {
+        nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), where ('language','==', 'Hindi'), startAfter(lastVisible), limit(dataLimit));
+      }
+      if (telugu) {
+        nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), where ('language','==', 'Telugu'), startAfter(lastVisible), limit(dataLimit));
+      }
+
       const genaiSnapshot = await getDocs(nextQuery);
       const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setGenaiData(prevData => [...prevData, ...genaiList]);
