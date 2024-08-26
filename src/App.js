@@ -111,16 +111,15 @@ const App = () => {
 
   const synthesizeSpeech = async (articles, language) => {
     const speechConfig = speechsdk.SpeechConfig.fromSubscription(speechKey, serviceRegion);
-    if (language === "Telugu") {
-      speechConfig.speechSynthesisVoiceName = "te-IN-ShrutiNeural";
+    speechConfig.speechSynthesisVoiceName = voiceName;
+    if (language === "Spanish") {
+      speechConfig.speechSynthesisVoiceName = "es-ES-AlvaroNeural";
     }
-    else {
-      if (language === "Hindi") {
-        speechConfig.speechSynthesisVoiceName = "hi-IN-SwaraNeural";
-      }
-      else {
-        speechConfig.speechSynthesisVoiceName = voiceName;
-      }
+    if (language === "Hindi") {
+      speechConfig.speechSynthesisVoiceName = "hi-IN-SwaraNeural";
+    }
+   if (language === "Telugu") {
+      speechConfig.speechSynthesisVoiceName = "te-IN-ShrutiNeural";
     }
 
     const audioConfig = speechsdk.AudioConfig.fromDefaultSpeakerOutput();
