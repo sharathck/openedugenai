@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 import { FaPlay, FaReadme } from 'react-icons/fa';
 import './App.css';
+import { getFirestore, collection, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
+import { SpeechSynthesisVoice } from 'microsoft-cognitiveservices-speech-sdk';
 
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
@@ -28,6 +29,7 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [lastVisible, setLastVisible] = useState(null); // State for the last visible document
+  const [language, setLanguage] = useState("en");
 
   const getUrlParameter = (name) => {
     const queryString = window.location.search;
@@ -73,7 +75,7 @@ const App = () => {
         console.error("Invalid JSON format:", error);
         setIsLoading(false);
       });
-  }, [searchQuery]); 
+  }, [searchQuery]);
 
   const handleLimitChange = (event) => {
     const newLimit = event.target.value ? parseInt(event.target.value) : 11;
@@ -98,9 +100,19 @@ const App = () => {
     return chunks;
   };
 
-  const synthesizeSpeech = async (articles) => {
+  const synthesizeSpeech = async (articles, language) => {
     const speechConfig = speechsdk.SpeechConfig.fromSubscription(speechKey, serviceRegion);
-    speechConfig.speechSynthesisVoiceName = voiceName;
+    if (language === "Telugu") {
+      speechConfig.speechSynthesisVoiceName = "te-IN-ShrutiNeural";
+    }
+    else {
+      if (language === "Hindi") {
+        speechConfig.speechSynthesisVoiceName = "hi-IN-SwaraNeural";
+      }
+      else {
+        speechConfig.speechSynthesisVoiceName = voiceName;
+      }
+    }
 
     const audioConfig = speechsdk.AudioConfig.fromDefaultSpeakerOutput();
     const speechSynthesizer = new speechsdk.SpeechSynthesizer(speechConfig, audioConfig);
@@ -153,16 +165,16 @@ const App = () => {
   return (
     <div>
       <label>
-        Limit: 
-        <input 
-          type="number" 
-          value={dataLimit} 
-          onChange={handleLimitChange} 
+        Limit:
+        <input
+          type="number"
+          value={dataLimit}
+          onChange={handleLimitChange}
           style={{ width: "50px", margin: "0 10px" }}
           min={1}
         />
-      </label>     
-      <input id="searchInput" style={{ fontSizex: "24px", height: "10%", width: "60%", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)" }} type="text" onKeyDown={(event) => event.key === "Enter" && handleSearchChange(event)} placeholder="Search..." /> 
+      </label>
+      <input id="searchInput" style={{ fontSizex: "24px", height: "10%", width: "60%", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)" }} type="text" onKeyDown={(event) => event.key === "Enter" && handleSearchChange(event)} placeholder="Search..." />
       <div>
         {isLoading && <p> Loading Data...</p>}
         {!isLoading && <div>
@@ -181,7 +193,7 @@ const App = () => {
               </div>
               <br />
               <div style={{ border: "1px solid black", padding: "4px" }}>
-                <button onClick={() => synthesizeSpeech(item.answer)}><FaPlay /></button>
+                <button onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaPlay /></button>
                 <div style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>---Answer--</div>
                 <ReactMarkdown>{item.answer}</ReactMarkdown>
               </div>
