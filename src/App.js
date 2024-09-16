@@ -1,24 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 import { FaPlay, FaReadme } from 'react-icons/fa';
 import './App.css';
 import { getFirestore, collection, where, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import { SpeechSynthesisVoice } from 'microsoft-cognitiveservices-speech-sdk';
-
-const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
-const serviceRegion = 'eastus';
-const voiceName = 'en-US-AvaNeural';
-
-import { initializeApp } from 'firebase/app';
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-} from 'firebase/firestore';
 import {
   getAuth,
   signInWithPopup,
@@ -31,6 +18,9 @@ import {
   signOut,
 } from 'firebase/auth';
 
+const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
+const serviceRegion = 'eastus';
+const voiceName = 'en-US-AvaNeural';
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -43,8 +33,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Firestore and Auth
 const db = getFirestore(app);
 const auth = getAuth(app);
 
@@ -58,8 +46,6 @@ const App = () => {
     messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.REACT_APP_FIREBASE_APP_ID
   };
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
   const [genaiData, setGenaiData] = useState([]);
   const [dataLimit, setDataLimit] = useState(11);
   const [searchQuery, setSearchQuery] = useState("");
@@ -68,6 +54,7 @@ const App = () => {
   const [language, setLanguage] = useState("en");
   // Authentication state
   const [user, setUser] = useState(null);
+  const [uid, setUid] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -92,6 +79,7 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      setUid(currentUser ? currentUser.uid : null);
       if (currentUser.uid) {
         console.log('User is signed in:', currentUser.uid);
         // Fetch inputText from Firebase for the authenticated user
@@ -104,7 +92,7 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-  const fetchData = async (uid) => {
+  const fetchData = async () => {
     try {
       const genaiCollection = collection(db, 'genai', uid, 'MyGenAI');
       var q;
@@ -213,7 +201,6 @@ const App = () => {
   const fetchMoreData = async () => {
     try {
       const genaiCollection = collection(db, 'genai', uid, 'MyGenAI');
-
       var nextQuery;
       nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), startAfter(lastVisible), limit(dataLimit));
       if (hindi) {
@@ -300,33 +287,50 @@ const App = () => {
 
   return (
     <div>
-      {user ? (
-        // Render the diagram editor
-        //    <button className="signinbutton" onClick={() => saveInputTextToFirebase(user.uid, inputText)}>Save</button>
-        <div className="App">
-          <div className="left-panel">
-            <button className="signinbutton" onClick={parseInput}>Generate</button>
-            <button className="signoutbutton" onClick={handleSignOut}>SignOut</button>
-            <textarea
-              value={inputText}
-              onChange={(e) => {
-                setInputText(e.target.value);
-              }}
-            />
-          </div>
-          <div style={{ width: '100%' }}>
-            <ReactFlowProvider>
-              <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={handleNodesChange}
-                onEdgesChange={handleEdgesChange}
-                onConnect={onConnect}
-                nodeTypes={nodeTypes}
-                fitView
-              />
-            </ReactFlowProvider>
-          </div>
+      {!user ? (
+        // Render the authentication forms
+        <div style={{ fontSize: '22px', width: '100%', margin: '0 auto' }}>
+          <br />
+          <p>Sign In</p>
+          <input
+            className="textinput"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <br />
+          <br />
+          <input
+            type="password"
+            className="textinput"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <br />
+          <br />
+          <button className="signonpagebutton" onClick={handleSignInWithEmail}>
+            Sign In
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button className="signuppagebutton" onClick={handleSignUpWithEmail}>
+            Sign Up
+          </button>
+          <br />
+          <br />
+          <button onClick={handlePasswordReset}>Forgot Password?</button>
+          <br />
+          <br />
+          <br />
+          <p> OR </p>
+          <br />
+          <button className="signgooglepagebutton" onClick={handleSignInWithGoogle}>
+            Sign In with Google
+          </button>
+          <br />
         </div>
       ) : (
         <div>
