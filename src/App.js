@@ -106,7 +106,7 @@ const App = () => {
 
   const fetchData = async (uid) => {
     try {
-      const genaiCollection = collection(db, 'genai', uid);
+      const genaiCollection = collection(db, 'genai', uid, 'MyGenAI');
       var q;
       q = query(genaiCollection, orderBy('createdDateTime', 'desc'), limit(dataLimit));
       if (hindi) {
