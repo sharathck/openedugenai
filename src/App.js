@@ -56,7 +56,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  let uid = null;
+  const [uid, setUid] = useState(null);
 
   const getUrlParameter = (name) => {
     const queryString = window.location.search;
@@ -80,10 +80,10 @@ const App = () => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        uid = currentUser.uid;
+        setUid(currentUser.uid);
         console.log('User is signed in:', currentUser.uid);
         // Fetch inputText from Firebase for the authenticated user
-        await fetchData();
+        await fetchData(currentUser.uid);
       }
       else {
         console.log('No user is signed in');
@@ -92,9 +92,9 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (userID) => {
     try {
-      const genaiCollection = collection(db, 'genai', uid, 'MyGenAI');
+      const genaiCollection = collection(db, 'genai', userID, 'MyGenAI');
       var q;
       q = query(genaiCollection, orderBy('createdDateTime', 'desc'), limit(dataLimit));
       if (hindi) {
@@ -200,7 +200,15 @@ const App = () => {
 
   const fetchMoreData = async () => {
     try {
-      const genaiCollection = collection(db, 'genai', uid, 'MyGenAI');
+      // get auth user
+      const user = auth.currentUser;
+      if (!user) {
+        console.error("No user is signed in");
+        return;
+      }
+      else {
+        console.log('User is signed in:', user.uid);
+      const genaiCollection = collection(db, 'genai', user.uid, 'MyGenAI');
       var nextQuery;
       nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), startAfter(lastVisible), limit(dataLimit));
       if (hindi) {
@@ -214,6 +222,7 @@ const App = () => {
       const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setGenaiData(prevData => [...prevData, ...genaiList]);
       setLastVisible(genaiSnapshot.docs[genaiSnapshot.docs.length - 1]); // Update last visible document
+    }
     } catch (error) {
       console.error("Error fetching more data: ", error);
     }
