@@ -212,7 +212,7 @@ const App = () => {
 
   const fetchMoreData = async () => {
     try {
-      const genaiCollection = collection(db, 'genai');
+      const genaiCollection = collection(db, 'genai', uid, 'MyGenAI');
 
       var nextQuery;
       nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), startAfter(lastVisible), limit(dataLimit));
