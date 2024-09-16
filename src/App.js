@@ -54,9 +54,9 @@ const App = () => {
   const [language, setLanguage] = useState("en");
   // Authentication state
   const [user, setUser] = useState(null);
-  const [uid, setUid] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  let uid = null;
 
   const getUrlParameter = (name) => {
     const queryString = window.location.search;
@@ -79,11 +79,11 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      setUid(currentUser ? currentUser.uid : null);
-      if (currentUser.uid) {
+      if (currentUser) {
+        uid = currentUser.uid;
         console.log('User is signed in:', currentUser.uid);
         // Fetch inputText from Firebase for the authenticated user
-        await fetchData(currentUser.uid);
+        await fetchData();
       }
       else {
         console.log('No user is signed in');
@@ -345,6 +345,7 @@ const App = () => {
             />
           </label>
           <input id="searchInput" style={{ fontSizex: "24px", height: "10%", width: "60%", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)" }} type="text" onKeyDown={(event) => event.key === "Enter" && handleSearchChange(event)} placeholder="Search..." />
+          <button className="signoutbutton" onClick={handleSignOut}>SignOut</button>
           <div>
             {isLoading && <p> Loading Data...</p>}
             {!isLoading && <div>
