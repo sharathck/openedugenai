@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "firebase": "^10.11.0",
+    "firebase": "^10.13.1",
     "fs": "^0.0.1-security",
     "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
-    "react-icons": "*",
     "path": "^0.12.7",
     "react": "*",
     "react-dom": "*",
+    "react-icons": "*",
     "react-markdown": "*",
     "react-scripts": "*"
   },
