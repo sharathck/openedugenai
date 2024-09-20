@@ -56,7 +56,6 @@ const App = () => {
 
   // **New State Variables for Generate Functionality**
   const [promptInput, setPromptInput] = useState('');
-  const [generatedResponse, setGeneratedResponse] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false); 
   const [isGeneratingGemini, setIsGeneratingGemini] = useState(false);
   const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false); 
@@ -322,6 +321,12 @@ const App = () => {
       return;
     }
 
+    if (isAnthropic) {
+      setIsGeneratingAnthropic(true); // Set generating state to true
+      setModel('anthropic');
+      callAPI('anthropic');
+    }
+
     if (isGemini) {
       setIsGeneratingGemini(true); // Set generating state to true
       setModel('gemini');
@@ -334,16 +339,11 @@ const App = () => {
       callAPI('openai');
     }
 
-    if (isAnthropic) {
-      setIsGeneratingAnthropic(true); // Set generating state to true
-      setModel('anthropic');
-      callAPI('anthropic');
-    }
- // Reset generating state
-  };
+};
 
   // Call the function13 api
   const callAPI = async (selectedModel) => {
+    console.log('Calling API with model:', selectedModel);
 
     try {
       const response = await fetch('https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-13', {
@@ -353,19 +353,28 @@ const App = () => {
         },
         body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid })
       });
-
+ 
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to generate content.');
       }
 
       const data = await response.json();
-      setGeneratedResponse(data);
+      console.log('Response:', data);
+      // print response data.question
+      console.log('Selected Model:', selectedModel);
+      console.log('Response - Question:', data.question);
+      
+     const { model, firestoreStatus } = data.results[0];
+      console.log('Model:', model);
+      console.log('Firestore Status:', firestoreStatus);
+
     } catch (error) {
       console.error('Error generating content:', error);
       alert(`Error: ${error.message}`);
     } finally {
       // click refresh button
+      console.log('Fetching data after generating content');
       fetchData(uid);
       if (selectedModel === 'openai') {
         setIsGenerating(false);
@@ -476,7 +485,7 @@ const App = () => {
               style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
               disabled={isGenerating || isGeneratingGemini || isGeneratingAnthropic} // Disable button while generating
             >
-              {isGenerating || isGeneratingGemini || isGeneratingAnthropic ? 'Generating...' : 'Generate'}
+              {isGenerating ? 'Generating OpenAI...' : isGeneratingGemini ? 'Generating Gemini...' : isGeneratingAnthropic ? 'Generating Anthropic...' : 'Generate'}
             </button>
             <button
               onClick={handleRefresh}
