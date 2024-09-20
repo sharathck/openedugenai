@@ -400,23 +400,8 @@ const App = () => {
                   value={promptInput}
                   onChange={(e) => setPromptInput(e.target.value)}
                   placeholder="Enter your prompt here..."
-                  style={{ width: '60%', padding: '10px', fontSize: '16px', height: '40px' }}
+                  style={{ width: '95%', padding: '8px', height: '40px',fontSize: '16px'  }}
                 />
-                <button
-                  onClick={handleGenerate}
-                  className="signonpagebutton"
-                  style={{ marginLeft: '10px', padding: '15px 20px', fontSize: '16px' }}
-                  disabled={isGenerating} // Disable button while generating
-            >
-              {isGenerating ? 'Generating...' : 'Generate'}
-            </button>
-            <button
-              onClick={handleRefresh}
-              className="signuppagebutton"
-              style={{ marginLeft: '10px', padding: '10px 20px', fontSize: '16px' }}
-            >
-              Refresh
-            </button>
           </div>
           <div style={{ marginBottom: '20px' }}>
             <label>
@@ -455,6 +440,24 @@ const App = () => {
               />
               All
             </label>
+            <button
+                  onClick={handleGenerate}
+                  className="signonpagebutton"
+                  style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
+                  disabled={isGenerating} // Disable button while generating
+            >
+              {isGenerating ? 'Generating...' : 'Generate'}
+            </button>
+            <button
+              onClick={handleRefresh}
+              className="signuppagebutton"
+              style={{ marginLeft: '10px', padding: '10px 20px', fontSize: '16px' }}
+            >
+              Refresh
+            </button>
+            <button className="signoutbutton" onClick={handleSignOut} style={{ marginLeft: '80px', padding: '10px 20px', fontSize: '16px' }}>
+            SignOut
+          </button>
           </div>
 
           {/* **Existing Components: Limit and Search Inputs, Sign Out Button** */}
@@ -475,9 +478,6 @@ const App = () => {
             defaultValue=""
             style={{ width: '60%', padding: '10px', fontSize: '16px' }}
           />
-          <button className="signoutbutton" onClick={handleSignOut} style={{ marginLeft: '10px', padding: '10px 20px', fontSize: '16px' }}>
-            SignOut
-          </button>
 
           {/* **Display Generated Response** */}
           {generatedResponse && (
@@ -501,13 +501,17 @@ const App = () => {
                   </h4>
                   <div style={{ border: "1px dotted black", padding: "2px" }}>
                     <div style={{ textAlign: "center", color: "orange", fontWeight: "bold" }}>---Question--</div>
-                    {renderQuestion(item.question)}
+                    <div style={{ fontSize: '16px' }}>
+                      {renderQuestion(item.question)}
+                    </div>
                   </div>
                   <br />
                   <div style={{ border: "1px solid black", padding: "4px" }}>
                     <button onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaPlay /></button>
                     <div style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>---Answer--</div>
-                    <ReactMarkdown>{item.answer}</ReactMarkdown>
+                    <div style={{ fontSize: '16px' }}>
+                      <ReactMarkdown>{item.answer}</ReactMarkdown>
+                    </div>
                   </div>
                 </div>
               ))}
