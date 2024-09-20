@@ -335,14 +335,14 @@ const App = () => {
       alert(`Error: ${error.message}`);
     } finally {
       // click refresh button
-      handleRefresh();
+      fetchData(uid);
       setIsGenerating(false); // Reset generating state
     }
   };
 
   // Handler for Refresh Button Click
   const handleRefresh = () => {
-    window.location.reload();
+    fetchData(uid);
   };
 
   return (
@@ -480,12 +480,12 @@ const App = () => {
             style={{ width: '60%', padding: '10px', fontSize: '16px' }}
           />
 
-          {/* **Display Generated Response** */}
+          {/* **Display Generated Response** 
           {generatedResponse && (
             <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '5px' }}>
               <h3>Response is generated, click Refresh button to see results</h3>
             </div>
-          )}
+          )}*/}
 
           {/* **Existing Data Display** */}
           <div>
