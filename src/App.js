@@ -58,6 +58,8 @@ const App = () => {
   const [promptInput, setPromptInput] = useState('');
   const [generatedResponse, setGeneratedResponse] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false); // Indicates if a generation request is in progress
+  const [isGeneratingGemini, setIsGeneratingGemini] = useState(false);
+  const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false); 
   const [isOpenAI, setIsOpenAI] = useState(true);
   const [isAnthropic, setIsAnthropic] = useState(false);
   const [isGemini, setIsGemini] = useState(false);
@@ -320,18 +322,20 @@ const App = () => {
       return;
     }
 
-    setIsGenerating(true); // Set generating state to true
     if (isGemini) {
+      setIsGeneratingGemini(true); // Set generating state to true
       setModel('gemini');
       callAPI('gemini');
     }
 
     if (isOpenAI) {
+      setIsGenerating(true); // Set generating state to true
       setModel('openai');
       callAPI('openai');
     }
 
     if (isAnthropic) {
+      setIsGeneratingAnthropic(true); // Set generating state to true
       setModel('anthropic');
       callAPI('anthropic');
     }
@@ -364,7 +368,15 @@ const App = () => {
     } finally {
       // click refresh button
       fetchData(uid);
-      setIsGenerating(false);
+      if (selectedModel === 'openai') {
+        setIsGenerating(false);
+      }
+      if (selectedModel === 'anthropic') {
+        setIsGeneratingAnthropic(false);
+      }
+      if (selectedModel === 'gemini') {
+        setIsGeneratingGemini(false);
+      }
     }
   };
 
@@ -463,9 +475,9 @@ const App = () => {
               onClick={handleGenerate}
               className="signonpagebutton"
               style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
-              disabled={isGenerating} // Disable button while generating
+              disabled={isGenerating || isGeneratingGemini || isGeneratingAnthropic} // Disable button while generating
             >
-              {isGenerating ? 'Generating...' : 'Generate'}
+              {isGenerating || isGeneratingGemini || isGeneratingAnthropic ? 'Generating...' : 'Generate'}
             </button>
             <button
               onClick={handleRefresh}
