@@ -469,7 +469,6 @@ const App = () => {
             />
           </label>
           <input
-            value={searchText}
             type="text"
             onKeyDown={(event) => event.key === "Enter" && handleSearchChange(event)}
             placeholder="Enter Search Text and Click Enter"
