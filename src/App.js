@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { initializeApp } from 'firebase/app';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
-import { FaPlay, FaReadme } from 'react-icons/fa';
+import { FaPlay, FaReadme, FaSignOutAlt, FaCloudDownloadAlt, FaHeadphones } from 'react-icons/fa';
 import './App.css';
 import { getFirestore, collection, where, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import {
@@ -451,16 +451,17 @@ const App = () => {
             <button
               onClick={handleRefresh}
               className="signuppagebutton"
-              style={{ marginLeft: '10px', padding: '10px 20px', fontSize: '16px' }}
+              style={{ marginLeft: '20px', padding: '10px 20px', fontSize: '16px' }}
+              title="Refresh data" // Added hover text
             >
-              Refresh
+              <FaCloudDownloadAlt />
             </button>
-            <button className="signoutbutton" onClick={handleSignOut} style={{ marginLeft: '80px', padding: '10px 20px', fontSize: '16px' }}>
-            SignOut
-          </button>
-          </div>
+            <button className="signoutbutton" onClick={handleSignOut} style={{ marginLeft: '40px', padding: '10px 20px', fontSize: '16px' }}>
+            <FaSignOutAlt />
+            </button>
+            </div>
 
-          {/* **Existing Components: Limit and Search Inputs, Sign Out Button** */}
+            {/* **Existing Components: Limit and Search Inputs, Sign Out Button** */}
           <label>
             Limit:
             <input
@@ -507,7 +508,7 @@ const App = () => {
                   </div>
                   <br />
                   <div style={{ border: "1px solid black", padding: "4px" }}>
-                    <button onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaPlay /></button>
+                    <button className="signgooglepagebutton" onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaHeadphones /></button>
                     <div style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>---Answer--</div>
                     <div style={{ fontSize: '16px' }}>
                       <ReactMarkdown>{item.answer}</ReactMarkdown>
