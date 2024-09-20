@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { initializeApp } from 'firebase/app';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
-import { FaPlay, FaReadme, FaSignOutAlt, FaCloudDownloadAlt, FaHeadphones } from 'react-icons/fa';
+import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner,FaCloudDownloadAlt, FaHeadphones } from 'react-icons/fa';
 import './App.css';
 import { getFirestore, collection, where, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import {
@@ -485,15 +485,7 @@ const App = () => {
               style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
               disabled={isGenerating || isGeneratingGemini || isGeneratingAnthropic} // Disable button while generating
             >
-              {isGenerating || isGeneratingGemini || isGeneratingAnthropic ? 'Generating Content.......' : 'Generate'}
-            </button>
-            <button
-              onClick={handleRefresh}
-              className="signuppagebutton"
-              style={{ marginLeft: '20px', padding: '10px 20px', fontSize: '16px' }}
-              title="Refresh data" // Added hover text
-            >
-              <FaCloudDownloadAlt />
+              {isGenerating || isGeneratingGemini || isGeneratingAnthropic ? <FaSpinner className="spinning" /> : 'Generate'}
             </button>
             <button className="signoutbutton" onClick={handleSignOut} style={{ marginLeft: '40px', padding: '10px 20px', fontSize: '16px' }}>
               <FaSignOutAlt />
