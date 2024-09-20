@@ -57,7 +57,7 @@ const App = () => {
   // **New State Variables for Generate Functionality**
   const [promptInput, setPromptInput] = useState('');
   const [generatedResponse, setGeneratedResponse] = useState(null);
-  const [isGenerating, setIsGenerating] = useState(false); // Indicates if a generation request is in progress
+  const [isGenerating, setIsGenerating] = useState(false); 
   const [isGeneratingGemini, setIsGeneratingGemini] = useState(false);
   const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false); 
   const [isOpenAI, setIsOpenAI] = useState(true);
@@ -346,7 +346,6 @@ const App = () => {
   const callAPI = async (selectedModel) => {
 
     try {
-      setIsGenerating(true);
       const response = await fetch('https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-13', {
         method: 'POST',
         headers: {
