@@ -485,7 +485,7 @@ const App = () => {
               style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
               disabled={isGenerating || isGeneratingGemini || isGeneratingAnthropic} // Disable button while generating
             >
-              {isGenerating ? 'Generating OpenAI...' : isGeneratingGemini ? 'Generating Gemini...' : isGeneratingAnthropic ? 'Generating Anthropic...' : 'Generate'}
+              {isGenerating || isGeneratingGemini || isGeneratingAnthropic ? 'Generating Content.......' : 'Generate'}
             </button>
             <button
               onClick={handleRefresh}
