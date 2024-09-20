@@ -5,7 +5,6 @@ import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 import { FaPlay, FaReadme } from 'react-icons/fa';
 import './App.css';
 import { getFirestore, collection, where, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
-import { SpeechSynthesisVoice } from 'microsoft-cognitiveservices-speech-sdk';
 import {
   getAuth,
   signInWithPopup,
@@ -21,6 +20,9 @@ import {
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
 const voiceName = 'en-US-AvaNeural';
+let searchText = '';
+
+// Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -37,27 +39,27 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 const App = () => {
-  const firebaseConfig = {
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_FIREBASE_APP_ID
-  };
+  // **State Variables**
   const [genaiData, setGenaiData] = useState([]);
   const [dataLimit, setDataLimit] = useState(11);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [lastVisible, setLastVisible] = useState(null); // State for the last visible document
   const [language, setLanguage] = useState("en");
+
   // Authentication state
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [uid, setUid] = useState(null);
+  const [model, setModel] = useState('openai');
 
+  // **New State Variables for Generate Functionality**
+  const [promptInput, setPromptInput] = useState('');
+  const [generatedResponse, setGeneratedResponse] = useState(null);
+  const [isGenerating, setIsGenerating] = useState(false); // Indicates if a generation request is in progress
+
+  // Helper function to get URL parameters
   const getUrlParameter = (name) => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -68,6 +70,7 @@ const App = () => {
   const telugu = getUrlParameter('telugu');
   const hindi = getUrlParameter('hindi');
 
+  // Helper function to truncate questions based on limit
   const getQuestionSubstring = (question) => {
     if (questionLimit) {
       return question.substring(0, parseInt(questionLimit));
@@ -82,7 +85,7 @@ const App = () => {
       if (currentUser) {
         setUid(currentUser.uid);
         console.log('User is signed in:', currentUser.uid);
-        // Fetch inputText from Firebase for the authenticated user
+        // Fetch data for the authenticated user
         await fetchData(currentUser.uid);
       }
       else {
@@ -92,10 +95,11 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
+  // Function to fetch data from Firestore
   const fetchData = async (userID) => {
     try {
       const genaiCollection = collection(db, 'genai', userID, 'MyGenAI');
-      var q;
+      let q;
       q = query(genaiCollection, orderBy('createdDateTime', 'desc'), limit(dataLimit));
       if (hindi) {
         q = query(genaiCollection, orderBy('createdDateTime', 'desc'), where('language', '==', 'Hindi'), limit(dataLimit));
@@ -112,6 +116,7 @@ const App = () => {
     }
   };
 
+  // Effect to handle search queries
   useEffect(() => {
     if (searchQuery === "") return;
     setIsLoading(true);
@@ -127,6 +132,7 @@ const App = () => {
       });
   }, [searchQuery]);
 
+  // Handlers for input changes
   const handleLimitChange = (event) => {
     const newLimit = event.target.value ? parseInt(event.target.value) : 11;
     setDataLimit(newLimit);
@@ -142,6 +148,7 @@ const App = () => {
     setShowFullQuestion(true);
   };
 
+  // Helper function to split messages into chunks
   const splitMessage = (msg, chunkSize = 4000) => {
     const chunks = [];
     for (let i = 0; i < msg.length; i += chunkSize) {
@@ -150,6 +157,7 @@ const App = () => {
     return chunks;
   };
 
+  // Function to synthesize speech
   const synthesizeSpeech = async (articles, language) => {
     const speechConfig = speechsdk.SpeechConfig.fromSubscription(speechKey, serviceRegion);
     speechConfig.speechSynthesisVoiceName = voiceName;
@@ -184,6 +192,7 @@ const App = () => {
     }
   };
 
+  // Function to render question with 'More' button
   const renderQuestion = (question) => {
     if (showFullQuestion) {
       return <ReactMarkdown>{question}</ReactMarkdown>;
@@ -198,6 +207,7 @@ const App = () => {
     }
   };
 
+  // Function to fetch more data for pagination
   const fetchMoreData = async () => {
     try {
       // get auth user
@@ -208,28 +218,27 @@ const App = () => {
       }
       else {
         console.log('User is signed in:', user.uid);
-      const genaiCollection = collection(db, 'genai', user.uid, 'MyGenAI');
-      var nextQuery;
-      nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), startAfter(lastVisible), limit(dataLimit));
-      if (hindi) {
-        nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), where('language', '==', 'Hindi'), startAfter(lastVisible), limit(dataLimit));
-      }
-      if (telugu) {
-        nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), where('language', '==', 'Telugu'), startAfter(lastVisible), limit(dataLimit));
-      }
+        const genaiCollection = collection(db, 'genai', user.uid, 'MyGenAI');
+        let nextQuery;
+        nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), startAfter(lastVisible), limit(dataLimit));
+        if (hindi) {
+          nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), where('language', '==', 'Hindi'), startAfter(lastVisible), limit(dataLimit));
+        }
+        if (telugu) {
+          nextQuery = query(genaiCollection, orderBy('createdDateTime', 'desc'), where('language', '==', 'Telugu'), startAfter(lastVisible), limit(dataLimit));
+        }
 
-      const genaiSnapshot = await getDocs(nextQuery);
-      const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setGenaiData(prevData => [...prevData, ...genaiList]);
-      setLastVisible(genaiSnapshot.docs[genaiSnapshot.docs.length - 1]); // Update last visible document
-    }
+        const genaiSnapshot = await getDocs(nextQuery);
+        const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setGenaiData(prevData => [...prevData, ...genaiList]);
+        setLastVisible(genaiSnapshot.docs[genaiSnapshot.docs.length - 1]); // Update last visible document
+      }
     } catch (error) {
       console.error("Error fetching more data: ", error);
     }
   };
 
-
-  // Authentication functions
+  // **Authentication Functions**
 
   // Sign In with Email and Password
   const handleSignInWithEmail = async () => {
@@ -294,10 +303,52 @@ const App = () => {
     });
   };
 
+  // **New Event Handlers for Generate and Refresh**
+
+  // Handler for Generate Button Click
+  const handleGenerate = async () => {
+    if (!promptInput.trim()) {
+      alert('Please enter a prompt.');
+      return;
+    }
+
+    setIsGenerating(true); // Set generating state to true
+
+    try {
+      const response = await fetch('https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-13', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prompt: promptInput, model : model, uid: uid })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate content.');
+      }
+
+      const data = await response.json();
+      setGeneratedResponse(data);
+    } catch (error) {
+      console.error('Error generating content:', error);
+      alert(`Error: ${error.message}`);
+    } finally {
+      // click refresh button
+      handleRefresh();
+      setIsGenerating(false); // Reset generating state
+    }
+  };
+
+  // Handler for Refresh Button Click
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
   return (
     <div>
       {!user ? (
-        // Render the authentication forms
+        // **Unauthenticated User Interface: Authentication Forms**
         <div style={{ fontSize: '22px', width: '100%', margin: '0 auto' }}>
           <br />
           <p>Sign In</p>
@@ -342,7 +393,71 @@ const App = () => {
           <br />
         </div>
       ) : (
+        // **Authenticated User Interface: Data Display and New Functionalities**
         <div>
+                <div>
+                <textarea
+                  value={promptInput}
+                  onChange={(e) => setPromptInput(e.target.value)}
+                  placeholder="Enter your prompt here..."
+                  style={{ width: '60%', padding: '10px', fontSize: '16px', height: '40px' }}
+                />
+                <button
+                  onClick={handleGenerate}
+                  className="signonpagebutton"
+                  style={{ marginLeft: '10px', padding: '15px 20px', fontSize: '16px' }}
+                  disabled={isGenerating} // Disable button while generating
+            >
+              {isGenerating ? 'Generating...' : 'Generate'}
+            </button>
+            <button
+              onClick={handleRefresh}
+              className="signuppagebutton"
+              style={{ marginLeft: '10px', padding: '10px 20px', fontSize: '16px' }}
+            >
+              Refresh
+            </button>
+          </div>
+          <div style={{ marginBottom: '20px' }}>
+            <label>
+              <input
+                type="radio"
+                value="openai"
+                checked={model === 'openai'}
+                onChange={(e) => setModel(e.target.value)}
+              />
+              OpenAI
+            </label>
+            <label style={{ marginLeft: '10px' }}>
+              <input
+                type="radio"
+                value="anthropic"
+                checked={model === 'anthropic'}
+                onChange={(e) => setModel(e.target.value)}
+              />
+              Anthropic
+            </label>
+            <label style={{ marginLeft: '10px' }}>
+              <input
+                type="radio"
+                value="gemini"
+                checked={model === 'gemini'}
+                onChange={(e) => setModel(e.target.value)}
+              />
+              Gemini
+            </label>
+            <label style={{ marginLeft: '10px' }}>
+              <input
+                type="radio"
+                value="all"
+                checked={model === 'all'}
+                onChange={(e) => setModel(e.target.value)}
+              />
+              All
+            </label>
+          </div>
+
+          {/* **Existing Components: Limit and Search Inputs, Sign Out Button** */}
           <label>
             Limit:
             <input
@@ -353,8 +468,26 @@ const App = () => {
               min={1}
             />
           </label>
-          <input id="searchInput" style={{ fontSizex: "24px", height: "10%", width: "60%", boxShadow: "0 0 5px rgba(0, 0, 0, 0.3)" }} type="text" onKeyDown={(event) => event.key === "Enter" && handleSearchChange(event)} placeholder="Search..." />
-          <button className="signoutbutton" onClick={handleSignOut}>SignOut</button>
+          <input
+            value={searchText}
+            type="text"
+            onKeyDown={(event) => event.key === "Enter" && handleSearchChange(event)}
+            placeholder="Enter Search Text and Click Enter"
+            defaultValue=""
+            style={{ width: '60%', padding: '10px', fontSize: '16px' }}
+          />
+          <button className="signoutbutton" onClick={handleSignOut} style={{ marginLeft: '10px', padding: '10px 20px', fontSize: '16px' }}>
+            SignOut
+          </button>
+
+          {/* **Display Generated Response** */}
+          {generatedResponse && (
+            <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '5px' }}>
+              <h3>Response is generated, click Refresh button to see results</h3>
+            </div>
+          )}
+
+          {/* **Existing Data Display** */}
           <div>
             {isLoading && <p> Loading Data...</p>}
             {!isLoading && <div>
@@ -379,7 +512,9 @@ const App = () => {
                   </div>
                 </div>
               ))}
-              <button className="fetchButton" onClick={fetchMoreData}>Show more information</button>
+              <button className="fetchButton" onClick={fetchMoreData} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px' }}>
+                Show more information
+              </button>
             </div>}
           </div>
         </div>
