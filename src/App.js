@@ -60,9 +60,9 @@ const App = () => {
   const [isGenerating, setIsGenerating] = useState(false); 
   const [isGeneratingGemini, setIsGeneratingGemini] = useState(false);
   const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false); 
-  const [isOpenAI, setIsOpenAI] = useState(true);
+  const [isOpenAI, setIsOpenAI] = useState(false);
   const [isAnthropic, setIsAnthropic] = useState(false);
-  const [isGemini, setIsGemini] = useState(false);
+  const [isGemini, setIsGemini] = useState(true);
 
   // Helper function to get URL parameters
   const getUrlParameter = (name) => {
