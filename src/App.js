@@ -477,7 +477,7 @@ const App = () => {
             onKeyDown={(event) => event.key === "Enter" && handleSearchChange(event)}
             placeholder="Enter Search Text and Click Enter"
             defaultValue=""
-            style={{ width: '60%', padding: '10px', fontSize: '16px' }}
+            style={{ width: '80%', padding: '10px', fontSize: '16px' }}
           />
 
           {/* **Display Generated Response** 
