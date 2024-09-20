@@ -58,6 +58,9 @@ const App = () => {
   const [promptInput, setPromptInput] = useState('');
   const [generatedResponse, setGeneratedResponse] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false); // Indicates if a generation request is in progress
+  const [isOpenAI, setIsOpenAI] = useState(true);
+  const [isAnthropic, setIsAnthropic] = useState(false);
+  const [isGemini, setIsGemini] = useState(false);
 
   // Helper function to get URL parameters
   const getUrlParameter = (name) => {
@@ -312,15 +315,40 @@ const App = () => {
       return;
     }
 
+    if (!isOpenAI && !isAnthropic && !isGemini) {
+      alert('Please select a model.');
+      return;
+    }
+
     setIsGenerating(true); // Set generating state to true
+    if (isGemini) {
+      setModel('gemini');
+      callAPI('gemini');
+    }
+
+    if (isOpenAI) {
+      setModel('openai');
+      callAPI('openai');
+    }
+
+    if (isAnthropic) {
+      setModel('anthropic');
+      callAPI('anthropic');
+    }
+ // Reset generating state
+  };
+
+  // Call the function13 api
+  const callAPI = async (selectedModel) => {
 
     try {
+      setIsGenerating(true);
       const response = await fetch('https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-13', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ prompt: promptInput, model : model, uid: uid })
+        body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid })
       });
 
       if (!response.ok) {
@@ -336,7 +364,7 @@ const App = () => {
     } finally {
       // click refresh button
       fetchData(uid);
-      setIsGenerating(false); // Reset generating state
+      setIsGenerating(false);
     }
   };
 
@@ -395,56 +423,47 @@ const App = () => {
       ) : (
         // **Authenticated User Interface: Data Display and New Functionalities**
         <div>
-                <div>
-                <textarea
-                  value={promptInput}
-                  onChange={(e) => setPromptInput(e.target.value)}
-                  placeholder="Enter your prompt here..."
-                  style={{ width: '95%', padding: '8px', height: '40px',fontSize: '16px'  }}
-                />
+          <div>
+            <textarea
+              value={promptInput}
+              onChange={(e) => setPromptInput(e.target.value)}
+              placeholder="Enter your prompt here..."
+              style={{ width: '95%', padding: '8px', height: '40px', fontSize: '16px' }}
+            />
           </div>
           <div style={{ marginBottom: '20px' }}>
             <label>
               <input
-                type="radio"
-                value="openai"
-                checked={model === 'openai'}
-                onChange={(e) => setModel(e.target.value)}
+          type="checkbox"
+          value="openai"
+          onChange={(e) => setIsOpenAI(e.target.checked)}
+          checked={isOpenAI}
               />
               OpenAI
             </label>
             <label style={{ marginLeft: '10px' }}>
               <input
-                type="radio"
-                value="anthropic"
-                checked={model === 'anthropic'}
-                onChange={(e) => setModel(e.target.value)}
+          type="checkbox"
+          value="anthropic"
+          onChange={(e) => setIsAnthropic(e.target.checked)}
+          checked={isAnthropic}
               />
               Anthropic
             </label>
             <label style={{ marginLeft: '10px' }}>
               <input
-                type="radio"
-                value="gemini"
-                checked={model === 'gemini'}
-                onChange={(e) => setModel(e.target.value)}
+          type="checkbox"
+          value="gemini"
+          onChange={(e) => setIsGemini(e.target.checked)}
+          checked={isGemini}
               />
               Gemini
             </label>
-            <label style={{ marginLeft: '10px' }}>
-              <input
-                type="radio"
-                value="all"
-                checked={model === 'all'}
-                onChange={(e) => setModel(e.target.value)}
-              />
-              All
-            </label>
             <button
-                  onClick={handleGenerate}
-                  className="signonpagebutton"
-                  style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
-                  disabled={isGenerating} // Disable button while generating
+              onClick={handleGenerate}
+              className="signonpagebutton"
+              style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
+              disabled={isGenerating} // Disable button while generating
             >
               {isGenerating ? 'Generating...' : 'Generate'}
             </button>
@@ -457,11 +476,11 @@ const App = () => {
               <FaCloudDownloadAlt />
             </button>
             <button className="signoutbutton" onClick={handleSignOut} style={{ marginLeft: '40px', padding: '10px 20px', fontSize: '16px' }}>
-            <FaSignOutAlt />
+              <FaSignOutAlt />
             </button>
-            </div>
+          </div>
 
-            {/* **Existing Components: Limit and Search Inputs, Sign Out Button** */}
+          {/* **Existing Components: Limit and Search Inputs, Sign Out Button** */}
           <label>
             Limit:
             <input
