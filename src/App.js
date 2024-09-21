@@ -52,18 +52,19 @@ const App = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [uid, setUid] = useState(null);
-  const [model, setModel] = useState('openai');
-
+ 
   // **New State Variables for Generate Functionality**
   const [promptInput, setPromptInput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false); 
   const [isGeneratingGemini, setIsGeneratingGemini] = useState(false);
   const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false); 
   const [isGeneratingGpt01Mini, setIsGeneratingGpt01Mini] = useState(false);
+  const [isGeneratingImage_Dall_e_3, setIsGeneratingImage_Dall_e_3] = useState(false);
   const [isOpenAI, setIsOpenAI] = useState(false);
   const [isAnthropic, setIsAnthropic] = useState(false);
   const [isGemini, setIsGemini] = useState(true);
   const [isGpto1Mini, setIsGpto1Mini] = useState(false);
+  const [isImage_Dall_e_3, setIsImage_Dall_e_3] = useState(false);
 
   // Helper function to get URL parameters
   const getUrlParameter = (name) => {
@@ -312,41 +313,45 @@ const App = () => {
   // **New Event Handlers for Generate and Refresh**
 
   // Handler for Generate Button Click
-  const handleGenerate = async () => {
-    if (!promptInput.trim()) {
-      alert('Please enter a prompt.');
-      return;
-    }
+// **Handler for Generate Button Click**
+const handleGenerate = async () => {
+  if (!promptInput.trim()) {
+    alert('Please enter a prompt.');
+    return;
+  }
 
-    if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini) {
-      alert('Please select a model.');
-      return;
-    }
+  // Check if at least one model is selected
+  if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !isImage_Dall_e_3) {
+    alert('Please select at least one model.');
+    return;
+  }
 
-    if (isAnthropic) {
-      setIsGeneratingAnthropic(true); // Set generating state to true
-      setModel('anthropic');
-      callAPI('anthropic');
-    }
+  // Generate API calls for each selected model
+  if (isAnthropic) {
+    setIsGeneratingAnthropic(true); // Set generating state to true
+    callAPI('anthropic');
+  }
 
-    if (isGemini) {
-      setIsGeneratingGemini(true); // Set generating state to true
-      setModel('gemini');
-      callAPI('gemini');
-    }
+  if (isGemini) {
+    setIsGeneratingGemini(true); // Set generating state to true
+    callAPI('gemini');
+  }
 
-    if (isOpenAI) {
-      setIsGenerating(true); // Set generating state to true
-      setModel('openai');
-      callAPI('openai');
-    }
+  if (isOpenAI) {
+    setIsGenerating(true); // Set generating state to true
+    callAPI('openai');
+  }
 
-    if (isGpto1Mini) {
-      setIsGeneratingGpt01Mini(true); // Set generating state to true
-      setModel('gpt01-mini');
-      callAPI('gpt01-mini');
-    }
+  if (isGpto1Mini) {
+    setIsGeneratingGpt01Mini(true); // Set generating state to true
+    callAPI('gpt01-mini');
+  }
 
+  // **Handle DALL·E 3 Selection**
+  if (isImage_Dall_e_3) {
+    setIsGeneratingImage_Dall_e_3(true); // Set generating state to true
+    callAPI('dall-e-3');
+  }
 };
 
   // Call the function13 api
@@ -396,12 +401,10 @@ const App = () => {
       if (selectedModel === 'gpt01-mini') {
         setIsGeneratingGpt01Mini(false);
       }
+      if (selectedModel === 'dall-e-3') {
+        setIsGeneratingImage_Dall_e_3(false);
+      }
     }
-  };
-
-  // Handler for Refresh Button Click
-  const handleRefresh = () => {
-    fetchData(uid);
   };
 
   return (
@@ -499,15 +502,42 @@ const App = () => {
               />
               gpt01-mini
             </label>
+              <label style={{ marginLeft: '10px' }}>
+    <input
+      type="checkbox"
+      value="dall-e-3"
+      onChange={(e) => setIsImage_Dall_e_3(e.target.checked)}
+      checked={isImage_Dall_e_3}
+    />
+    DALL-E-3
+  </label>
             <button
               onClick={handleGenerate}
               className="signonpagebutton"
               style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
-              disabled={isGenerating || isGeneratingGemini || isGeneratingAnthropic || isGeneratingGpt01Mini} // Disable button while generating
+              disabled={
+                isGenerating ||
+                isGeneratingGemini ||
+                isGeneratingAnthropic ||
+                isGeneratingGpt01Mini ||
+                isGeneratingImage_Dall_e_3 // Disable when DALL·E 3 is generating
+              }
             >
-              {isGenerating || isGeneratingGemini || isGeneratingAnthropic || isGeneratingGpt01Mini ? <FaSpinner className="spinning" /> : 'Generate'}
+              {isGenerating ||
+              isGeneratingGemini ||
+              isGeneratingAnthropic ||
+              isGeneratingGpt01Mini ||
+              isGeneratingImage_Dall_e_3 ? (
+                <FaSpinner className="spinning" />
+              ) : (
+                'Generate'
+              )}
             </button>
-            <button className="signoutbutton" onClick={handleSignOut} style={{ marginLeft: '40px', padding: '10px 20px', fontSize: '16px' }}>
+            <button
+              className="signoutbutton"
+              onClick={handleSignOut}
+              style={{ marginLeft: '40px', padding: '10px 20px', fontSize: '16px' }}
+            >
               <FaSignOutAlt />
             </button>
           </div>
