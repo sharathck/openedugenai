@@ -59,9 +59,11 @@ const App = () => {
   const [isGenerating, setIsGenerating] = useState(false); 
   const [isGeneratingGemini, setIsGeneratingGemini] = useState(false);
   const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false); 
+  const [isGeneratingGpt01Mini, setIsGeneratingGpt01Mini] = useState(false);
   const [isOpenAI, setIsOpenAI] = useState(false);
   const [isAnthropic, setIsAnthropic] = useState(false);
   const [isGemini, setIsGemini] = useState(true);
+  const [isGpto1Mini, setIsGpto1Mini] = useState(false);
 
   // Helper function to get URL parameters
   const getUrlParameter = (name) => {
@@ -316,7 +318,7 @@ const App = () => {
       return;
     }
 
-    if (!isOpenAI && !isAnthropic && !isGemini) {
+    if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini) {
       alert('Please select a model.');
       return;
     }
@@ -337,6 +339,12 @@ const App = () => {
       setIsGenerating(true); // Set generating state to true
       setModel('openai');
       callAPI('openai');
+    }
+
+    if (isGpto1Mini) {
+      setIsGeneratingGpt01Mini(true); // Set generating state to true
+      setModel('gpt01-mini');
+      callAPI('gpt01-mini');
     }
 
 };
@@ -384,6 +392,9 @@ const App = () => {
       }
       if (selectedModel === 'gemini') {
         setIsGeneratingGemini(false);
+      }
+      if (selectedModel === 'gpt01-mini') {
+        setIsGeneratingGpt01Mini(false);
       }
     }
   };
@@ -479,13 +490,22 @@ const App = () => {
               />
               Gemini
             </label>
+            <label style={{ marginLeft: '10px' }}>
+              <input
+          type="checkbox"
+          value="gpt01-mini"
+          onChange={(e) => setIsGpto1Mini(e.target.checked)}
+          checked={isGpto1Mini}
+              />
+              gpt01-mini
+            </label>
             <button
               onClick={handleGenerate}
               className="signonpagebutton"
               style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
-              disabled={isGenerating || isGeneratingGemini || isGeneratingAnthropic} // Disable button while generating
+              disabled={isGenerating || isGeneratingGemini || isGeneratingAnthropic || isGeneratingGpt01Mini} // Disable button while generating
             >
-              {isGenerating || isGeneratingGemini || isGeneratingAnthropic ? <FaSpinner className="spinning" /> : 'Generate'}
+              {isGenerating || isGeneratingGemini || isGeneratingAnthropic || isGeneratingGpt01Mini ? <FaSpinner className="spinning" /> : 'Generate'}
             </button>
             <button className="signoutbutton" onClick={handleSignOut} style={{ marginLeft: '40px', padding: '10px 20px', fontSize: '16px' }}>
               <FaSignOutAlt />
