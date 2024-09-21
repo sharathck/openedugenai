@@ -407,6 +407,24 @@ const handleGenerate = async () => {
     }
   };
 
+    // Handler for DALL·E 3 Checkbox Change
+  const handleDall_e_3Change = (checked) => {
+    setIsImage_Dall_e_3(checked);
+    // if any other model is checked, uncheck it, and display popup
+    
+    if (checked) {
+      // Uncheck other models
+      if (isOpenAI || isAnthropic || isGemini || isGpto1Mini) {
+        alert('Image generation model, can not be combined with Text Generation model.');
+        setIsOpenAI(false);
+        setIsOpenAI(false);
+        setIsAnthropic(false);
+        setIsGemini(false);
+        setIsGpto1Mini(false);
+        }
+    }
+  };
+
   return (
     <div>
       {!user ? (
@@ -502,14 +520,16 @@ const handleGenerate = async () => {
               />
               gpt01-mini
             </label>
-              <label style={{ marginLeft: '10px' }}>
+            <label style={{ marginLeft: '10px' }}> |
+              </label>
+            <label style={{ marginLeft: '8px' }}>
     <input
       type="checkbox"
       value="dall-e-3"
-      onChange={(e) => setIsImage_Dall_e_3(e.target.checked)}
+      onChange={(e) => handleDall_e_3Change(e.target.checked)}
       checked={isImage_Dall_e_3}
     />
-    DALL-E-3
+    Gen-IMAGE
   </label>
             <button
               onClick={handleGenerate}
