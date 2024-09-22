@@ -615,14 +615,15 @@ const handleGenerate = async () => {
                 isGeneratingGemini ||
                 isGeneratingAnthropic ||
                 isGeneratingGpt01Mini ||
-                isGeneratingImage_Dall_e_3 // Disable when DALL·E 3 is generating
+                isGeneratingImage_Dall_e_3 ||
+                isGeneratingTTS
               }
             >
               {isGenerating ||
               isGeneratingGemini ||
               isGeneratingAnthropic ||
               isGeneratingGpt01Mini ||
-              isGeneratingImage_Dall_e_3 ? (
+              isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
                 <FaSpinner className="spinning" />
               ) : (
                 'Generate'
