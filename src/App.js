@@ -65,7 +65,10 @@ const App = () => {
   const [isGemini, setIsGemini] = useState(true);
   const [isGpto1Mini, setIsGpto1Mini] = useState(false);
   const [isImage_Dall_e_3, setIsImage_Dall_e_3] = useState(false);
+  const [isTTS, setIsTTS] = useState(false);
+  const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
 
+  
   // Helper function to get URL parameters
   const getUrlParameter = (name) => {
     const queryString = window.location.search;
@@ -321,7 +324,7 @@ const handleGenerate = async () => {
   }
 
   // Check if at least one model is selected
-  if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !isImage_Dall_e_3) {
+  if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !isImage_Dall_e_3 && !isTTS) {
     alert('Please select at least one model.');
     return;
   }
@@ -351,6 +354,12 @@ const handleGenerate = async () => {
   if (isImage_Dall_e_3) {
     setIsGeneratingImage_Dall_e_3(true); // Set generating state to true
     callAPI('dall-e-3');
+  }
+
+  // **Handle TTS Selection**
+  if (isTTS) {
+    setIsGeneratingTTS(true); // Set generating state to true
+    callTTSAPI(promptInput);
   }
 };
 
@@ -407,6 +416,42 @@ const handleGenerate = async () => {
     }
   };
 
+    // Function to call the TTS API
+  const callTTSAPI = async (message) => {
+    console.log('Calling TTS API with message:', message);
+  
+    try {
+      const response = await fetch('https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-17', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: message , uid: uid})
+      });
+  
+      if (!response.ok) {
+        throw new Error([`Network response was not ok: ${response.statusText}`]);
+      }
+  
+      const json = await response.json();
+  
+      if (json.status === 'success') {
+        const url = json.url;
+        console.log('TTS URL:', url);
+        alert('TTS processed and URL saved successfully.');
+      } else {
+        alert('TTS API did not return a success status.');
+        console.error('TTS API Response:', json);
+      }
+    } catch (error) {
+      console.error('Error calling TTS API:', error);
+      alert([`Error: ${error.message}`]);
+    } finally {
+      setIsGeneratingTTS(false); // Reset generating state
+      // Optionally, refresh data
+      fetchData(uid);
+    }
+  };
     // Handler for DALL·E 3 Checkbox Change
   const handleDall_e_3Change = (checked) => {
     setIsImage_Dall_e_3(checked);
@@ -414,16 +459,36 @@ const handleGenerate = async () => {
     
     if (checked) {
       // Uncheck other models
-      if (isOpenAI || isAnthropic || isGemini || isGpto1Mini) {
+      if (isOpenAI || isAnthropic || isGemini || isGpto1Mini || isTTS) {
         alert('Image generation model, can not be combined with Text Generation model.');
         setIsOpenAI(false);
         setIsOpenAI(false);
         setIsAnthropic(false);
         setIsGemini(false);
         setIsGpto1Mini(false);
+        setIsTTS(false);
         }
     }
   };
+
+  const handleTTSChange = (checked) => {
+    setIsTTS(checked);
+  
+    if (checked) {
+      // Optionally, uncheck DALL·E 3 or other models if needed
+      // For example, if TTS should not coexist with DALL·E 3:
+      if (isOpenAI || isAnthropic || isGemini || isGpto1Mini || isImage_Dall_e_3) {
+        alert('Audio generation model, can not be combined with other model.');
+        setIsOpenAI(false);
+        setIsOpenAI(false);
+        setIsAnthropic(false);
+        setIsGemini(false);
+        setIsGpto1Mini(false);
+        setIsImage_Dall_e_3(false);
+        }
+    }
+  };
+
 
   return (
     <div>
@@ -531,6 +596,16 @@ const handleGenerate = async () => {
     />
     Gen-IMAGE
   </label>
+  {/* **New TTS Checkbox** */}
+<label style={{ marginLeft: '10px' }}>
+  <input
+    type="checkbox"
+    value="tts"
+    onChange={(e) => handleTTSChange(e.target.checked)}
+    checked={isTTS}
+  />
+  TTS
+</label>
             <button
               onClick={handleGenerate}
               className="signonpagebutton"
