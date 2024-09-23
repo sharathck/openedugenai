@@ -370,7 +370,7 @@ const handleGenerate = async () => {
       for (const chunk of chunks) {
         callTTSAPI(chunk);
       }*/
-     callTTSAPI(promptInput, 'http://tts--v2.happyrock-2dd71657.centralus.azurecontainerapps.io/');
+     callTTSAPI(promptInput, 'https://tts--v2.happyrock-2dd71657.centralus.azurecontainerapps.io/');
     }
     else
     {
