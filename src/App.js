@@ -360,18 +360,21 @@ const handleGenerate = async () => {
   if (isTTS) {
     setIsGeneratingTTS(true); // Set generating state to true
     // if promptInput is > 9000 characters, then split it into chunks and call TTS API for each chunk
-    if (promptInput.length > 3999) {
-      const chunks = [];
+    //
+
+   if (promptInput.length > 3999) {
+     /* const chunks = [];
       for (let i = 0; i < promptInput.length; i += 3999) {
         chunks.push(promptInput.substring(i, i + 3999));
       }
       for (const chunk of chunks) {
         callTTSAPI(chunk);
-      }
+      }*/
+     callTTSAPI(promptInput, 'http://tts--v2.happyrock-2dd71657.centralus.azurecontainerapps.io/');
     }
     else
     {
-    callTTSAPI(promptInput);
+    callTTSAPI(promptInput, 'https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18');
   }
   }
 };
@@ -430,11 +433,11 @@ const handleGenerate = async () => {
   };
 
     // Function to call the TTS API
-  const callTTSAPI = async (message) => {
+  const callTTSAPI = async (message, apiUrl) => {
     console.log('Calling TTS API with message:', message);
   
     try {
-      const response = await fetch('https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
