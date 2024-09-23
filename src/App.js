@@ -436,7 +436,7 @@ const handleGenerate = async () => {
       const json = await response.json();
   
       if (json.status === 'success') {
-        const url = json.url;
+        const url = json.answer;
         console.log('TTS URL:', url);
         alert('TTS processed and URL saved successfully.');
       } else {
