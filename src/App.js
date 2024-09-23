@@ -359,7 +359,20 @@ const handleGenerate = async () => {
   // **Handle TTS Selection**
   if (isTTS) {
     setIsGeneratingTTS(true); // Set generating state to true
+    // if promptInput is > 9000 characters, then split it into chunks and call TTS API for each chunk
+    if (promptInput.length > 3999) {
+      const chunks = [];
+      for (let i = 0; i < promptInput.length; i += 3999) {
+        chunks.push(promptInput.substring(i, i + 3999));
+      }
+      for (const chunk of chunks) {
+        callTTSAPI(chunk);
+      }
+    }
+    else
+    {
     callTTSAPI(promptInput);
+  }
   }
 };
 
