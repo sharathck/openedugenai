@@ -448,17 +448,6 @@ const handleGenerate = async () => {
       if (!response.ok) {
         throw new Error([`Network response was not ok: ${response.statusText}`]);
       }
-  
-      const json = await response.json();
-  
-      if (json.status === 'success') {
-        const url = json.answer;
-        console.log('TTS URL:', url);
-        alert('TTS processed and URL saved successfully.');
-      } else {
-        alert('TTS API did not return a success status.');
-        console.error('TTS API Response:', json);
-      }
     } catch (error) {
       console.error('Error calling TTS API:', error);
       alert([`Error: ${error.message}`]);
