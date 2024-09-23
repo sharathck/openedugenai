@@ -421,7 +421,7 @@ const handleGenerate = async () => {
     console.log('Calling TTS API with message:', message);
   
     try {
-      const response = await fetch('https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-17', {
+      const response = await fetch('https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
