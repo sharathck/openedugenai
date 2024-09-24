@@ -660,7 +660,6 @@ const App = () => {
               <FaSignOutAlt />
             </button>
           </div>
-
           {/* **Existing Components: Limit and Search Inputs, Sign Out Button** */}
           <label>
             Limit:
