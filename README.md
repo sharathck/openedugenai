@@ -1,4 +1,4 @@
-# React Generative AI Responses
+# Generative AI Studio
 # Lessons Learned - React Hooks
 ** useEffect **
 * useEffect was getting triggered twice, once for searchQuery and once for limit. I had to use if condition to stop it from happening.
