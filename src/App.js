@@ -52,8 +52,6 @@ const App = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [uid, setUid] = useState(null);
- 
-  // **New State Variables for Generate Functionality**
   const [promptInput, setPromptInput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false); 
   const [isGeneratingGemini, setIsGeneratingGemini] = useState(false);
