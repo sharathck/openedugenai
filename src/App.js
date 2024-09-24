@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { initializeApp } from 'firebase/app';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
-import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner,FaCloudDownloadAlt, FaHeadphones } from 'react-icons/fa';
+import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaHeadphones } from 'react-icons/fa';
 import './App.css';
 import { getFirestore, collection, where, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import {
@@ -53,10 +53,10 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [uid, setUid] = useState(null);
   const [promptInput, setPromptInput] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false); 
+  const [isGenerating, setIsGenerating] = useState(false);
   const [isGeneratingGemini, setIsGeneratingGemini] = useState(false);
-  const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false); 
-  const [isGeneratingGpt01Mini, setIsGeneratingGpt01Mini] = useState(false);
+  const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false);
+  const [isGeneratingo1Mini, setIsGeneratingo1Mini] = useState(false);
   const [isGeneratingImage_Dall_e_3, setIsGeneratingImage_Dall_e_3] = useState(false);
   const [isOpenAI, setIsOpenAI] = useState(false);
   const [isAnthropic, setIsAnthropic] = useState(false);
@@ -65,8 +65,10 @@ const App = () => {
   const [isImage_Dall_e_3, setIsImage_Dall_e_3] = useState(false);
   const [isTTS, setIsTTS] = useState(false);
   const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
+  const [iso1, setIso1] = useState(false); // New state for o1
+  const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
 
-  
+
   // Helper function to get URL parameters
   const getUrlParameter = (name) => {
     const queryString = window.location.search;
@@ -314,68 +316,72 @@ const App = () => {
   // **New Event Handlers for Generate and Refresh**
 
   // Handler for Generate Button Click
-// **Handler for Generate Button Click**
-const handleGenerate = async () => {
-  if (!promptInput.trim()) {
-    alert('Please enter a prompt.');
-    return;
-  }
-
-  // Check if at least one model is selected
-  if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !isImage_Dall_e_3 && !isTTS) {
-    alert('Please select at least one model.');
-    return;
-  }
-
-  // Generate API calls for each selected model
-  if (isAnthropic) {
-    setIsGeneratingAnthropic(true); // Set generating state to true
-    callAPI('anthropic');
-  }
-
-  if (isGemini) {
-    setIsGeneratingGemini(true); // Set generating state to true
-    callAPI('gemini');
-  }
-
-  if (isOpenAI) {
-    setIsGenerating(true); // Set generating state to true
-    callAPI('openai');
-  }
-
-  if (isGpto1Mini) {
-    setIsGeneratingGpt01Mini(true); // Set generating state to true
-    callAPI('gpt01-mini');
-  }
-
-  // **Handle DALL·E 3 Selection**
-  if (isImage_Dall_e_3) {
-    setIsGeneratingImage_Dall_e_3(true); // Set generating state to true
-    callAPI('dall-e-3');
-  }
-
-  // **Handle TTS Selection**
-  if (isTTS) {
-    setIsGeneratingTTS(true); // Set generating state to true
-    // if promptInput is > 9000 characters, then split it into chunks and call TTS API for each chunk
-    //
-
-   if (promptInput.length > 3999) {
-     /* const chunks = [];
-      for (let i = 0; i < promptInput.length; i += 3999) {
-        chunks.push(promptInput.substring(i, i + 3999));
-      }
-      for (const chunk of chunks) {
-        callTTSAPI(chunk);
-      }*/
-     callTTSAPI(promptInput, 'https://tts.happyrock-2dd71657.centralus.azurecontainerapps.io/');
+  // **Handler for Generate Button Click**
+  const handleGenerate = async () => {
+    if (!promptInput.trim()) {
+      alert('Please enter a prompt.');
+      return;
     }
-    else
-    {
-    callTTSAPI(promptInput, 'https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18');
-  }
-  }
-};
+
+    // Check if at least one model is selected
+    if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS) {
+      alert('Please select at least one model.');
+      return;
+    }
+
+    // Generate API calls for each selected model
+    if (isAnthropic) {
+      setIsGeneratingAnthropic(true); // Set generating state to true
+      callAPI('anthropic');
+    }
+
+    if (isGemini) {
+      setIsGeneratingGemini(true); // Set generating state to true
+      callAPI('gemini');
+    }
+
+    if (isOpenAI) {
+      setIsGenerating(true); // Set generating state to true
+      callAPI('openai');
+    }
+
+    if (isGpto1Mini) {
+      setIsGeneratingo1Mini(true); // Set generating state to true
+      callAPI('o1-mini');
+    }
+
+    if (iso1) {
+      setIsGeneratingo1(true); // Set generating state to true
+      callAPI('o1');
+    }
+
+    // **Handle DALL·E 3 Selection**
+    if (isImage_Dall_e_3) {
+      setIsGeneratingImage_Dall_e_3(true); // Set generating state to true
+      callAPI('dall-e-3');
+    }
+
+    // **Handle TTS Selection**
+    if (isTTS) {
+      setIsGeneratingTTS(true); // Set generating state to true
+      // if promptInput is > 9000 characters, then split it into chunks and call TTS API for each chunk
+      //
+
+      if (promptInput.length > 3999) {
+        /* const chunks = [];
+         for (let i = 0; i < promptInput.length; i += 3999) {
+           chunks.push(promptInput.substring(i, i + 3999));
+         }
+         for (const chunk of chunks) {
+           callTTSAPI(chunk);
+         }*/
+        callTTSAPI(promptInput, 'https://tts.happyrock-2dd71657.centralus.azurecontainerapps.io/');
+      }
+      else {
+        callTTSAPI(promptInput, 'https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18');
+      }
+    }
+  };
 
   // Call the function13 api
   const callAPI = async (selectedModel) => {
@@ -389,7 +395,7 @@ const handleGenerate = async () => {
         },
         body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid })
       });
- 
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to generate content.');
@@ -400,8 +406,8 @@ const handleGenerate = async () => {
       // print response data.question
       console.log('Selected Model:', selectedModel);
       console.log('Response - Question:', data.question);
-      
-     const { model, firestoreStatus } = data.results[0];
+
+      const { model, firestoreStatus } = data.results[0];
       console.log('Model:', model);
       console.log('Firestore Status:', firestoreStatus);
 
@@ -421,8 +427,11 @@ const handleGenerate = async () => {
       if (selectedModel === 'gemini') {
         setIsGeneratingGemini(false);
       }
-      if (selectedModel === 'gpt01-mini') {
-        setIsGeneratingGpt01Mini(false);
+      if (selectedModel === 'o1-mini') {
+        setIsGeneratingo1Mini(false);
+      }
+      if (selectedModel === 'o1') {
+        setIsGeneratingo1(false);
       }
       if (selectedModel === 'dall-e-3') {
         setIsGeneratingImage_Dall_e_3(false);
@@ -430,19 +439,19 @@ const handleGenerate = async () => {
     }
   };
 
-    // Function to call the TTS API
+  // Function to call the TTS API
   const callTTSAPI = async (message, apiUrl) => {
     console.log('Calling TTS API with message:', message);
-  
+
     try {
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: message , uid: uid})
+        body: JSON.stringify({ message: message, uid: uid })
       });
-  
+
       if (!response.ok) {
         throw new Error([`Network response was not ok: ${response.statusText}`]);
       }
@@ -455,40 +464,42 @@ const handleGenerate = async () => {
       fetchData(uid);
     }
   };
-    // Handler for DALL·E 3 Checkbox Change
+  // Handler for DALL·E 3 Checkbox Change
   const handleDall_e_3Change = (checked) => {
     setIsImage_Dall_e_3(checked);
     // if any other model is checked, uncheck it, and display popup
-    
+
     if (checked) {
       // Uncheck other models
-      if (isOpenAI || isAnthropic || isGemini || isGpto1Mini || isTTS) {
+      if (isOpenAI || isAnthropic || isGemini || isGpto1Mini || iso1 || isTTS) {
         alert('Image generation model, can not be combined with Text Generation model.');
         setIsOpenAI(false);
         setIsOpenAI(false);
         setIsAnthropic(false);
         setIsGemini(false);
         setIsGpto1Mini(false);
+        setIso1(false);
         setIsTTS(false);
-        }
+      }
     }
   };
 
   const handleTTSChange = (checked) => {
     setIsTTS(checked);
-  
+
     if (checked) {
       // Optionally, uncheck DALL·E 3 or other models if needed
       // For example, if TTS should not coexist with DALL·E 3:
-      if (isOpenAI || isAnthropic || isGemini || isGpto1Mini || isImage_Dall_e_3) {
+      if (isOpenAI || isAnthropic || isGemini || isGpto1Mini || iso1 || isImage_Dall_e_3) {
         alert('Audio generation model, can not be combined with other model.');
         setIsOpenAI(false);
         setIsOpenAI(false);
         setIsAnthropic(false);
         setIsGemini(false);
         setIsGpto1Mini(false);
+        setIso1(false);
         setIsImage_Dall_e_3(false);
-        }
+      }
     }
   };
 
@@ -554,79 +565,88 @@ const handleGenerate = async () => {
           <div style={{ marginBottom: '20px' }}>
             <label>
               <input
-          type="checkbox"
-          value="openai"
-          onChange={(e) => setIsOpenAI(e.target.checked)}
-          checked={isOpenAI}
+                type="checkbox"
+                value="openai"
+                onChange={(e) => setIsOpenAI(e.target.checked)}
+                checked={isOpenAI}
               />
-              OpenAI
+              ChatGPT
             </label>
-            <label style={{ marginLeft: '10px' }}>
+            <label style={{ marginLeft: '8px' }}>
               <input
-          type="checkbox"
-          value="anthropic"
-          onChange={(e) => setIsAnthropic(e.target.checked)}
-          checked={isAnthropic}
+                type="checkbox"
+                value="anthropic"
+                onChange={(e) => setIsAnthropic(e.target.checked)}
+                checked={isAnthropic}
               />
-              Anthropic
+              Claude
             </label>
-            <label style={{ marginLeft: '10px' }}>
+            <label style={{ marginLeft: '8px' }}>
               <input
-          type="checkbox"
-          value="gemini"
-          onChange={(e) => setIsGemini(e.target.checked)}
-          checked={isGemini}
+                type="checkbox"
+                value="gemini"
+                onChange={(e) => setIsGemini(e.target.checked)}
+                checked={isGemini}
               />
               Gemini
             </label>
-            <label style={{ marginLeft: '10px' }}>
-              <input
-          type="checkbox"
-          value="gpt01-mini"
-          onChange={(e) => setIsGpto1Mini(e.target.checked)}
-          checked={isGpto1Mini}
-              />
-              gpt01-mini
-            </label>
-            <label style={{ marginLeft: '10px' }}> |
-              </label>
             <label style={{ marginLeft: '8px' }}>
-    <input
-      type="checkbox"
-      value="dall-e-3"
-      onChange={(e) => handleDall_e_3Change(e.target.checked)}
-      checked={isImage_Dall_e_3}
-    />
-    Gen-IMAGE
-  </label>
-  {/* **New TTS Checkbox** */}
-<label style={{ marginLeft: '10px' }}>
-  <input
-    type="checkbox"
-    value="tts"
-    onChange={(e) => handleTTSChange(e.target.checked)}
-    checked={isTTS}
-  />
-  TTS
-</label>
+              <input
+                type="checkbox"
+                value="o1-mini"
+                onChange={(e) => setIsGpto1Mini(e.target.checked)}
+                checked={isGpto1Mini}
+              />
+              o1-mini
+            </label>
+            <label style={{ marginLeft: '8px' }}>
+              <input
+                type="checkbox"
+                value="o1"
+                onChange={(e) => setIso1(e.target.checked)}
+                checked={iso1}
+              />
+              o1
+            </label>
+            <label style={{ marginLeft: '8px' }}>
+              <input
+                type="checkbox"
+                value="dall-e-3"
+                onChange={(e) => handleDall_e_3Change(e.target.checked)}
+                checked={isImage_Dall_e_3}
+              />
+              IMAGE
+            </label>
+            {/* **New TTS Checkbox** */}
+            <label style={{ marginLeft: '8px' }}>
+              <input
+                type="checkbox"
+                value="tts"
+                onChange={(e) => handleTTSChange(e.target.checked)}
+                checked={isTTS}
+              />
+              TTS
+            </label>
             <button
               onClick={handleGenerate}
               className="signonpagebutton"
-              style={{ marginLeft: '60px', padding: '15px 20px', fontSize: '16px' }}
+              style={{ marginLeft: '20px', padding: '15px 20px', fontSize: '16px' }}
               disabled={
                 isGenerating ||
                 isGeneratingGemini ||
                 isGeneratingAnthropic ||
-                isGeneratingGpt01Mini ||
+                isGeneratingo1Mini ||
+                isGeneratingo1 ||
                 isGeneratingImage_Dall_e_3 ||
                 isGeneratingTTS
               }
             >
               {isGenerating ||
-              isGeneratingGemini ||
-              isGeneratingAnthropic ||
-              isGeneratingGpt01Mini ||
-              isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
+                isGeneratingGemini ||
+                isGeneratingAnthropic ||
+                isGeneratingo1Mini ||
+                isGeneratingo1 ||
+                isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
                 <FaSpinner className="spinning" />
               ) : (
                 'Generate'
@@ -635,7 +655,7 @@ const handleGenerate = async () => {
             <button
               className="signoutbutton"
               onClick={handleSignOut}
-              style={{ marginLeft: '40px', padding: '10px 20px', fontSize: '16px' }}
+              style={{ marginLeft: '20px', padding: '10px 20px', fontSize: '16px' }}
             >
               <FaSignOutAlt />
             </button>
@@ -702,8 +722,9 @@ const handleGenerate = async () => {
             </div>}
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 
