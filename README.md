@@ -13,12 +13,17 @@
   * Enforce HTTPS should be selected
   * It takes 15-20 minutes for the changes to reflect.
 * Go to domain provider godaddy.com and add **CNAME** record with value (subdomain like **www.genai-all.com**)
-  * CNAME: www -> sharath.github.io
+  * CNAME: www -> sharath.github.io.
 * Go to domain provider godaddy.com and add **A** record with values (Apex domain like **genai-all.com without www**) 
   * A: @ -> 185.199.108.153
   * A: @ -> 185.199.109.153
   * A: @ -> 185.199.110.153
   * A: @ -> 185.199.111.153
+* **https://www.<sitename>.com** will initially display **insecure** site. It takse **10-15 minutes** to deploy security certificates, so please wait and try again after 15 minutes.
+* **https://<sitename>.com ** will not work initially. **It will take 30-45 minutes** for the changes (**A records in DNS**) to reflect.
+  * Add www.<sitename>.com
+  * Enforce HTTPS should be selected
+  * It takes 15-20 minutes for the changes to reflect.
 * Most importantly, update build script to the following in package.json
 ```bash
     "build": "cp ./docs/CNAME ./CNAME_backup && BUILD_PATH='./docs' react-scripts build && cp ./CNAME_backup ./docs/CNAME && rm ./CNAME_backup",
