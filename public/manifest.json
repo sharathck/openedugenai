@@ -1,0 +1,13 @@
+{
+    "short_name": "Gen AI",
+    "name": "Gen AI Studio",
+    "icons": [
+      {
+        "src": "ai.avif"
+      }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+  }
