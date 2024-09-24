@@ -19,7 +19,11 @@
   * A: @ -> 185.199.109.153
   * A: @ -> 185.199.110.153
   * A: @ -> 185.199.111.153
-* Most importantly, add CNAME file to .gitiignore file to avoid it from being pushed to github.
+* Most importantly, update build script to the following in package.json
+```bash
+    "build": "cp ./docs/CNAME ./CNAME_backup && BUILD_PATH='./docs' react-scripts build && cp ./CNAME_backup ./docs/CNAME && rm ./CNAME_backup",
+```
+* Also, add CNAME file to .gitiignore file to avoid it from being pushed to github.
   * .gitignore 
     * docs/CNAME
   * clear git cache
