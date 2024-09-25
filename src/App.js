@@ -36,12 +36,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+let searchQuery = '';
+let searchModel = 'All';
+let dataLimit = 11;
 
 const App = () => {
   // **State Variables**
   const [genaiData, setGenaiData] = useState([]);
-  const [dataLimit, setDataLimit] = useState(11);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [lastVisible, setLastVisible] = useState(null); // State for the last visible document
   const [language, setLanguage] = useState("en");
@@ -66,8 +67,7 @@ const App = () => {
   const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
   const [iso1, setIso1] = useState(false); // New state for o1
   const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
-  const [searchModel, setSearchModel] = useState("all");
-
+ 
 
   // Helper function to get URL parameters
   const getUrlParameter = (name) => {
@@ -128,13 +128,18 @@ const App = () => {
 
   // Update the useEffect that handles the search query
 useEffect(() => {
-  if (searchQuery === "") return;
+  if (searchQuery.length > 1 && searchModel != "All") 
+  {
   setIsLoading(true);
+  console.log("Fetching data for search query:", searchQuery);
+  console.log("search model:", searchModel);
+  console.log("limit:", dataLimit);
   fetch(
     `https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?uid=${uid}&limit=${dataLimit}&q=${searchQuery.replace(/ /g,'-')}&model=${searchModel}`
   )
     .then((res) => res.json())
     .then((data) => {
+      console.log("BigQuery Data:", data);
       setGenaiData(data);
       setIsLoading(false);
     })
@@ -142,16 +147,18 @@ useEffect(() => {
       console.error("Invalid JSON format:", error);
       setIsLoading(false);
     });
-}, [searchQuery, searchModel]);
+  }
+}, [dataLimit, searchQuery]);
 
   // Handlers for input changes
   const handleLimitChange = (event) => {
-    const newLimit = event.target.value ? parseInt(event.target.value) : 11;
-    setDataLimit(newLimit);
+    dataLimit = parseInt(event.target.value);
+    bigQueryResults();
   };
 
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
+    searchQuery = event.target.value;
+    bigQueryResults();
   };
 
   const [showFullQuestion, setShowFullQuestion] = useState(false);
@@ -505,6 +512,29 @@ useEffect(() => {
     }
   };
 
+const handleModelChange = (modelValue) => {
+  searchModel = modelValue;
+  bigQueryResults();
+  }
+const bigQueryResults = () => {
+  setIsLoading(true);
+  console.log("Fetching data for search query:", searchQuery);
+  console.log("search model:", searchModel);
+  console.log("limit:", dataLimit);
+  fetch(
+    `https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?uid=${uid}&limit=${dataLimit}&q=${searchQuery.replace(/ /g,'-')}&model=${searchModel}`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("BigQuery Data:", data);
+      setGenaiData(data);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      console.error("Invalid JSON format:", error);
+      setIsLoading(false);
+    });
+}
 
   return (
     <div>
@@ -618,80 +648,79 @@ useEffect(() => {
                 checked={isImage_Dall_e_3}
               />
               IMAGE
-            </label>
-            {/* **New TTS Checkbox** */}
-            <label style={{ marginLeft: '8px' }}>
-              <input
-                type="checkbox"
-                value="tts"
-                onChange={(e) => handleTTSChange(e.target.checked)}
-                checked={isTTS}
-              />
-              TTS
-            </label>
-            <button
-              onClick={handleGenerate}
-              className="signonpagebutton"
-              style={{ marginLeft: '20px', padding: '15px 20px', fontSize: '16px' }}
-              disabled={
-                isGenerating ||
-                isGeneratingGemini ||
-                isGeneratingAnthropic ||
-                isGeneratingo1Mini ||
-                isGeneratingo1 ||
-                isGeneratingImage_Dall_e_3 ||
-                isGeneratingTTS
-              }
+            </label>}
+                  <label style={{ marginLeft: '8px' }}>
+                    <input
+                    type="checkbox"
+                    value="tts"
+                    onChange={(e) => handleTTSChange(e.target.checked)}
+                    checked={isTTS}
+                    />
+                    TTS
+                  </label>
+                  <button
+                    onClick={handleGenerate}
+                    className="signonpagebutton"
+                    style={{ marginLeft: '20px', padding: '15px 20px', fontSize: '16px' }}
+                    disabled={
+                    isGenerating ||
+                    isGeneratingGemini ||
+                    isGeneratingAnthropic ||
+                    isGeneratingo1Mini ||
+                    isGeneratingo1 ||
+                    isGeneratingImage_Dall_e_3 ||
+                    isGeneratingTTS
+                    }
+                  >
+                    {isGenerating ||
+                    isGeneratingGemini ||
+                    isGeneratingAnthropic ||
+                    isGeneratingo1Mini ||
+                    isGeneratingo1 ||
+                    isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
+                    <FaSpinner className="spinning" />
+                    ) : (
+                    'Generate'
+                    )}
+                  </button>
+                  <button
+                    className="signoutbutton"
+                    onClick={handleSignOut}
+                    style={{ marginLeft: '20px', padding: '10px 20px', fontSize: '16px' }}
+                  >
+                    <FaSignOutAlt />
+                  </button>
+                  </div>
+                  <label>
+                  Limit:
+                  <input
+                    type="number"
+                    onBlur={(event) => handleLimitChange(event)}
+                    onKeyDown={(event) => (event.key === "Enter" || event.key === "Tab") && handleLimitChange(event)}
+                    defaultValue={dataLimit}
+                    style={{ width: "50px", margin: "0 10px" }}
+                    min={1}
+                  />
+                  </label>
+                  <input
+                  type="text"
+                  onBlur={(event) => handleSearchChange(event)}
+                  onKeyDown={(event) => (event.key === "Enter" || event.key === "Tab") && handleSearchChange(event)}
+                  placeholder="Enter Search Text and Click Enter"
+                  style={{ width: '80%', padding: '10px', fontSize: '16px' }}
+                  />
+                  <select
+              value={searchModel}
+              onChange={(e) => handleModelChange(e.target.value)}
+              style={{ marginLeft: '10px', padding: '10px', fontSize: '16px' }}
             >
-              {isGenerating ||
-                isGeneratingGemini ||
-                isGeneratingAnthropic ||
-                isGeneratingo1Mini ||
-                isGeneratingo1 ||
-                isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
-                <FaSpinner className="spinning" />
-              ) : (
-                'Generate'
-              )}
-            </button>
-            <button
-              className="signoutbutton"
-              onClick={handleSignOut}
-              style={{ marginLeft: '20px', padding: '10px 20px', fontSize: '16px' }}
-            >
-              <FaSignOutAlt />
-            </button>
-          </div>
-          <label>
-            Limit:
-            <input
-              type="number"
-              value={dataLimit}
-              onChange={handleLimitChange}
-              style={{ width: "50px", margin: "0 10px" }}
-              min={1}
-            />
-          </label>
-          <input
-            type="text"
-            onKeyDown={(event) => event.key === "Enter" && handleSearchChange(event)}
-            placeholder="Enter Search Text and Click Enter"
-            defaultValue=""
-            style={{ width: '80%', padding: '10px', fontSize: '16px' }}
-          />
-          <select
-  value={searchModel}
-  onChange={(e) => setSearchModel(e.target.value)}
-  style={{ marginLeft: '10px', padding: '10px', fontSize: '16px' }}
->
-  <option value="All">All</option>
-  <option value="chatgpt-4o-latest">ChatGPT</option>
-  <option value="gpt-4o">gpt-4o</option>
-  <option value="gemini-1.5-pro-002">Gemini</option>
-  <option value="gemini-1.5-pro-exp-0827">gemini-1.5-pro-exp-0827</option>
-  <option value="claude-3-5-sonnet-20240620i">Claude</option>
-  <option value="o1-mini">o1-mini</option>
-  <option value="o1-preview">o1</option>
+              <option value="All">All</option>
+              <option value="chatgpt-4o-latest">ChatGPT</option>
+              <option value="gemini-1.5-pro-002">Gemini</option>
+              <option value="gemini-1.5-pro-exp-0827">gemini-1.5-pro-exp-0827</option>
+              <option value="claude-3-5-sonnet-20240620">Claude</option>
+              <option value="o1-mini">o1-mini</option>
+              <option value="o1-preview">o1</option>
   <option value="azure-tts">TTS</option>
   <option value="dall-e-3">IMAGE</option>
 </select>
