@@ -60,3 +60,51 @@
 ## Build and deploy the app
 * npm run build
 * git add, commit and push
+
+## Firebase Firestore Database Security Rule
+```yaml
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /todo/{document} {
+      allow read, delete, update : if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+    match /todo/{document} {
+      allow write : if request.auth != null;
+    }
+    match /tasks/{document} {
+      allow read, delete, update : if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+    match /tasks/{document} {
+      allow read,update : if request.auth != null && request.auth.uid in ['bTGBBpeYPmPJonItYpUOCYhdIlr1', 'qDzUX26K0dgtSMlN9PtCj6Q9L5J3', 'yvsWRZwjTQecvGap3pGXWNGHoTp2', 'lpwCpZkPk2h1ZWrESgkyXPUXEPQ2'];
+    }
+    match /tasks/{document} {
+      allow write : if request.auth != null;
+    }
+    match /diagrams/{userId}/MyDiagrams/{document=**} {
+      allow read, write, delete, update : if request.auth != null && request.auth.uid == userId;
+    }
+    match /diagrams/{document} {
+      allow read, write : if request.auth != null;
+    }
+    match /genai/{userId}/MyGenAI/{document=**} {
+      allow read, write, delete, update : if request.auth != null && request.auth.uid == userId;
+    }
+  }
+} 
+```
+
+## Firebase Storage Security Rules for storing and accessing Images and Audio files
+```yaml
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /user_data/{userId}/{allImages=**} {
+      // Only allow authenticated users to read/write their own images
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
+```
+
