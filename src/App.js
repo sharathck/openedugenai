@@ -425,6 +425,8 @@ useEffect(() => {
       alert(`Error: ${error.message}`);
     } finally {
       // click refresh button
+      searchQuery = '';
+      searchModel = 'All';
       console.log('Fetching data after generating content');
       fetchData(uid);
       if (selectedModel === 'openai') {
