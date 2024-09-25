@@ -20,7 +20,6 @@ import {
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
 const voiceName = 'en-US-AvaNeural';
-let searchText = '';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -130,9 +129,10 @@ const App = () => {
   useEffect(() => {
     if (searchQuery === "") return;
     setIsLoading(true);
-    fetch(`https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?limit=12&q=${searchQuery.replace(/ /g, '-')}`)
+    fetch(`https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?uid=${uid}&limit=${dataLimit}&q=${searchQuery.replace(/ /g, '-')}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log("Data from bigquery is generated successfully");
         setGenaiData(data);
         setIsLoading(false);
       })
