@@ -754,7 +754,9 @@ const bigQueryResults = () => {
                   </div>
                   <br />
                   <div style={{ border: "1px solid black", padding: "4px" }}>
-                    <button className="signgooglepagebutton" onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaHeadphones /></button>
+                    {item.model !== 'dall-e-3' && item.model !== 'azure-tts' && (
+                      <button className="signgooglepagebutton" onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaHeadphones /></button>
+                    )}
                     <div style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>---Answer--</div>
                     <div style={{ fontSize: '16px' }}>
                       <ReactMarkdown>{item.answer}</ReactMarkdown>
