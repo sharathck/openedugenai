@@ -648,7 +648,7 @@ const bigQueryResults = () => {
                 checked={isImage_Dall_e_3}
               />
               IMAGE
-            </label>}
+            </label>
                   <label style={{ marginLeft: '8px' }}>
                     <input
                     type="checkbox"
