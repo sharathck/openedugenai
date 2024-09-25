@@ -66,6 +66,7 @@ const App = () => {
   const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
   const [iso1, setIso1] = useState(false); // New state for o1
   const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
+  const [searchModel, setSearchModel] = useState("all");
 
 
   // Helper function to get URL parameters
@@ -125,22 +126,23 @@ const App = () => {
     }
   };
 
-  // Effect to handle search queries
-  useEffect(() => {
-    if (searchQuery === "") return;
-    setIsLoading(true);
-    fetch(`https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?uid=${uid}&limit=${dataLimit}&q=${searchQuery.replace(/ /g, '-')}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Data from bigquery is generated successfully");
-        setGenaiData(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Invalid JSON format:", error);
-        setIsLoading(false);
-      });
-  }, [searchQuery]);
+  // Update the useEffect that handles the search query
+useEffect(() => {
+  if (searchQuery === "") return;
+  setIsLoading(true);
+  fetch(
+    `https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?uid=${uid}&limit=${dataLimit}&q=${searchQuery.replace(/ /g,'-')}&model=${searchModel}`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      setGenaiData(data);
+      setIsLoading(false);
+    })
+    .catch((error) => {
+      console.error("Invalid JSON format:", error);
+      setIsLoading(false);
+    });
+}, [searchQuery, searchModel]);
 
   // Handlers for input changes
   const handleLimitChange = (event) => {
@@ -677,7 +679,22 @@ const App = () => {
             defaultValue=""
             style={{ width: '80%', padding: '10px', fontSize: '16px' }}
           />
-
+          <select
+  value={searchModel}
+  onChange={(e) => setSearchModel(e.target.value)}
+  style={{ marginLeft: '10px', padding: '10px', fontSize: '16px' }}
+>
+  <option value="all">all</option>
+  <option value="chatgpt-4o-latest">ChatGPT</option>
+  <option value="gpt-4o">gpt-4o</option>
+  <option value="gemini-1.5-pro-002">Gemini</option>
+  <option value="gemini-1.5-pro-exp-0827">gemini-1.5-pro-exp-0827</option>
+  <option value="claude-3-5-sonnet-20240620i">Claude</option>
+  <option value="o1-mini">o1-mini</option>
+  <option value="o1-preview">o1</option>
+  <option value="azure-tts">TTS</option>
+  <option value="dall-e-3">IMAGE</option>
+</select>
           {/* **Display Generated Response** 
           {generatedResponse && (
             <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '5px' }}>
