@@ -684,7 +684,7 @@ useEffect(() => {
   onChange={(e) => setSearchModel(e.target.value)}
   style={{ marginLeft: '10px', padding: '10px', fontSize: '16px' }}
 >
-  <option value="all">all</option>
+  <option value="All">All</option>
   <option value="chatgpt-4o-latest">ChatGPT</option>
   <option value="gpt-4o">gpt-4o</option>
   <option value="gemini-1.5-pro-002">Gemini</option>
