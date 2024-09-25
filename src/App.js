@@ -367,7 +367,7 @@ const App = () => {
       // if promptInput is > 9000 characters, then split it into chunks and call TTS API for each chunk
       //
 
-      if (promptInput.length > 3999) {
+      if (promptInput.length > 2) {
         /* const chunks = [];
          for (let i = 0; i < promptInput.length; i += 3999) {
            chunks.push(promptInput.substring(i, i + 3999));
