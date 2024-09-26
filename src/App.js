@@ -577,6 +577,9 @@ const bigQueryResults = () => {
           <button onClick={handlePasswordReset}>Forgot Password?</button>
           <br />
           <br />
+          <br />
+          <button className="signgooglepagebutton" onClick={handleSignInWithGoogle}>Sign In with Google</button>
+          <br />
         </div>
       ) : (
         // **Authenticated User Interface: Data Display and New Functionalities**
