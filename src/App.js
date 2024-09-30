@@ -721,12 +721,12 @@ const bigQueryResults = () => {
                   onBlur={(event) => handleSearchChange(event)}
                   onKeyDown={(event) => (event.key === "Enter" || event.key === "Tab") && handleSearchChange(event)}
                   placeholder="Enter Search Text and Click Enter"
-                  style={{ width: '80%', padding: '10px', fontSize: '16px' }}
+                  style={{ width: '70%', padding: '10px', fontSize: '16px' }}
                   />
                   <select
               value={searchModel}
               onChange={(e) => handleModelChange(e.target.value)}
-              style={{ marginLeft: '10px', padding: '10px', fontSize: '16px' }}
+              style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
             >
               <option value="All">All</option>
               <option value="chatgpt-4o-latest">ChatGPT</option>
