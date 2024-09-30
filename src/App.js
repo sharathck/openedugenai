@@ -35,6 +35,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const isiPhone = /iPhone/i.test(navigator.userAgent);
+console.log(isiPhone);
+
 let searchQuery = '';
 let searchModel = 'All';
 let dataLimit = 11;
@@ -178,6 +181,10 @@ useEffect(() => {
 
   // Function to synthesize speech
   const synthesizeSpeech = async (articles, language) => {
+    if (isiPhone) {
+       callTTSAPI(articles, 'https://tts.happyrock-2dd71657.centralus.azurecontainerapps.io/');
+       return;
+    }
     const speechConfig = speechsdk.SpeechConfig.fromSubscription(speechKey, serviceRegion);
     speechConfig.speechSynthesisVoiceName = voiceName;
     if (language === "Spanish") {
@@ -372,7 +379,6 @@ useEffect(() => {
 
     // **Handle TTS Selection**
     if (isTTS) {
-      setIsGeneratingTTS(true); // Set generating state to true
       // if promptInput is > 9000 characters, then split it into chunks and call TTS API for each chunk
       //
 
@@ -453,6 +459,7 @@ useEffect(() => {
   // Function to call the TTS API
   const callTTSAPI = async (message, apiUrl) => {
     console.log('Calling TTS API with message:', message);
+    setIsGeneratingTTS(true); // Set generating state to true
 
     try {
       const response = await fetch(apiUrl, {
