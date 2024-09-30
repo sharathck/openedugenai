@@ -182,6 +182,7 @@ useEffect(() => {
   // Function to synthesize speech
   const synthesizeSpeech = async (articles, language) => {
     if (isiPhone) {
+       window.scrollTo(0, 0);
        callTTSAPI(articles, 'https://tts.happyrock-2dd71657.centralus.azurecontainerapps.io/');
        return;
     }
