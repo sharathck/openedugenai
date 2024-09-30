@@ -19,7 +19,6 @@ import {
 
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
-const voiceName = 'en-US-AvaNeural';
 
 // Firebase configuration
 const firebaseConfig = {
