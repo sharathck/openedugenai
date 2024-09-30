@@ -67,7 +67,8 @@ const App = () => {
   const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
   const [iso1, setIso1] = useState(false); // New state for o1
   const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
- 
+  const [voiceName, setVoiceName] = useState('en-US-AriaNeural');
+
 
   // Helper function to get URL parameters
   const getUrlParameter = (name) => {
@@ -460,7 +461,7 @@ useEffect(() => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: message, uid: uid , source: 'ai'})
+        body: JSON.stringify({ message: message, uid: uid , source: 'ai', voice_name: voiceName })
       });
 
       if (!response.ok) {
@@ -656,6 +657,13 @@ const bigQueryResults = () => {
                     />
                     TTS
                   </label>
+                  <input
+          type="text"
+          placeholder="Enter Voice Name"
+          value={voiceName}
+          onChange={(e) => setVoiceName(e.target.value)}
+          style={{ marginBottom: '10px', fontSize: '18px' }}
+        />
                   <button
                     onClick={handleGenerate}
                     className="signonpagebutton"
