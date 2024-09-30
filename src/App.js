@@ -460,7 +460,7 @@ useEffect(() => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: message, uid: uid })
+        body: JSON.stringify({ message: message, uid: uid , source: 'ai'})
       });
 
       if (!response.ok) {
