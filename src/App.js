@@ -161,7 +161,7 @@ useEffect(() => {
       setIsLoading(false);
     });
   }
-}, [dataLimit, searchQuery]);
+}, [dataLimit]);
 
   // Handlers for input changes
   const handleLimitChange = (event) => {
