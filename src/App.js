@@ -129,44 +129,6 @@ const App = () => {
     }
   };
 
-  // Update the useEffect that handles the search query
-useEffect(() => {
-  if (searchQuery.length > 1 && searchModel != "All") 
-  {
-  setIsLoading(true);
-  console.log("Fetching data for search query:", searchQuery);
-  console.log("search model:", searchModel);
-  console.log("limit:", dataLimit);
-  console.log("URL:", "https://genaiapp-892085575649.us-central1.run.app/bigquery-search");
-  fetch("https://genaiapp-892085575649.us-central1.run.app/bigquery-search", {
-    method: "POST",
-    body: JSON.stringify({
-      uid: uid,
-      limit: dataLimit,
-      q: searchQuery,
-      model: searchModel
-    })
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (Array.isArray(data)) {
-        setGenaiData(data);
-      } else {
-        console.error("Response is not a valid array:", data);
-      }
-    })
-    .then((data) => {
-      console.log("BigQuery Data:", data);
-      setGenaiData(data);
-      setIsLoading(false);
-    })
-    .catch((error) => {
-      console.error("Invalid JSON format:", error);
-      setIsLoading(false);
-    });
-  }
-}, [dataLimit]);
-
   // Handlers for input changes
   const handleLimitChange = (event) => {
     dataLimit = parseInt(event.target.value);
@@ -539,10 +501,6 @@ const bigQueryResults = () => {
   console.log("URL:", "https://genaiapp-892085575649.us-central1.run.app/bigquery-search");
   fetch("https://genaiapp-892085575649.us-central1.run.app/bigquery-search", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "charset": "utf-8"
-    },
     body: JSON.stringify({
       uid: uid,
       limit: dataLimit,
@@ -550,15 +508,10 @@ const bigQueryResults = () => {
       model: searchModel
     })
   })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("BigQuery Data:", data);
-      if (Array.isArray(data)) {
-        setGenaiData(data);
-      } else {
-        console.error("Response is not a valid array:", data);
-      }
-      setIsLoading(false);
+  .then((res) => res.json())
+  .then((text) => {
+    setGenaiData(JSON.parse(text));
+    setIsLoading(false);
     })
     .catch((error) => {
       console.error("Invalid JSON format:", error);
