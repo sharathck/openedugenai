@@ -1,11 +1,36 @@
 # Generative AI Studio
-# Lessons Learned - React Hooks
+
+## Lessons Learned 
+### React Hooks
 ** useEffect **
 * useEffect was getting triggered twice, once for searchQuery and once for limit. I had to use if condition to stop it from happening.
 * Adding dependencies to useEffect will execute the code whenever dependencies change.
 ** useState **
 * use this React hook to assign values
 
+### JSON.Parse and JSON.Stringify
+* JSON.Parse will convert string to JSON object
+  * JSON.parse(text) will resolve the issues related to JSON object (double quotes for each property) and JavaScript Array (no double quotes for keys, for values typically single quote is used for strings) conversion issues
+  
+```javascript
+  console.log("URL:", "https://genaiapp-892085575649.us-central1.run.app/bigquery-search");
+  fetch("https://genaiapp-892085575649.us-central1.run.app/bigquery-search", {
+    method: "POST",
+    body: JSON.stringify({
+      uid: uid,
+      limit: dataLimit,
+      q: searchQuery,
+      model: searchModel
+    })
+  })
+  .then((res) => res.json())
+  .then((text) => {
+    setGenaiData(JSON.parse(text));
+    setIsLoading(false);
+    })
+```
+* JSON.Stringify will convert JSON object to string
+  * in above example, JSON.stringify is used to convert JSON object to string before sending it to server
 
 ## adding custom domain www.genai-all.com
 * Go to settings -> Pages -> Custom domain -> Add custom domain
