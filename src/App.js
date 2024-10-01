@@ -138,9 +138,18 @@ useEffect(() => {
   console.log("search model:", searchModel);
   console.log("limit:", dataLimit);
   console.log("URL:", "https://genaiapp-892085575649.us-central1.run.app/bigquery-search");
-  fetch(
-    `https://genaiapp-892085575649.us-central1.run.app/bigquery-search?uid=${uid}&limit=${dataLimit}&q=${searchQuery.replace(/ /g,'-')}&model=${searchModel}`
-  )
+  fetch("https://genaiapp-892085575649.us-central1.run.app/bigquery-search", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      uid: uid,
+      limit: dataLimit,
+      q: searchQuery,
+      model: searchModel
+    })
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log("BigQuery Data:", data);
