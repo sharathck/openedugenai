@@ -140,9 +140,6 @@ useEffect(() => {
   console.log("URL:", "https://genaiapp-892085575649.us-central1.run.app/bigquery-search");
   fetch("https://genaiapp-892085575649.us-central1.run.app/bigquery-search", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
     body: JSON.stringify({
       uid: uid,
       limit: dataLimit,
@@ -151,6 +148,13 @@ useEffect(() => {
     })
   })
     .then((res) => res.json())
+    .then((data) => {
+      if (Array.isArray(data)) {
+        setGenaiData(data);
+      } else {
+        console.error("Response is not a valid array:", data);
+      }
+    })
     .then((data) => {
       console.log("BigQuery Data:", data);
       setGenaiData(data);
@@ -536,7 +540,8 @@ const bigQueryResults = () => {
   fetch("https://genaiapp-892085575649.us-central1.run.app/bigquery-search", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "charset": "utf-8"
     },
     body: JSON.stringify({
       uid: uid,
@@ -548,7 +553,11 @@ const bigQueryResults = () => {
     .then((res) => res.json())
     .then((data) => {
       console.log("BigQuery Data:", data);
-      setGenaiData(data);
+      if (Array.isArray(data)) {
+        setGenaiData(data);
+      } else {
+        console.error("Response is not a valid array:", data);
+      }
       setIsLoading(false);
     })
     .catch((error) => {
