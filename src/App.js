@@ -400,12 +400,11 @@ useEffect(() => {
     }
   };
 
-  // Call the function13 api
   const callAPI = async (selectedModel) => {
-    console.log('Calling API with model:', selectedModel);
+    console.log('Calling API with model:', selectedModel + ' URL: ' + process.env.REACT_APP_API_URL);
 
     try {
-      const response = await fetch('https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-13', {
+      const response = await fetch('https://genaiapp-892085575649.us-central1.run.app/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -417,17 +416,8 @@ useEffect(() => {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to generate content.');
       }
-
       const data = await response.json();
       console.log('Response:', data);
-      // print response data.question
-      console.log('Selected Model:', selectedModel);
-      console.log('Response - Question:', data.question);
-
-      const { model, firestoreStatus } = data.results[0];
-      console.log('Model:', model);
-      console.log('Firestore Status:', firestoreStatus);
-
     } catch (error) {
       console.error('Error generating content:', error);
       alert(`Error: ${error.message}`);
