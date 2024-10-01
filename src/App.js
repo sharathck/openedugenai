@@ -137,8 +137,9 @@ useEffect(() => {
   console.log("Fetching data for search query:", searchQuery);
   console.log("search model:", searchModel);
   console.log("limit:", dataLimit);
+  console.log("URL:", "https://genaiapp-892085575649.us-central1.run.app/bigquery-search");
   fetch(
-    `https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?uid=${uid}&limit=${dataLimit}&q=${searchQuery.replace(/ /g,'-')}&model=${searchModel}`
+    `https://genaiapp-892085575649.us-central1.run.app/bigquery-search?uid=${uid}&limit=${dataLimit}&q=${searchQuery.replace(/ /g,'-')}&model=${searchModel}`
   )
     .then((res) => res.json())
     .then((data) => {
