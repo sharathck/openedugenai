@@ -184,7 +184,7 @@ useEffect(() => {
     if (isiPhone) {
        window.scrollTo(0, 0);
        alert('Please go to top of the page to check status and listen to the audio');
-       callTTSAPI(articles, 'https://tts.happyrock-2dd71657.centralus.azurecontainerapps.io/');
+       callTTSAPI(articles, 'https://fastapi-tts-v21-892085575649.us-central1.run.app');
        return;
     }
     const speechConfig = speechsdk.SpeechConfig.fromSubscription(speechKey, serviceRegion);
@@ -392,7 +392,7 @@ useEffect(() => {
          for (const chunk of chunks) {
            callTTSAPI(chunk);
          }*/
-        callTTSAPI(promptInput, 'https://tts.happyrock-2dd71657.centralus.azurecontainerapps.io/');
+        callTTSAPI(promptInput, 'https://fastapi-tts-v21-892085575649.us-central1.run.app');
       }
       else {
         callTTSAPI(promptInput, 'https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18');
