@@ -532,9 +532,19 @@ const bigQueryResults = () => {
   console.log("Fetching data for search query:", searchQuery);
   console.log("search model:", searchModel);
   console.log("limit:", dataLimit);
-  fetch(
-    `https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-11?uid=${uid}&limit=${dataLimit}&q=${searchQuery.replace(/ /g,'-')}&model=${searchModel}`
-  )
+  console.log("URL:", "https://genaiapp-892085575649.us-central1.run.app/bigquery-search");
+  fetch("https://genaiapp-892085575649.us-central1.run.app/bigquery-search", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      uid: uid,
+      limit: dataLimit,
+      q: searchQuery,
+      model: searchModel
+    })
+  })
     .then((res) => res.json())
     .then((data) => {
       console.log("BigQuery Data:", data);
