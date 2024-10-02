@@ -4,7 +4,7 @@ import { initializeApp } from 'firebase/app';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones } from 'react-icons/fa';
 import './App.css';
-import { getFirestore, collection, where, addDoc, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
+import { getFirestore, collection, doc, where, addDoc, getDocs, query, orderBy, startAfter, limit, updateDoc } from 'firebase/firestore';
 import {
   getAuth,
   signInWithPopup,
@@ -92,13 +92,30 @@ const App = () => {
         return;
       }
       const genaiCollection = collection(db, 'genai', user.uid, 'prompts');
-      await addDoc(genaiCollection, {
-        tag: editPromptTag,
-        fullText: editPromptFullText
-      });
-      setEditPromptTag('');
-      setEditPromptFullText('');
-      setShowEditPopup(false);
+      if (selectedPrompt == 'NA' || selectedPrompt == null) {
+        console.log('Adding new prompt');
+        await addDoc(genaiCollection, {
+          tag: editPromptTag,
+          fullText: editPromptFullText
+        })
+      }
+      else {
+        console.log('Updating prompt');
+        const q = query(genaiCollection, where('tag', '==', selectedPrompt), limit(1));
+        const genaiSnapshot = await getDocs(q);
+        const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const docRef = doc(db, 'genai', user.uid, 'prompts', genaiList[0].id);
+        await updateDoc(docRef, {
+          tag: editPromptTag,
+          fullText: editPromptFullText
+        });
+      }
+
+        setEditPromptTag('');
+        setEditPromptFullText('');
+        setShowEditPopup(false);
+        return;
+
     } catch (error) {
       console.error("Error saving prompt: ", error);
     }
@@ -146,7 +163,7 @@ const App = () => {
   const fetchPrompts = async (userID) => {
     try {
       const genaiCollection = collection(db, 'genai', userID, 'prompts');
-      const q = query(genaiCollection, limit(10));
+      const q = query(genaiCollection, limit(10), orderBy('tag', 'asc'));
       const genaiSnapshot = await getDocs(q);
       const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setGenaiPrompts(genaiList);
