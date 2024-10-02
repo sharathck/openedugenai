@@ -10,6 +10,9 @@
 
 ### JSON.Parse and JSON.Stringify
 * JSON.Parse will convert string to JSON object
+  * JSON is subset of JavaScript object and array with stricter rules
+    * JSON object has double quotes for each property
+    * JavaScript Object has no double quotes for keys, for values typically single quote is used for strings (JSON.stringify will convert all properties to double quotes)
   * JSON.parse(text) will resolve the issues related to JSON object (double quotes for each property) and JavaScript Array (no double quotes for keys, for values typically single quote is used for strings) conversion issues
   
 ```javascript
@@ -29,10 +32,59 @@
     setIsLoading(false);
     })
 ```
+----------------- Single JSON Object ------------
+```JSON
+{
+  "uid": "userid2",
+  "limit": 10,
+  "q": "How many models are available in ChatGPT?"
+}
+```
+``` JaveScript Object
+{
+  uid: "userid2",
+  limit: 10,
+  q: "How many models are available in ChatGPT?"
+}
+```
+------------------- JSON Array --------------
+```JSON
+[
+  {
+    "uid": "userid2",
+    "limit": 10,
+    "q": "How many models are available in ChatGPT?"
+  },
+  {
+    "uid": "userid2",
+    "limit": 10,
+    "q": "How many models are available in ChatGPT?"
+  }
+]
+```
+``` JaveScript Array
+[
+  {
+    uid: "userid2",
+    limit: 10,
+    q: "How many models are available in ChatGPT?"
+  },
+  {
+    uid: "userid2",
+    limit: 10,
+    q: "How many models are available in ChatGPT?"
+  }
+]
+```
+-------------- While sending JSON object to server ------------
 * JSON.Stringify will convert JSON object to string
   * in above example, JSON.stringify is used to convert JSON object to string before sending it to server
 
-## adding custom domain www.genai-all.com
+----------------- While receiving JSON object from server ------------
+* JSON.Parse will convert string to JSON object
+  * in above example, JSON.parse is used to convert string to JSON object after receiving it from server
+  
+## Custom Domain Setup - www.genai-all.com
 * Go to settings -> Pages -> Custom domain -> Add custom domain
   * Add www.genai-all.com
   * Enforce HTTPS should be selected
