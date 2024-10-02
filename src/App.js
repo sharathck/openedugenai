@@ -41,6 +41,7 @@ console.log(isiPhone);
 let searchQuery = '';
 let searchModel = 'All';
 let dataLimit = 11;
+let promptSuggestion = 'NA';
 
 const App = () => {
   // **State Variables**
@@ -158,10 +159,10 @@ const App = () => {
   // Function to synthesize speech
   const synthesizeSpeech = async (articles, language) => {
     if (isiPhone) {
-       window.scrollTo(0, 0);
-       alert('Please go to top of the page to check status and listen to the audio');
-       callTTSAPI(articles, 'https://fastapi-tts-v21-892085575649.us-central1.run.app');
-       return;
+      window.scrollTo(0, 0);
+      alert('Please go to top of the page to check status and listen to the audio');
+      callTTSAPI(articles, 'https://fastapi-tts-v21-892085575649.us-central1.run.app');
+      return;
     }
     const speechConfig = speechsdk.SpeechConfig.fromSubscription(speechKey, serviceRegion);
     speechConfig.speechSynthesisVoiceName = voiceName;
@@ -242,6 +243,13 @@ const App = () => {
     }
   };
 
+  const handlePromptChange = async (promptValue) => {
+    const genaiCollection = collection(db, 'genai', uid, 'prompts');
+    const q = query(genaiCollection, where('tag', '==', promptValue), limit(1));
+    const genaiSnapshot = await getDocs(q);
+    const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setPromptInput(prevInput => prevInput + "\n " + "------------ prompt --------------" + "\n" + genaiList[0].fullText);
+  };
   // **Authentication Functions**
 
   // Sign In with Email and Password
@@ -435,7 +443,7 @@ const App = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: message, uid: uid , source: 'ai', voice_name: voiceName })
+        body: JSON.stringify({ message: message, uid: uid, source: 'ai', voice_name: voiceName })
       });
 
       if (!response.ok) {
@@ -489,35 +497,35 @@ const App = () => {
     }
   };
 
-const handleModelChange = (modelValue) => {
-  searchModel = modelValue;
-  bigQueryResults();
+  const handleModelChange = (modelValue) => {
+    searchModel = modelValue;
+    bigQueryResults();
   }
-const bigQueryResults = () => {
-  setIsLoading(true);
-  console.log("Fetching data for search query:", searchQuery);
-  console.log("search model:", searchModel);
-  console.log("limit:", dataLimit);
-  console.log("URL:", "https://genaiapp-892085575649.us-central1.run.app/bigquery-search");
-  fetch("https://genaiapp-892085575649.us-central1.run.app/bigquery-search", {
-    method: "POST",
-    body: JSON.stringify({
-      uid: uid,
-      limit: dataLimit,
-      q: searchQuery,
-      model: searchModel
+  const bigQueryResults = () => {
+    setIsLoading(true);
+    console.log("Fetching data for search query:", searchQuery);
+    console.log("search model:", searchModel);
+    console.log("limit:", dataLimit);
+    console.log("URL:", "https://genaiapp-892085575649.us-central1.run.app/bigquery-search");
+    fetch("https://genaiapp-892085575649.us-central1.run.app/bigquery-search", {
+      method: "POST",
+      body: JSON.stringify({
+        uid: uid,
+        limit: dataLimit,
+        q: searchQuery,
+        model: searchModel
+      })
     })
-  })
-  .then((res) => res.json())
-  .then((text) => {
-    setGenaiData(JSON.parse(text));
-    setIsLoading(false);
-    })
-    .catch((error) => {
-      console.error("Invalid JSON format:", error);
-      setIsLoading(false);
-    });
-}
+      .then((res) => res.json())
+      .then((text) => {
+        setGenaiData(JSON.parse(text));
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Invalid JSON format:", error);
+        setIsLoading(false);
+      });
+  }
 
   return (
     <div>
@@ -628,88 +636,99 @@ const bigQueryResults = () => {
               />
               IMAGE
             </label>
-                  <label style={{ marginLeft: '8px' }}>
-                    <input
-                    type="checkbox"
-                    value="tts"
-                    onChange={(e) => handleTTSChange(e.target.checked)}
-                    checked={isTTS}
-                    />
-                    TTS
-                  </label>
-                  <input
-          type="text"
-          placeholder="Enter Voice Name"
-          value={voiceName}
-          onChange={(e) => setVoiceName(e.target.value)}
-          style={{ marginBottom: '10px', fontSize: '18px' }}
-        />
-                  <button
-                    onClick={handleGenerate}
-                    className="signonpagebutton"
-                    style={{ marginLeft: '20px', padding: '15px 20px', fontSize: '16px' }}
-                    disabled={
-                    isGenerating ||
-                    isGeneratingGemini ||
-                    isGeneratingAnthropic ||
-                    isGeneratingo1Mini ||
-                    isGeneratingo1 ||
-                    isGeneratingImage_Dall_e_3 ||
-                    isGeneratingTTS
-                    }
-                  >
-                    {isGenerating ||
-                    isGeneratingGemini ||
-                    isGeneratingAnthropic ||
-                    isGeneratingo1Mini ||
-                    isGeneratingo1 ||
-                    isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
-                    <FaSpinner className="spinning" />
-                    ) : (
-                    'Generate'
-                    )}
-                  </button>
-                  <button
-                    className="signoutbutton"
-                    onClick={handleSignOut}
-                    style={{ marginLeft: '20px', padding: '10px 20px', fontSize: '16px' }}
-                  >
-                    <FaSignOutAlt />
-                  </button>
-                  </div>
-                  <label>
-                  Limit:
-                  <input
-                    type="number"
-                    onBlur={(event) => handleLimitChange(event)}
-                    onKeyDown={(event) => (event.key === "Enter" || event.key === "Tab") && handleLimitChange(event)}
-                    defaultValue={dataLimit}
-                    style={{ width: "50px", margin: "0 10px" }}
-                    min={1}
-                  />
-                  </label>
-                  <input
-                  type="text"
-                  onBlur={(event) => handleSearchChange(event)}
-                  onKeyDown={(event) => (event.key === "Enter" || event.key === "Tab") && handleSearchChange(event)}
-                  placeholder="Enter Search Text and Click Enter"
-                  style={{ width: '70%', padding: '10px', fontSize: '16px' }}
-                  />
-                  <select
-              value={searchModel}
-              onChange={(e) => handleModelChange(e.target.value)}
+            <label style={{ marginLeft: '8px' }}>
+              <input
+                type="checkbox"
+                value="tts"
+                onChange={(e) => handleTTSChange(e.target.checked)}
+                checked={isTTS}
+              />
+              TTS
+            </label>
+            <input
+              type="text"
+              placeholder="Enter Voice Name"
+              value={voiceName}
+              onChange={(e) => setVoiceName(e.target.value)}
+              style={{ marginBottom: '10px', fontSize: '18px' }}
+            />
+            <select
+              value={promptSuggestion}
+              onChange={(e) => handlePromptChange(e.target.value)}
               style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
             >
-              <option value="All">All</option>
-              <option value="chatgpt-4o-latest">ChatGPT</option>
-              <option value="gemini-1.5-pro-002">Gemini</option>
-              <option value="gemini-1.5-pro-exp-0827">gemini-1.5-pro-exp-0827</option>
-              <option value="claude-3-5-sonnet-20240620">Claude</option>
-              <option value="o1-mini">o1-mini</option>
-              <option value="o1-preview">o1</option>
-  <option value="azure-tts">TTS</option>
-  <option value="dall-e-3">IMAGE</option>
-</select>
+              <option value="NA">NA</option>
+              <option value="PS-HRMS">PS-HRMS</option>
+              <option value="PS-FSCM">PS-FSCM</option>
+              <option value="my-role">my-role</option>
+            </select>
+            &nbsp;
+            <button
+              onClick={handleGenerate}
+              className="signonpagebutton"
+              style={{ marginLeft: '20px', padding: '15px 20px', fontSize: '16px' }}
+              disabled={
+                isGenerating ||
+                isGeneratingGemini ||
+                isGeneratingAnthropic ||
+                isGeneratingo1Mini ||
+                isGeneratingo1 ||
+                isGeneratingImage_Dall_e_3 ||
+                isGeneratingTTS
+              }
+            >
+              {isGenerating ||
+                isGeneratingGemini ||
+                isGeneratingAnthropic ||
+                isGeneratingo1Mini ||
+                isGeneratingo1 ||
+                isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
+                <FaSpinner className="spinning" />
+              ) : (
+                'Generate'
+              )}
+            </button>
+            <button
+              className="signoutbutton"
+              onClick={handleSignOut}
+              style={{ marginLeft: '20px', padding: '10px 20px', fontSize: '16px' }}
+            >
+              <FaSignOutAlt />
+            </button>
+          </div>
+          <label>
+            Limit:
+            <input
+              type="number"
+              onBlur={(event) => handleLimitChange(event)}
+              onKeyDown={(event) => (event.key === "Enter" || event.key === "Tab") && handleLimitChange(event)}
+              defaultValue={dataLimit}
+              style={{ width: "50px", margin: "0 10px" }}
+              min={1}
+            />
+          </label>
+          <input
+            type="text"
+            onBlur={(event) => handleSearchChange(event)}
+            onKeyDown={(event) => (event.key === "Enter" || event.key === "Tab") && handleSearchChange(event)}
+            placeholder="Enter Search Text and Click Enter"
+            style={{ width: '70%', padding: '10px', fontSize: '16px' }}
+          />
+          <select
+            value={searchModel}
+            onChange={(e) => handleModelChange(e.target.value)}
+            style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
+          >
+            <option value="All">All</option>
+            <option value="chatgpt-4o-latest">ChatGPT</option>
+            <option value="gemini-1.5-pro-002">Gemini</option>
+            <option value="gemini-1.5-pro-exp-0827">gemini-1.5-pro-exp-0827</option>
+            <option value="claude-3-5-sonnet-20240620">Claude</option>
+            <option value="o1-mini">o1-mini</option>
+            <option value="o1-preview">o1</option>
+            <option value="azure-tts">TTS</option>
+            <option value="dall-e-3">IMAGE</option>
+          </select>
           {/* **Display Generated Response** 
           {generatedResponse && (
             <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '5px' }}>
@@ -725,7 +744,7 @@ const bigQueryResults = () => {
                 <div key={item.createdDateTime}>
                   <div style={{ border: "1px dotted black", padding: "2px", backgroundColor: "#e4ede8" }}>
                     <h4 style={{ color: "brown" }}>
-                      <span style={{ color: "#a3780a", fontWeight: "bold" }}> Prompt </span>    
+                      <span style={{ color: "#a3780a", fontWeight: "bold" }}> Prompt </span>
                       @ <span style={{ color: "black", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
                       &nbsp;
                       on <span style={{ color: "grey", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
@@ -733,41 +752,41 @@ const bigQueryResults = () => {
                       <span style={{ color: "blue", fontSize: "16px" }}>{item.model}   </span>
                       &nbsp;
                       <button onClick={() => {
-                      const updatedData = genaiData.map(dataItem => {
-                        if (dataItem.id === item.id) {
-                          return { ...dataItem, showRawQuestion: !dataItem.showRawQuestion };
-                        }
-                        return dataItem;
-                      });
-                      setGenaiData(updatedData);
-                    }}>
-                      {item.showRawQuestion ? <FaMarkdown /> : <FaEnvelopeOpenText />}
-                    </button>
+                        const updatedData = genaiData.map(dataItem => {
+                          if (dataItem.id === item.id) {
+                            return { ...dataItem, showRawQuestion: !dataItem.showRawQuestion };
+                          }
+                          return dataItem;
+                        });
+                        setGenaiData(updatedData);
+                      }}>
+                        {item.showRawQuestion ? <FaMarkdown /> : <FaEnvelopeOpenText />}
+                      </button>
                     </h4>
                     <div style={{ fontSize: '16px' }}>
                       {item.showRawQuestion ? item.question : renderQuestion(item.question)}
                     </div>
                   </div>
                   <div style={{ border: "1px solid black" }}>
-                    <div style={{color: "green", fontWeight: "bold" }}>---- Response ----
-                    {item.model !== 'dall-e-3' && item.model !== 'azure-tts' && (
-                      <button className="signgooglepagebutton" onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaHeadphones /></button>
-                    )}
-                    &nbsp; &nbsp; &nbsp;
-                    <button onClick={() => {
-                      const updatedData = genaiData.map(dataItem => {
-                        if (dataItem.id === item.id) {
-                          return { ...dataItem, showRawAnswer: !dataItem.showRawAnswer };
-                        }
-                        return dataItem;
-                      });
-                      setGenaiData(updatedData);
-                    }}>
-                      {item.showRawAnswer ? <FaMarkdown /> : <FaEnvelopeOpenText />}
-                    </button>
+                    <div style={{ color: "green", fontWeight: "bold" }}>---- Response ----
+                      {item.model !== 'dall-e-3' && item.model !== 'azure-tts' && (
+                        <button className="signgooglepagebutton" onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaHeadphones /></button>
+                      )}
+                      &nbsp; &nbsp; &nbsp;
+                      <button onClick={() => {
+                        const updatedData = genaiData.map(dataItem => {
+                          if (dataItem.id === item.id) {
+                            return { ...dataItem, showRawAnswer: !dataItem.showRawAnswer };
+                          }
+                          return dataItem;
+                        });
+                        setGenaiData(updatedData);
+                      }}>
+                        {item.showRawAnswer ? <FaMarkdown /> : <FaEnvelopeOpenText />}
+                      </button>
                     </div>
                     <div style={{ fontSize: '16px' }}>
-                    {item.showRawAnswer ? item.answer : <ReactMarkdown>{item.answer}</ReactMarkdown>}
+                      {item.showRawAnswer ? item.answer : <ReactMarkdown>{item.answer}</ReactMarkdown>}
                     </div>
                   </div>
                   <br />
