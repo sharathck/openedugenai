@@ -723,25 +723,29 @@ const bigQueryResults = () => {
             {!isLoading && <div>
               {genaiData.map((item) => (
                 <div key={item.createdDateTime}>
-                  <h4 style={{ color: "brown" }}>
-                    Time: <span style={{ color: "black", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
-                    &nbsp;&nbsp;
-                    Date: <span style={{ color: "grey", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    Model: <span style={{ color: "blue", fontSize: "16px" }}>{item.model}   </span>
-                  </h4>
+
                   <div style={{ border: "1px dotted black", padding: "2px", backgroundColor: "#e4ede8" }}>
-                    <div style={{ textAlign: "center", color: "#a3780a", fontWeight: "bold" }}>---Question--</div>
+                  <h4 style={{ color: "brown" }}>
+                  <span style={{ color: "#a3780a", fontWeight: "bold" }}> Prompt </span>    
+                    @ <span style={{ color: "black", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
+                    &nbsp;
+                    on <span style={{ color: "grey", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    &nbsp;&nbsp;
+                    <span style={{ color: "blue", fontSize: "16px" }}>{item.model}   </span>
+                  
+                  </h4>
                     <div style={{ fontSize: '16px' }}>
                       {renderQuestion(item.question)}
                     </div>
                   </div>
                   <br />
                   <div style={{ border: "1px solid black", padding: "4px" }}>
+
+                    <div style={{color: "green", fontWeight: "bold" }}>---- Response ----
                     {item.model !== 'dall-e-3' && item.model !== 'azure-tts' && (
                       <button className="signgooglepagebutton" onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaHeadphones /></button>
                     )}
-                    <div style={{ textAlign: "center", color: "green", fontWeight: "bold" }}>---Answer--</div>
+                    </div>
                     <div style={{ fontSize: '16px' }}>
                       <ReactMarkdown>{item.answer}</ReactMarkdown>
                     </div>
