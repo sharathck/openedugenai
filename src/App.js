@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { initializeApp } from 'firebase/app';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
-import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaHeadphones } from 'react-icons/fa';
+import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaMarkdown, FaEnvelopeOpenText, FaHeadphones } from 'react-icons/fa';
 import './App.css';
 import { getFirestore, collection, where, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import {
@@ -723,19 +723,29 @@ const bigQueryResults = () => {
             {!isLoading && <div>
               {genaiData.map((item) => (
                 <div key={item.createdDateTime}>
-
                   <div style={{ border: "1px dotted black", padding: "2px", backgroundColor: "#e4ede8" }}>
-                  <h4 style={{ color: "brown" }}>
-                  <span style={{ color: "#a3780a", fontWeight: "bold" }}> Prompt </span>    
-                    @ <span style={{ color: "black", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
-                    &nbsp;
-                    on <span style={{ color: "grey", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                    &nbsp;&nbsp;
-                    <span style={{ color: "blue", fontSize: "16px" }}>{item.model}   </span>
-                  
-                  </h4>
+                    <h4 style={{ color: "brown" }}>
+                      <span style={{ color: "#a3780a", fontWeight: "bold" }}> Prompt </span>    
+                      @ <span style={{ color: "black", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
+                      &nbsp;
+                      on <span style={{ color: "grey", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                      &nbsp;&nbsp;
+                      <span style={{ color: "blue", fontSize: "16px" }}>{item.model}   </span>
+                      &nbsp;
+                      <button onClick={() => {
+                      const updatedData = genaiData.map(dataItem => {
+                        if (dataItem.id === item.id) {
+                          return { ...dataItem, showRawQuestion: !dataItem.showRawQuestion };
+                        }
+                        return dataItem;
+                      });
+                      setGenaiData(updatedData);
+                    }}>
+                      {item.showRawQuestion ? <FaMarkdown /> : <FaEnvelopeOpenText />}
+                    </button>
+                    </h4>
                     <div style={{ fontSize: '16px' }}>
-                      {renderQuestion(item.question)}
+                      {item.showRawQuestion ? item.question : renderQuestion(item.question)}
                     </div>
                   </div>
                   <div style={{ border: "1px solid black" }}>
@@ -743,9 +753,21 @@ const bigQueryResults = () => {
                     {item.model !== 'dall-e-3' && item.model !== 'azure-tts' && (
                       <button className="signgooglepagebutton" onClick={() => synthesizeSpeech(item.answer, item.language || "English")}><FaHeadphones /></button>
                     )}
+                    &nbsp; &nbsp; &nbsp;
+                    <button onClick={() => {
+                      const updatedData = genaiData.map(dataItem => {
+                        if (dataItem.id === item.id) {
+                          return { ...dataItem, showRawAnswer: !dataItem.showRawAnswer };
+                        }
+                        return dataItem;
+                      });
+                      setGenaiData(updatedData);
+                    }}>
+                      {item.showRawAnswer ? <FaMarkdown /> : <FaEnvelopeOpenText />}
+                    </button>
                     </div>
                     <div style={{ fontSize: '16px' }}>
-                      <ReactMarkdown>{item.answer}</ReactMarkdown>
+                    {item.showRawAnswer ? item.answer : <ReactMarkdown>{item.answer}</ReactMarkdown>}
                     </div>
                   </div>
                   <br />
