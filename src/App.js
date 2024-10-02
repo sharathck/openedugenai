@@ -4,7 +4,7 @@ import { initializeApp } from 'firebase/app';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones } from 'react-icons/fa';
 import './App.css';
-import { getFirestore, collection, where, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
+import { getFirestore, collection, where, addDoc, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import {
   getAuth,
   signInWithPopup,
@@ -72,6 +72,37 @@ const App = () => {
   const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
   const [voiceName, setVoiceName] = useState('en-US-AriaNeural');
   const [genaiPrompts, setGenaiPrompts] = useState([]);
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [editPromptTag, setEditPromptTag] = useState('');
+  const [editPromptFullText, setEditPromptFullText] = useState('');
+  const [generatedResponse, setGeneratedResponse] = useState(null);
+  const [selectedPrompt, setSelectedPrompt] = useState(null);
+  const [selectedPromptFullText, setSelectedPromptFullText] = useState(null);
+
+  // Helper function to save prompt
+  const handleSavePrompt = async () => {
+    if (!editPromptTag.trim() || !editPromptFullText.trim()) {
+      alert('Please enter a prompt.');
+      return;
+    }
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        console.error("No user is signed in");
+        return;
+      }
+      const genaiCollection = collection(db, 'genai', user.uid, 'prompts');
+      await addDoc(genaiCollection, {
+        tag: editPromptTag,
+        fullText: editPromptFullText
+      });
+      setEditPromptTag('');
+      setEditPromptFullText('');
+      setShowEditPopup(false);
+    } catch (error) {
+      console.error("Error saving prompt: ", error);
+    }
+  };
 
 
   // Helper function to get URL parameters
@@ -511,6 +542,14 @@ const App = () => {
     }
   };
 
+  const handleEditPrompt = () => {
+    setShowEditPopup(true);
+    if (selectedPrompt) {
+    setEditPromptTag(selectedPrompt);
+    setEditPromptFullText(selectedPromptFullText);
+    }
+  };
+
   const handleModelChange = (modelValue) => {
     searchModel = modelValue;
     bigQueryResults();
@@ -659,15 +698,21 @@ const App = () => {
               />
               TTS
             </label>
-            <input
-              type="text"
-              placeholder="Enter Voice Name"
-              value={voiceName}
-              onChange={(e) => setVoiceName(e.target.value)}
-              style={{ marginBottom: '10px', fontSize: '18px' }}
-            />
+            {isTTS && (
+              <input
+          type="text"
+          placeholder="Enter Voice Name"
+          value={voiceName}
+          onChange={(e) => setVoiceName(e.target.value)}
+          style={{ marginBottom: '10px', fontSize: '18px' }}
+              />
+            )}
             <select
-              onChange={(e) => handlePromptChange(e.target.value)}
+              onChange={(e) => {
+                handlePromptChange(e.target.value);
+                setSelectedPrompt(e.target.options[e.target.selectedIndex].text);
+                setSelectedPromptFullText(e.target.value);
+                    }}
               style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
             >
               <option value="NA">Select Prompt</option>
@@ -678,7 +723,7 @@ const App = () => {
             &nbsp;
             <button
               className="signonpagebutton"
-              onClick={() => setPromptInput(promptSuggestion)}
+              onClick={() => handleEditPrompt()}
               style={{ padding: '10px', background: 'lightblue', fontSize: '16px' }}
             >
               <FaEdit />
@@ -749,6 +794,34 @@ const App = () => {
             <option value="azure-tts">TTS</option>
             <option value="dall-e-3">IMAGE</option>
           </select>
+          {showEditPopup && (
+          <div style={ {border : '4px'}}>
+            <div className="popup-inner">
+              <br />
+              <h3>Add/Edit Prompt</h3>
+              <label>Tag:</label>
+              <input
+          type="text"
+          value={editPromptTag}
+          onChange={(e) => setEditPromptTag(e.target.value)}
+          className="popup-input"
+              />
+              <br />
+              <textarea
+          value={editPromptFullText}
+          style={{ height: '100px', width: '96%' }}
+          onChange={(e) => setEditPromptFullText(e.target.value)}
+          className="popup-textarea"
+              />
+              <div>
+          <button onClick={handleSavePrompt} className="signinbutton">Save</button>
+          <button onClick={() => setShowEditPopup(false)} className="signoutbutton">Cancel</button>
+              </div>
+              <br />
+              <br />
+            </div>
+          </div>
+        )}
           {/* **Display Generated Response** 
           {generatedResponse && (
             <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '5px' }}>
