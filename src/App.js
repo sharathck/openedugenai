@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { initializeApp } from 'firebase/app';
 import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
-import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaMarkdown, FaEnvelopeOpenText, FaHeadphones } from 'react-icons/fa';
+import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones } from 'react-icons/fa';
 import './App.css';
 import { getFirestore, collection, where, getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore';
 import {
@@ -71,6 +71,7 @@ const App = () => {
   const [iso1, setIso1] = useState(false); // New state for o1
   const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
   const [voiceName, setVoiceName] = useState('en-US-AriaNeural');
+  const [genaiPrompts, setGenaiPrompts] = useState([]);
 
 
   // Helper function to get URL parameters
@@ -101,6 +102,7 @@ const App = () => {
         console.log('User is signed in:', currentUser.uid);
         // Fetch data for the authenticated user
         await fetchData(currentUser.uid);
+        await fetchPrompts(currentUser.uid);
       }
       else {
         console.log('No user is signed in');
@@ -109,6 +111,18 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
+  // Fetch prompts from Firestore
+  const fetchPrompts = async (userID) => {
+    try {
+      const genaiCollection = collection(db, 'genai', userID, 'prompts');
+      const q = query(genaiCollection, limit(10));
+      const genaiSnapshot = await getDocs(q);
+      const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setGenaiPrompts(genaiList);
+    } catch (error) {
+      console.error("Error fetching prompts: ", error);
+    }
+  };
   // Function to fetch data from Firestore
   const fetchData = async (userID) => {
     try {
@@ -244,11 +258,11 @@ const App = () => {
   };
 
   const handlePromptChange = async (promptValue) => {
-    const genaiCollection = collection(db, 'genai', uid, 'prompts');
+   /* const genaiCollection = collection(db, 'genai', uid, 'prompts');
     const q = query(genaiCollection, where('tag', '==', promptValue), limit(1));
     const genaiSnapshot = await getDocs(q);
-    const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    setPromptInput(prevInput => prevInput + "\n " + "------------ prompt --------------" + "\n" + genaiList[0].fullText);
+    const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));*/
+    setPromptInput(prevInput => prevInput + "\n " + "------------ prompt --------------" + "\n" + promptValue);
   };
   // **Authentication Functions**
 
@@ -584,64 +598,64 @@ const App = () => {
           <div style={{ marginBottom: '20px' }}>
             <label>
               <input
-                type="checkbox"
-                value="openai"
-                onChange={(e) => setIsOpenAI(e.target.checked)}
-                checked={isOpenAI}
+          type="checkbox"
+          value="openai"
+          onChange={(e) => setIsOpenAI(e.target.checked)}
+          checked={isOpenAI}
               />
               ChatGPT
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="anthropic"
-                onChange={(e) => setIsAnthropic(e.target.checked)}
-                checked={isAnthropic}
+          type="checkbox"
+          value="anthropic"
+          onChange={(e) => setIsAnthropic(e.target.checked)}
+          checked={isAnthropic}
               />
               Claude
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="gemini"
-                onChange={(e) => setIsGemini(e.target.checked)}
-                checked={isGemini}
+          type="checkbox"
+          value="gemini"
+          onChange={(e) => setIsGemini(e.target.checked)}
+          checked={isGemini}
               />
               Gemini
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="o1-mini"
-                onChange={(e) => setIsGpto1Mini(e.target.checked)}
-                checked={isGpto1Mini}
+          type="checkbox"
+          value="o1-mini"
+          onChange={(e) => setIsGpto1Mini(e.target.checked)}
+          checked={isGpto1Mini}
               />
               o1-mini
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="o1"
-                onChange={(e) => setIso1(e.target.checked)}
-                checked={iso1}
+          type="checkbox"
+          value="o1"
+          onChange={(e) => setIso1(e.target.checked)}
+          checked={iso1}
               />
               o1
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="dall-e-3"
-                onChange={(e) => handleDall_e_3Change(e.target.checked)}
-                checked={isImage_Dall_e_3}
+          type="checkbox"
+          value="dall-e-3"
+          onChange={(e) => handleDall_e_3Change(e.target.checked)}
+          checked={isImage_Dall_e_3}
               />
               IMAGE
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="tts"
-                onChange={(e) => handleTTSChange(e.target.checked)}
-                checked={isTTS}
+          type="checkbox"
+          value="tts"
+          onChange={(e) => handleTTSChange(e.target.checked)}
+          checked={isTTS}
               />
               TTS
             </label>
@@ -653,39 +667,45 @@ const App = () => {
               style={{ marginBottom: '10px', fontSize: '18px' }}
             />
             <select
-              value={promptSuggestion}
               onChange={(e) => handlePromptChange(e.target.value)}
               style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
             >
-              <option value="NA">NA</option>
-              <option value="PS-HRMS">PS-HRMS</option>
-              <option value="PS-FSCM">PS-FSCM</option>
-              <option value="my-role">my-role</option>
+              <option value="NA">Select Prompt</option>
+              {genaiPrompts.map((prompt) => (
+          <option key={prompt.id} value={prompt.fullText}>{prompt.tag}</option>
+              ))}
             </select>
             &nbsp;
+            <button
+              className="signonpagebutton"
+              onClick={() => setPromptInput(promptSuggestion)}
+              style={{ padding: '10px', background: 'lightblue', fontSize: '16px' }}
+            >
+              <FaEdit />
+            </button>
             <button
               onClick={handleGenerate}
               className="signonpagebutton"
               style={{ marginLeft: '20px', padding: '15px 20px', fontSize: '16px' }}
               disabled={
-                isGenerating ||
-                isGeneratingGemini ||
-                isGeneratingAnthropic ||
-                isGeneratingo1Mini ||
-                isGeneratingo1 ||
-                isGeneratingImage_Dall_e_3 ||
-                isGeneratingTTS
+          isGenerating ||
+          isGeneratingGemini ||
+          isGeneratingAnthropic ||
+          isGeneratingo1Mini ||
+          isGeneratingo1 ||
+          isGeneratingImage_Dall_e_3 ||
+          isGeneratingTTS
               }
             >
               {isGenerating ||
-                isGeneratingGemini ||
-                isGeneratingAnthropic ||
-                isGeneratingo1Mini ||
-                isGeneratingo1 ||
-                isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
-                <FaSpinner className="spinning" />
+              isGeneratingGemini ||
+              isGeneratingAnthropic ||
+              isGeneratingo1Mini ||
+              isGeneratingo1 ||
+              isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
+          <FaSpinner className="spinning" />
               ) : (
-                'Generate'
+          'Generate'
               )}
             </button>
             <button
