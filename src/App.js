@@ -730,8 +730,8 @@ const bigQueryResults = () => {
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     Model: <span style={{ color: "blue", fontSize: "16px" }}>{item.model}   </span>
                   </h4>
-                  <div style={{ border: "1px dotted black", padding: "2px" }}>
-                    <div style={{ textAlign: "center", color: "orange", fontWeight: "bold" }}>---Question--</div>
+                  <div style={{ border: "1px dotted black", padding: "2px", backgroundColor: "#e4ede8" }}>
+                    <div style={{ textAlign: "center", color: "#a3780a", fontWeight: "bold" }}>---Question--</div>
                     <div style={{ fontSize: '16px' }}>
                       {renderQuestion(item.question)}
                     </div>
