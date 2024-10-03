@@ -73,15 +73,17 @@
 }
 
 html, body {
-  margin-left: 1%;
+  margin-left: 6px;
+  margin-right: 6px;
   padding: 0;
   width: 99%;
   overflow-x: hidden;
 }
 
 #root {
-  width: 100%;
-  margin-left: 1%;
+  width: 99%;
+  margin-left: 6px;
+  margin-right: 6px;
 }
 
 /* src/App.css */
