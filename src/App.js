@@ -163,7 +163,7 @@ const App = () => {
   const fetchPrompts = async (userID) => {
     try {
       const genaiCollection = collection(db, 'genai', userID, 'prompts');
-      const q = query(genaiCollection, limit(10), orderBy('tag', 'asc'));
+      const q = query(genaiCollection, limit(100), orderBy('tag', 'asc'));
       const genaiSnapshot = await getDocs(q);
       const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setGenaiPrompts(genaiList);
