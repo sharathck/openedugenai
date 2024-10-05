@@ -74,14 +74,16 @@ const App = () => {
   const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
   const [iso1, setIso1] = useState(false); // New state for o1
   const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
-  const [voiceName, setVoiceName] = useState('en-US-AriaNeural');
+  const [voiceName, setVoiceName] = useState('');
   const [genaiPrompts, setGenaiPrompts] = useState([]);
+  const [genaiVoices, setGenaiVoices] = useState(['en-US-AriaNeural']);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [editPromptTag, setEditPromptTag] = useState('');
   const [editPromptFullText, setEditPromptFullText] = useState('');
   const [generatedResponse, setGeneratedResponse] = useState(null);
   const [selectedPrompt, setSelectedPrompt] = useState(null);
   const [selectedPromptFullText, setSelectedPromptFullText] = useState(null);
+  const [selectedVoice, setSelectedVoice] = useState(null);
 
   // Helper function to save prompt
   const handleSavePrompt = async () => {
@@ -155,22 +157,13 @@ const App = () => {
         // Fetch data for the authenticated user
         await fetchData(currentUser.uid);
         await fetchPrompts(currentUser.uid);
+        await fetchVoiceNames();
       }
       else {
         console.log('No user is signed in');
       }
     });
     return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const loadVoiceNames = async () => {
-      const voiceNames = await fetchVoiceNames();
-      const options = voiceNames.map(name => ({ value: name, label: name }));
-      setVoiceOptions(options);
-      setDefaultOptions(options.slice(0, 10)); // Display top 10 voices by default
-    };
-    loadVoiceNames();
   }, []);
 
   // Fetch prompts from Firestore
@@ -192,41 +185,16 @@ const App = () => {
       const voiceNamesCollection = collection(db, 'public');
       const q = query(voiceNamesCollection, where('setup', '==', 'tts'));
       const voiceNamesSnapshot = await getDocs(q);
-      const voiceNamesList = [];
       voiceNamesSnapshot.forEach(doc => {
         const data = doc.data();
         if (Array.isArray(data.tts)) {
-          voiceNamesList.push(...data.tts);
+          genaiVoices.push(...data.tts);
         }
       });
-      return voiceNamesList;
     } catch (error) {
       console.error("Error fetching voice names: ", error);
       return [];
     }
-  };
-
-  const VoiceSelect = ({ onChange }) => {
-    return (
-      <Select
-      options={voiceOptions}
-      defaultOptions={defaultOptions}
-      value={voiceOptions.find(option => option.value === voiceName)}
-      onChange={(selectedOption) => {
-        setVoiceName(selectedOption ? selectedOption.value : '');
-        onChange(selectedOption);
-      }}
-      placeholder="Select Voice Name"
-      isClearable
-      isSearchable
-      styles={{
-        control: (provided) => ({
-        ...provided,
-        width: '40ch'
-        })
-      }}
-      />
-    );
   };
 
   // Function to fetch data from Firestore
@@ -581,12 +549,9 @@ const App = () => {
   // Handler for DALL·E 3 Checkbox Change
   const handleDall_e_3Change = (checked) => {
     setIsImage_Dall_e_3(checked);
-    // if any other model is checked, uncheck it, and display popup
-
     if (checked) {
       // Uncheck other models
       if (isOpenAI || isAnthropic || isGemini || isGpto1Mini || iso1 || isTTS) {
-        setIsOpenAI(false);
         setIsOpenAI(false);
         setIsAnthropic(false);
         setIsGemini(false);
@@ -594,8 +559,21 @@ const App = () => {
         setIso1(false);
         setIsTTS(false);
       }
+      
+      // Set the promptSelect dropdown to "image"
+      const promptSelect = document.getElementById('promptSelect');
+      if (promptSelect) {
+        const imageOption = Array.from(promptSelect.options).find(option => option.text.toLowerCase() === 'image');
+        if (imageOption) {
+          promptSelect.value = imageOption.value;
+          // Trigger the onChange event manually
+          const event = new Event('change', { bubbles: true });
+          promptSelect.dispatchEvent(event);
+        }
+      }
     }
   };
+  
 
   const handleTTSChange = (checked) => {
     setIsTTS(checked);
@@ -704,79 +682,86 @@ const App = () => {
               value={promptInput}
               onChange={(e) => setPromptInput(e.target.value)}
               placeholder="Enter your prompt here..."
-              style={{ width: '95%', padding: '8px', height: '40px', fontSize: '16px' }}
+              style={{ width: '99%', padding: '2px', height: '200px', fontSize: '16px' }}
             />
           </div>
           <div style={{ marginBottom: '20px' }}>
             <label>
               <input
-                type="checkbox"
-                value="openai"
-                onChange={(e) => setIsOpenAI(e.target.checked)}
-                checked={isOpenAI}
+          type="checkbox"
+          value="openai"
+          onChange={(e) => setIsOpenAI(e.target.checked)}
+          checked={isOpenAI}
               />
               ChatGPT
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="anthropic"
-                onChange={(e) => setIsAnthropic(e.target.checked)}
-                checked={isAnthropic}
+          type="checkbox"
+          value="anthropic"
+          onChange={(e) => setIsAnthropic(e.target.checked)}
+          checked={isAnthropic}
               />
               Claude
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="gemini"
-                onChange={(e) => setIsGemini(e.target.checked)}
-                checked={isGemini}
+          type="checkbox"
+          value="gemini"
+          onChange={(e) => setIsGemini(e.target.checked)}
+          checked={isGemini}
               />
               Gemini
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="o1-mini"
-                onChange={(e) => setIsGpto1Mini(e.target.checked)}
-                checked={isGpto1Mini}
+          type="checkbox"
+          value="o1-mini"
+          onChange={(e) => setIsGpto1Mini(e.target.checked)}
+          checked={isGpto1Mini}
               />
               o1-mini
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="o1"
-                onChange={(e) => setIso1(e.target.checked)}
-                checked={iso1}
+          type="checkbox"
+          value="o1"
+          onChange={(e) => setIso1(e.target.checked)}
+          checked={iso1}
               />
               o1
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="dall-e-3"
-                onChange={(e) => handleDall_e_3Change(e.target.checked)}
-                checked={isImage_Dall_e_3}
+          type="checkbox"
+          value="dall-e-3"
+          onChange={(e) => handleDall_e_3Change(e.target.checked)}
+          checked={isImage_Dall_e_3}
               />
               IMAGE
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-                type="checkbox"
-                value="tts"
-                onChange={(e) => handleTTSChange(e.target.checked)}
-                checked={isTTS}
+          type="checkbox"
+          value="tts"
+          onChange={(e) => handleTTSChange(e.target.checked)}
+          checked={isTTS}
               />
               TTS
             </label>
             {isTTS && (
-              <VoiceSelect
-                onChange={(selectedOption) => setVoiceName(selectedOption ? selectedOption.value : '')}
-              />
+              <select id= "voiceSelect"
+              onChange={(e) => {
+                setVoiceName(e.target.value);
+              }}
+              style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
+            >
+              {genaiVoices.map((tts) => (
+                <option key={tts} value={tts}>{tts}</option>
+              ))}
+            </select>
             )}
-            <select
+            <select id="promptSelect"
               onChange={(e) => {
                 handlePromptChange(e.target.value);
                 setSelectedPrompt(e.target.options[e.target.selectedIndex].text);
