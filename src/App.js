@@ -5,6 +5,8 @@ import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
 import { FaPlay, FaReadme, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones } from 'react-icons/fa';
 import './App.css';
 import { getFirestore, collection, doc, where, addDoc, getDocs, query, orderBy, startAfter, limit, updateDoc } from 'firebase/firestore';
+import Select from 'react-select';
+
 import {
   getAuth,
   signInWithPopup,
@@ -49,6 +51,8 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [lastVisible, setLastVisible] = useState(null); // State for the last visible document
   const [language, setLanguage] = useState("en");
+  const [voiceOptions, setVoiceOptions] = useState([]);
+  const [defaultOptions, setDefaultOptions] = useState([]);
 
   // Authentication state
   const [user, setUser] = useState(null);
@@ -111,10 +115,10 @@ const App = () => {
         });
       }
 
-        setEditPromptTag('');
-        setEditPromptFullText('');
-        setShowEditPopup(false);
-        return;
+      setEditPromptTag('');
+      setEditPromptFullText('');
+      setShowEditPopup(false);
+      return;
 
     } catch (error) {
       console.error("Error saving prompt: ", error);
@@ -159,6 +163,16 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const loadVoiceNames = async () => {
+      const voiceNames = await fetchVoiceNames();
+      const options = voiceNames.map(name => ({ value: name, label: name }));
+      setVoiceOptions(options);
+      setDefaultOptions(options.slice(0, 10)); // Display top 10 voices by default
+    };
+    loadVoiceNames();
+  }, []);
+
   // Fetch prompts from Firestore
   const fetchPrompts = async (userID) => {
     try {
@@ -171,6 +185,50 @@ const App = () => {
       console.error("Error fetching prompts: ", error);
     }
   };
+
+  // Function to fetch data from Firestore
+  const fetchVoiceNames = async () => {
+    try {
+      const voiceNamesCollection = collection(db, 'public');
+      const q = query(voiceNamesCollection, where('setup', '==', 'tts'));
+      const voiceNamesSnapshot = await getDocs(q);
+      const voiceNamesList = [];
+      voiceNamesSnapshot.forEach(doc => {
+        const data = doc.data();
+        if (Array.isArray(data.tts)) {
+          voiceNamesList.push(...data.tts);
+        }
+      });
+      return voiceNamesList;
+    } catch (error) {
+      console.error("Error fetching voice names: ", error);
+      return [];
+    }
+  };
+
+  const VoiceSelect = ({ onChange }) => {
+    return (
+      <Select
+      options={voiceOptions}
+      defaultOptions={defaultOptions}
+      value={voiceOptions.find(option => option.value === voiceName)}
+      onChange={(selectedOption) => {
+        setVoiceName(selectedOption ? selectedOption.value : '');
+        onChange(selectedOption);
+      }}
+      placeholder="Select Voice Name"
+      isClearable
+      isSearchable
+      styles={{
+        control: (provided) => ({
+        ...provided,
+        width: '40ch'
+        })
+      }}
+      />
+    );
+  };
+
   // Function to fetch data from Firestore
   const fetchData = async (userID) => {
     try {
@@ -306,10 +364,10 @@ const App = () => {
   };
 
   const handlePromptChange = async (promptValue) => {
-   /* const genaiCollection = collection(db, 'genai', uid, 'prompts');
-    const q = query(genaiCollection, where('tag', '==', promptValue), limit(1));
-    const genaiSnapshot = await getDocs(q);
-    const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));*/
+    /* const genaiCollection = collection(db, 'genai', uid, 'prompts');
+     const q = query(genaiCollection, where('tag', '==', promptValue), limit(1));
+     const genaiSnapshot = await getDocs(q);
+     const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));*/
     setPromptInput(prevInput => prevInput + "\n " + "------------ prompt --------------" + "\n" + promptValue);
   };
   // **Authentication Functions**
@@ -528,7 +586,6 @@ const App = () => {
     if (checked) {
       // Uncheck other models
       if (isOpenAI || isAnthropic || isGemini || isGpto1Mini || iso1 || isTTS) {
-        alert('Image generation model, can not be combined with Text Generation model.');
         setIsOpenAI(false);
         setIsOpenAI(false);
         setIsAnthropic(false);
@@ -547,7 +604,6 @@ const App = () => {
       // Optionally, uncheck DALL·E 3 or other models if needed
       // For example, if TTS should not coexist with DALL·E 3:
       if (isOpenAI || isAnthropic || isGemini || isGpto1Mini || iso1 || isImage_Dall_e_3) {
-        alert('Audio generation model, can not be combined with other model.');
         setIsOpenAI(false);
         setIsOpenAI(false);
         setIsAnthropic(false);
@@ -562,8 +618,8 @@ const App = () => {
   const handleEditPrompt = () => {
     setShowEditPopup(true);
     if (selectedPrompt) {
-    setEditPromptTag(selectedPrompt);
-    setEditPromptFullText(selectedPromptFullText);
+      setEditPromptTag(selectedPrompt);
+      setEditPromptFullText(selectedPromptFullText);
     }
   };
 
@@ -654,74 +710,70 @@ const App = () => {
           <div style={{ marginBottom: '20px' }}>
             <label>
               <input
-          type="checkbox"
-          value="openai"
-          onChange={(e) => setIsOpenAI(e.target.checked)}
-          checked={isOpenAI}
+                type="checkbox"
+                value="openai"
+                onChange={(e) => setIsOpenAI(e.target.checked)}
+                checked={isOpenAI}
               />
               ChatGPT
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-          type="checkbox"
-          value="anthropic"
-          onChange={(e) => setIsAnthropic(e.target.checked)}
-          checked={isAnthropic}
+                type="checkbox"
+                value="anthropic"
+                onChange={(e) => setIsAnthropic(e.target.checked)}
+                checked={isAnthropic}
               />
               Claude
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-          type="checkbox"
-          value="gemini"
-          onChange={(e) => setIsGemini(e.target.checked)}
-          checked={isGemini}
+                type="checkbox"
+                value="gemini"
+                onChange={(e) => setIsGemini(e.target.checked)}
+                checked={isGemini}
               />
               Gemini
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-          type="checkbox"
-          value="o1-mini"
-          onChange={(e) => setIsGpto1Mini(e.target.checked)}
-          checked={isGpto1Mini}
+                type="checkbox"
+                value="o1-mini"
+                onChange={(e) => setIsGpto1Mini(e.target.checked)}
+                checked={isGpto1Mini}
               />
               o1-mini
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-          type="checkbox"
-          value="o1"
-          onChange={(e) => setIso1(e.target.checked)}
-          checked={iso1}
+                type="checkbox"
+                value="o1"
+                onChange={(e) => setIso1(e.target.checked)}
+                checked={iso1}
               />
               o1
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-          type="checkbox"
-          value="dall-e-3"
-          onChange={(e) => handleDall_e_3Change(e.target.checked)}
-          checked={isImage_Dall_e_3}
+                type="checkbox"
+                value="dall-e-3"
+                onChange={(e) => handleDall_e_3Change(e.target.checked)}
+                checked={isImage_Dall_e_3}
               />
               IMAGE
             </label>
             <label style={{ marginLeft: '8px' }}>
               <input
-          type="checkbox"
-          value="tts"
-          onChange={(e) => handleTTSChange(e.target.checked)}
-          checked={isTTS}
+                type="checkbox"
+                value="tts"
+                onChange={(e) => handleTTSChange(e.target.checked)}
+                checked={isTTS}
               />
               TTS
             </label>
             {isTTS && (
-              <input
-          type="text"
-          placeholder="Enter Voice Name"
-          value={voiceName}
-          onChange={(e) => setVoiceName(e.target.value)}
-          style={{ marginBottom: '10px', fontSize: '18px' }}
+              <VoiceSelect
+                onChange={(selectedOption) => setVoiceName(selectedOption ? selectedOption.value : '')}
               />
             )}
             <select
@@ -729,12 +781,12 @@ const App = () => {
                 handlePromptChange(e.target.value);
                 setSelectedPrompt(e.target.options[e.target.selectedIndex].text);
                 setSelectedPromptFullText(e.target.value);
-                    }}
+              }}
               style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
             >
               <option value="NA">Select Prompt</option>
               {genaiPrompts.map((prompt) => (
-          <option key={prompt.id} value={prompt.fullText}>{prompt.tag}</option>
+                <option key={prompt.id} value={prompt.fullText}>{prompt.tag}</option>
               ))}
             </select>
             &nbsp;
@@ -750,24 +802,24 @@ const App = () => {
               className="signonpagebutton"
               style={{ marginLeft: '20px', padding: '15px 20px', fontSize: '16px' }}
               disabled={
-          isGenerating ||
-          isGeneratingGemini ||
-          isGeneratingAnthropic ||
-          isGeneratingo1Mini ||
-          isGeneratingo1 ||
-          isGeneratingImage_Dall_e_3 ||
-          isGeneratingTTS
+                isGenerating ||
+                isGeneratingGemini ||
+                isGeneratingAnthropic ||
+                isGeneratingo1Mini ||
+                isGeneratingo1 ||
+                isGeneratingImage_Dall_e_3 ||
+                isGeneratingTTS
               }
             >
               {isGenerating ||
-              isGeneratingGemini ||
-              isGeneratingAnthropic ||
-              isGeneratingo1Mini ||
-              isGeneratingo1 ||
-              isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
-          <FaSpinner className="spinning" />
+                isGeneratingGemini ||
+                isGeneratingAnthropic ||
+                isGeneratingo1Mini ||
+                isGeneratingo1 ||
+                isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
+                <FaSpinner className="spinning" />
               ) : (
-          'Generate'
+                'Generate'
               )}
             </button>
             <button
@@ -812,33 +864,33 @@ const App = () => {
             <option value="dall-e-3">IMAGE</option>
           </select>
           {showEditPopup && (
-          <div style={ {border : '4px'}}>
-            <div className="popup-inner">
-              <br />
-              <h3>Add/Edit Prompt</h3>
-              <label>Tag:</label>
-              <input
-          type="text"
-          value={editPromptTag}
-          onChange={(e) => setEditPromptTag(e.target.value)}
-          className="popup-input"
-              />
-              <br />
-              <textarea
-          value={editPromptFullText}
-          style={{ height: '100px', width: '96%' }}
-          onChange={(e) => setEditPromptFullText(e.target.value)}
-          className="popup-textarea"
-              />
-              <div>
-          <button onClick={handleSavePrompt} className="signinbutton">Save</button>
-          <button onClick={() => setShowEditPopup(false)} className="signoutbutton">Cancel</button>
+            <div style={{ border: '4px' }}>
+              <div className="popup-inner">
+                <br />
+                <h3>Add/Edit Prompt</h3>
+                <label>Tag:</label>
+                <input
+                  type="text"
+                  value={editPromptTag}
+                  onChange={(e) => setEditPromptTag(e.target.value)}
+                  className="popup-input"
+                />
+                <br />
+                <textarea
+                  value={editPromptFullText}
+                  style={{ height: '100px', width: '96%' }}
+                  onChange={(e) => setEditPromptFullText(e.target.value)}
+                  className="popup-textarea"
+                />
+                <div>
+                  <button onClick={handleSavePrompt} className="signinbutton">Save</button>
+                  <button onClick={() => setShowEditPopup(false)} className="signoutbutton">Cancel</button>
+                </div>
+                <br />
+                <br />
               </div>
-              <br />
-              <br />
             </div>
-          </div>
-        )}
+          )}
           {/* **Display Generated Response** 
           {generatedResponse && (
             <div style={{ marginTop: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '5px' }}>

@@ -11,7 +11,8 @@
     "react-dom": "*",
     "react-icons": "*",
     "react-markdown": "*",
-    "react-scripts": "*"
+    "react-scripts": "*",
+    "react-select": "^5.8.1"
   },
   "scripts": {
     "start": "react-scripts start",
