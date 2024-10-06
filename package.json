@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "cp ./docs/CNAME ./CNAME_backup && BUILD_PATH='./docs' react-scripts build && cp ./CNAME_backup ./docs/CNAME && rm ./CNAME_backup",
+    "build": "BUILD_PATH='./docs' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
