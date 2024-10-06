@@ -1,9 +1,10 @@
 import React from 'react';
-import App from './App';
-import { createRoot } from 'react-dom/client';
-const container = document.getElementById('root');
-createRoot(container).render(
+import ReactDOM from 'react-dom/client';
+import SigninApp from './Signin';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <SigninApp />
+  </React.StrictMode>
 );
