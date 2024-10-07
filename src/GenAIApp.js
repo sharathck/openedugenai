@@ -8,6 +8,7 @@ import {
     onAuthStateChanged,
     signOut,
 } from 'firebase/auth';
+import App from './App';
 import { auth, db } from './Firebase';
 import VoiceSelect from './VoiceSelect';
 
@@ -56,6 +57,7 @@ const GenAIApp = () => {
     const [selectedPrompt, setSelectedPrompt] = useState(null);
     const [selectedPromptFullText, setSelectedPromptFullText] = useState(null);
     const [showMainApp, setShowMainApp] = useState(false);
+    const [GenAIParameter, setGenAIParameter] = useState(false);
 
 
     // Helper function to save prompt
@@ -125,6 +127,14 @@ const GenAIApp = () => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
             if (currentUser) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const genaiParam = urlParams.get('genai');
+                if (genaiParam) {
+                    setGenAIParameter(true);
+                } 
+                if (process.env.REACT_APP_MAIN_APP === 'GenAI') {
+                    setGenAIParameter(true);
+                }           
                 setUid(currentUser.uid);
                 console.log('User is signed in:', currentUser.uid);
                 // Fetch data for the authenticated user
@@ -529,6 +539,11 @@ const GenAIApp = () => {
                 setIsLoading(false);
             });
     }
+    if (showMainApp) {
+        return (
+            <App user={user} />
+        );
+    }
 
     return (
         <div>
@@ -559,7 +574,8 @@ const GenAIApp = () => {
                         <input
                             type="checkbox"
                             value="anthropic"
-                            onChange={(e) => {setIsAnthropic(e.target.checked);
+                            onChange={(e) => {
+                                setIsAnthropic(e.target.checked);
                                 if (e.target.checked) setIsTTS(false);
                                 if (e.target.checked) setIsImage_Dall_e_3(false);
                             }}
@@ -571,7 +587,8 @@ const GenAIApp = () => {
                         <input
                             type="checkbox"
                             value="gemini"
-                            onChange={(e) => {setIsGemini(e.target.checked);
+                            onChange={(e) => {
+                                setIsGemini(e.target.checked);
                                 if (e.target.checked) setIsTTS(false);
                                 if (e.target.checked) setIsImage_Dall_e_3(false);
                             }}
@@ -583,7 +600,8 @@ const GenAIApp = () => {
                         <input
                             type="checkbox"
                             value="o1-mini"
-                            onChange={(e) => {setIsGpto1Mini(e.target.checked);
+                            onChange={(e) => {
+                                setIsGpto1Mini(e.target.checked);
                                 if (e.target.checked) setIsTTS(false);
                                 if (e.target.checked) setIsImage_Dall_e_3(false);
                             }}
@@ -595,7 +613,8 @@ const GenAIApp = () => {
                         <input
                             type="checkbox"
                             value="o1"
-                            onChange={(e) => {setIso1(e.target.checked);
+                            onChange={(e) => {
+                                setIso1(e.target.checked);
                                 if (e.target.checked) setIsTTS(false);
                                 if (e.target.checked) setIsImage_Dall_e_3(false);
                             }}
@@ -623,33 +642,33 @@ const GenAIApp = () => {
                     </label>
                     {isTTS && (
                         <VoiceSelect
-                        selectedVoice={voiceName} // Current selected voice
-                        onVoiceChange={setVoiceName} // Handler to update selected voice
+                            selectedVoice={voiceName} // Current selected voice
+                            onVoiceChange={setVoiceName} // Handler to update selected voice
                         />
                     )}
                     {!isTTS && (
-                    <select id="promptS</label>elect"
-                        onChange={(e) => {
-                            handlePromptChange(e.target.value);
-                            setSelectedPrompt(e.target.options[e.target.selectedIndex].text);
-                            setSelectedPromptFullText(e.target.value);
-                        }}
-                        style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
-                    >
-                        <option value="NA">Select Prompt</option>
-                        {genaiPrompts.map((prompt) => (
-                            <option key={prompt.id} value={prompt.fullText}>{prompt.tag}</option>
-                        ))}
-                    </select>
+                        <select id="promptS</label>elect"
+                            onChange={(e) => {
+                                handlePromptChange(e.target.value);
+                                setSelectedPrompt(e.target.options[e.target.selectedIndex].text);
+                                setSelectedPromptFullText(e.target.value);
+                            }}
+                            style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
+                        >
+                            <option value="NA">Select Prompt</option>
+                            {genaiPrompts.map((prompt) => (
+                                <option key={prompt.id} value={prompt.fullText}>{prompt.tag}</option>
+                            ))}
+                        </select>
                     )}
                     {!isTTS && (
-                    <button
-                        className="signonpagebutton"
-                        onClick={() => handleEditPrompt()}
-                        style={{ padding: '10px', background: 'lightblue', fontSize: '16px' }}
-                    >
-                        <FaEdit />
-                    </button>
+                        <button
+                            className="signonpagebutton"
+                            onClick={() => handleEditPrompt()}
+                            style={{ padding: '10px', background: 'lightblue', fontSize: '16px' }}
+                        >
+                            <FaEdit />
+                        </button>
                     )}
                     <button
                         onClick={handleGenerate}
@@ -677,7 +696,7 @@ const GenAIApp = () => {
                         )}
                     </button>
                     &nbsp; &nbsp;
-                    {process.env.REACT_APP_MAIN_APP === 'App' ? (
+                    {!GenAIParameter ? (
                         <button className='signoutbutton' onClick={() => setShowMainApp(!showMainApp)}>
                             <FaArrowLeft />
                         </button>
