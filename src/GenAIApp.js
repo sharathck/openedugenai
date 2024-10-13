@@ -43,11 +43,17 @@ const GenAIApp = () => {
     const [isAnthropic, setIsAnthropic] = useState(false);
     const [isGemini, setIsGemini] = useState(true);
     const [isGpto1Mini, setIsGpto1Mini] = useState(false);
+    const [isLlama, setIsLlama] = useState(false);
+    const [isMistral, setIsMistral] = useState(false);
+    const [isPerplexity, setIsPerplexity] = useState(false);
     const [isImage_Dall_e_3, setIsImage_Dall_e_3] = useState(false);
     const [isTTS, setIsTTS] = useState(false);
     const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
     const [iso1, setIso1] = useState(false); // New state for o1
     const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
+    const [isGeneratingMistral, setIsGeneratingMistral] = useState(false);
+    const [isGeneratingLlama, setIsGeneratingLlama] = useState(false);
+    const [isGeneratingPerplexity, setIsGeneratingPerplexity] = useState(false);
     const [voiceName, setVoiceName] = useState('en-US-AriaNeural');
     const [genaiPrompts, setGenaiPrompts] = useState([]);
     const [showEditPopup, setShowEditPopup] = useState(false);
@@ -131,10 +137,10 @@ const GenAIApp = () => {
                 const genaiParam = urlParams.get('genai');
                 if (genaiParam) {
                     setGenAIParameter(true);
-                } 
+                }
                 if (process.env.REACT_APP_MAIN_APP === 'GenAI') {
                     setGenAIParameter(true);
-                }           
+                }
                 setUid(currentUser.uid);
                 console.log('User is signed in:', currentUser.uid);
                 // Fetch data for the authenticated user
@@ -353,6 +359,21 @@ const GenAIApp = () => {
             callAPI('o1');
         }
 
+        if (isLlama) {
+            setIsGeneratingLlama(true); // Set generating state to true
+            callAPI('llama');
+        }
+
+        if (isMistral) {
+            setIsGeneratingMistral(true); // Set generating state to true
+            callAPI('mistral');
+        }
+
+        if (isPerplexity) {
+            setIsGeneratingPerplexity(true); // Set generating state to true
+            callAPI('perplexity');
+        }
+
         // **Handle DALL·E 3 Selection**
         if (isImage_Dall_e_3) {
             setIsGeneratingImage_Dall_e_3(true); // Set generating state to true
@@ -424,6 +445,15 @@ const GenAIApp = () => {
             }
             if (selectedModel === 'dall-e-3') {
                 setIsGeneratingImage_Dall_e_3(false);
+            }
+            if (selectedModel === 'mistral') {
+                setIsGeneratingMistral(false);
+            }
+            if (selectedModel === 'llama') {
+                setIsGeneratingLlama(false);
+            }
+            if (selectedModel === 'perplexity') {
+                setIsGeneratingPerplexity(false);
             }
         }
     };
@@ -612,6 +642,33 @@ const GenAIApp = () => {
                     <label style={{ marginLeft: '8px' }}>
                         <input
                             type="checkbox"
+                            value="llama"
+                            onChange={(e) => setIsLlama(e.target.checked)}
+                            checked={isLlama}
+                        />
+                        Llama
+                    </label>
+                    <label style={{ marginLeft: '8px' }}>
+                        <input
+                            type="checkbox"
+                            value="mistral"
+                            onChange={(e) => setIsMistral(e.target.checked)}
+                            checked={isMistral}
+                        />
+                        Mistral
+                    </label>
+                    <label style={{ marginLeft: '8px' }}>
+                        <input
+                            type="checkbox"
+                            value="perplexity"
+                            onChange={(e) => setIsPerplexity(e.target.checked)}
+                            checked={isPerplexity}
+                        />
+                        Perplexity
+                    </label>
+                    <label style={{ marginLeft: '8px' }}>
+                        <input
+                            type="checkbox"
                             value="o1"
                             onChange={(e) => {
                                 setIso1(e.target.checked);
@@ -681,7 +738,10 @@ const GenAIApp = () => {
                             isGeneratingo1Mini ||
                             isGeneratingo1 ||
                             isGeneratingImage_Dall_e_3 ||
-                            isGeneratingTTS
+                            isGeneratingTTS ||
+                            isGeneratingMistral ||
+                            isGeneratingLlama ||
+                            isGeneratingPerplexity
                         }
                     >
                         {isGenerating ||
@@ -689,7 +749,10 @@ const GenAIApp = () => {
                             isGeneratingAnthropic ||
                             isGeneratingo1Mini ||
                             isGeneratingo1 ||
-                            isGeneratingImage_Dall_e_3 || isGeneratingTTS ? (
+                            isGeneratingImage_Dall_e_3 || isGeneratingTTS ||
+                            isGeneratingMistral ||
+                            isGeneratingLlama ||
+                            isGeneratingPerplexity ? (
                             <FaSpinner className="spinning" />
                         ) : (
                             'GenAI'
