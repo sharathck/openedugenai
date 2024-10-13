@@ -90,7 +90,7 @@
   * Enforce HTTPS should be selected
   * It takes 15-20 minutes for the changes to reflect.
 * Go to domain provider godaddy.com and add **CNAME** record with value (subdomain like **www.genai-all.com**)
-  * CNAME: www -> sharath.github.io.
+  * CNAME: www -> sharathck.github.io
 * Go to domain provider godaddy.com and add **A** record with values (Apex domain like **genai-all.com without www**) 
   * A: @ -> 185.199.108.153
   * A: @ -> 185.199.109.153
