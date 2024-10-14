@@ -67,6 +67,7 @@ const GenAIApp = () => {
     const [GenAIParameter, setGenAIParameter] = useState(false);
     const [temperature, setTemperature] = useState(0.7);
     const [top_p, setTop_p] = useState(0.8);
+    const [showPerplexity, setShowPerplexity] = useState(false);
 
 
     // Helper function to save prompt
@@ -405,7 +406,7 @@ const GenAIApp = () => {
     };
 
     const callAPI = async (selectedModel) => {
-        console.log('Calling API with model:', selectedModel + ' URL: ' + process.env.REACT_APP_TTS_API_URL);
+        console.log('Calling API with model:', selectedModel + ' URL: ' + process.env.REACT_APP_GENAI_API_URL);
 
         try {
             const response = await fetch(process.env.REACT_APP_GENAI_API_URL, {
@@ -660,7 +661,7 @@ const GenAIApp = () => {
                         />
                         Mistral
                     </label>
-                    <label className={isGeneratingPerplexity ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
+                    {showPerplexity && <label className={isGeneratingPerplexity ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
                         <input
                             type="checkbox"
                             value="perplexity"
@@ -668,7 +669,7 @@ const GenAIApp = () => {
                             checked={isPerplexity}
                         />
                         Perplexity
-                    </label>
+                    </label>}
                     <label className={isGeneratingo1 ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
                         <input
                             type="checkbox"
