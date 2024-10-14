@@ -456,7 +456,7 @@ const GenAIApp = () => {
             if (selectedModel === 'llama') {
                 setIsGeneratingLlama(false);
             }
-            if (selectedModel === 'Gpt4Turbo') {
+            if (selectedModel === 'gpt-4-turbo') {
                 setIsGeneratingGpt4Turbo(false);
             }
         }
