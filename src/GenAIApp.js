@@ -413,7 +413,7 @@ const GenAIApp = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid , temperature: 0.5, top_p: 100 })
+                body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid , temperature: temperature, top_p: top_p })
             });
 
             if (!response.ok) {
@@ -681,6 +681,30 @@ const GenAIApp = () => {
                             checked={iso1}
                         />
                         o1
+                    </label>
+                    <label style={{ marginLeft: '8px' }}>
+                        Temperature:
+                        <input
+                            type="number"
+                            value={temperature}
+                            onChange={(e) => setTemperature(parseFloat(e.target.value))}
+                            step="0.1"
+                            min="0"
+                            max="1"
+                            style={{ width: '50px', marginLeft: '5px' }}
+                        />
+                    </label>
+                    <label style={{ marginLeft: '8px' }}>
+                        Top_p:
+                        <input
+                            type="number"
+                            value={top_p}
+                            onChange={(e) => setTop_p(parseFloat(e.target.value))}
+                            step="0.1"
+                            min="0"
+                            max="1"
+                            style={{ width: '50px', marginLeft: '5px' }}
+                        />
                     </label>
                     <label className={isGeneratingImage_Dall_e_3 ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
                         <input
