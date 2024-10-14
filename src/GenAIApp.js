@@ -46,7 +46,7 @@ const GenAIApp = () => {
     const [isGpto1Mini, setIsGpto1Mini] = useState(false);
     const [isLlama, setIsLlama] = useState(false);
     const [isMistral, setIsMistral] = useState(false);
-    const [isPerplexity, setIsPerplexity] = useState(false);
+    const [isGpt4Turbo, setIsGpt4Turbo] = useState(false);
     const [isImage_Dall_e_3, setIsImage_Dall_e_3] = useState(false);
     const [isTTS, setIsTTS] = useState(false);
     const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
@@ -54,7 +54,7 @@ const GenAIApp = () => {
     const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
     const [isGeneratingMistral, setIsGeneratingMistral] = useState(false);
     const [isGeneratingLlama, setIsGeneratingLlama] = useState(false);
-    const [isGeneratingPerplexity, setIsGeneratingPerplexity] = useState(false);
+    const [isGeneratingGpt4Turbo, setIsGeneratingGpt4Turbo] = useState(false);
     const [voiceName, setVoiceName] = useState('en-US-AriaNeural');
     const [genaiPrompts, setGenaiPrompts] = useState([]);
     const [showEditPopup, setShowEditPopup] = useState(false);
@@ -67,7 +67,7 @@ const GenAIApp = () => {
     const [GenAIParameter, setGenAIParameter] = useState(false);
     const [temperature, setTemperature] = useState(0.7);
     const [top_p, setTop_p] = useState(0.8);
-    const [showPerplexity, setShowPerplexity] = useState(false);
+    const [showGpt4Turbo, setShowGpt4Turbo] = useState(true);
 
 
     // Helper function to save prompt
@@ -332,7 +332,7 @@ const GenAIApp = () => {
         }
 
         // Check if at least one model is selected
-        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isPerplexity) {
+        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo) {
             alert('Please select at least one model.');
             return;
         }
@@ -373,9 +373,9 @@ const GenAIApp = () => {
             callAPI('mistral');
         }
 
-        if (isPerplexity) {
-            setIsGeneratingPerplexity(true); // Set generating state to true
-            callAPI('perplexity');
+        if (isGpt4Turbo) {
+            setIsGeneratingGpt4Turbo(true); // Set generating state to true
+            callAPI('gpt-4-turbo');
         }
 
         // **Handle DALL·E 3 Selection**
@@ -456,8 +456,8 @@ const GenAIApp = () => {
             if (selectedModel === 'llama') {
                 setIsGeneratingLlama(false);
             }
-            if (selectedModel === 'perplexity') {
-                setIsGeneratingPerplexity(false);
+            if (selectedModel === 'Gpt4Turbo') {
+                setIsGeneratingGpt4Turbo(false);
             }
         }
     };
@@ -661,14 +661,14 @@ const GenAIApp = () => {
                         />
                         Mistral
                     </label>
-                    {showPerplexity && <label className={isGeneratingPerplexity ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
+                    {showGpt4Turbo && <label className={isGeneratingGpt4Turbo ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
                         <input
                             type="checkbox"
-                            value="perplexity"
-                            onChange={(e) => setIsPerplexity(e.target.checked)}
-                            checked={isPerplexity}
+                            value="Gpt4Turbo"
+                            onChange={(e) => setIsGpt4Turbo(e.target.checked)}
+                            checked={isGpt4Turbo}
                         />
-                        Perplexity
+                        Gpt4Turbo
                     </label>}
                     <label className={isGeneratingo1 ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
                         <input
@@ -769,7 +769,7 @@ const GenAIApp = () => {
                             isGeneratingTTS ||
                             isGeneratingMistral ||
                             isGeneratingLlama ||
-                            isGeneratingPerplexity
+                            isGeneratingGpt4Turbo
                         }
                     >
                         {isGenerating ||
@@ -780,7 +780,7 @@ const GenAIApp = () => {
                             isGeneratingImage_Dall_e_3 || isGeneratingTTS ||
                             isGeneratingMistral ||
                             isGeneratingLlama ||
-                            isGeneratingPerplexity ? (
+                            isGeneratingGpt4Turbo ? (
                             <FaSpinner className="spinning" />
                         ) : (
                             'GenAI'
