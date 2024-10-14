@@ -11,6 +11,7 @@ import {
 import App from './App';
 import { auth, db } from './Firebase';
 import VoiceSelect from './VoiceSelect';
+import { TbEmpathize } from "react-icons/tb";
 
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
@@ -64,6 +65,8 @@ const GenAIApp = () => {
     const [selectedPromptFullText, setSelectedPromptFullText] = useState(null);
     const [showMainApp, setShowMainApp] = useState(false);
     const [GenAIParameter, setGenAIParameter] = useState(false);
+    const [temperature, setTemperature] = useState(0.7);
+    const [top_p, setTop_p] = useState(0.8);
 
 
     // Helper function to save prompt
@@ -410,7 +413,7 @@ const GenAIApp = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid })
+                body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid , temperature: 0.5, top_p: 100 })
             });
 
             if (!response.ok) {
