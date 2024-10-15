@@ -149,7 +149,8 @@ const GenAIApp = () => {
                 console.log('User is signed in:', currentUser.uid);
                 // Fetch data for the authenticated user
                 await fetchData(currentUser.uid);
-                await fetchPrompts(currentUser.uid);
+                fetchPrompts(currentUser.uid);
+                fetchGenAIParameters();
             }
             else {
                 console.log('No user is signed in');
@@ -157,6 +158,24 @@ const GenAIApp = () => {
         });
         return () => unsubscribe();
     }, []);
+
+    const fetchGenAIParameters = async () => {
+        try {
+            console.log('Fetching genai parameters...');
+            const voiceNamesCollection = collection(db, 'public');
+            const q = query(voiceNamesCollection, where('setup', '==', 'genai'));
+            const voiceNamesSnapshot = await getDocs(q);
+            voiceNamesSnapshot.forEach(doc => {
+                const data = doc.data();
+                console.log('Data:', data.temperature, data.top_p);
+                setTemperature(data.temperature);
+                setTop_p(data.top_p);
+            });
+        } catch (error) {
+            console.error("Error fetching voice names: ", error);
+            return [];
+        }
+    };
 
     // Fetch prompts from Firestore
     const fetchPrompts = async (userID) => {
