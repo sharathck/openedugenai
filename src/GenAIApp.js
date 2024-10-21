@@ -359,7 +359,7 @@ const GenAIApp = () => {
         // Generate API calls for each selected model
         if (isAnthropic) {
             setIsGeneratingAnthropic(true); // Set generating state to true
-            callAPI('anthropic');
+            callAPI('claude');
         }
 
         if (isGemini) {
@@ -369,7 +369,7 @@ const GenAIApp = () => {
 
         if (isOpenAI) {
             setIsGenerating(true); // Set generating state to true
-            callAPI('openai');
+            callAPI('gpt-4o');
         }
 
         if (isGpto1Mini) {
@@ -390,6 +390,11 @@ const GenAIApp = () => {
         if (isMistral) {
             setIsGeneratingMistral(true); // Set generating state to true
             callAPI('mistral');
+        }
+
+        if (isGpt4oMini) {
+            setIsGeneratingGpt4Turbo(true); // Set generating state to true
+            callAPI('gpt-4o-mini');
         }
 
         if (isGpt4Turbo) {
