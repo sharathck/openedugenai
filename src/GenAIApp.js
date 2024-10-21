@@ -403,7 +403,7 @@ const GenAIApp = () => {
 
         if (isGeminiFast) {
             setIsGeneratingGeminiFast(true); // Set generating state to true
-            callAPI('gemini-fast');
+            callAPI('gemini-flash-fast');
         }
 
         if (isGpt4Turbo) {
@@ -895,7 +895,7 @@ const GenAIApp = () => {
                     <option value="meta-llama-3.1-405b-instruct">Llama</option>
                     <option value="gpt-4-turbo">Gpt4Turbo</option>
                     <option value="gpt-4o-mini">Gpt4oMini</option>
-                    <option value="gemini-fast">GeminiFast</option>
+                    <option value="gemini-flash-fast">GeminiFast</option>
                 </select>
                 {showEditPopup && (
                     <div style={{ border: '4px' }}>
