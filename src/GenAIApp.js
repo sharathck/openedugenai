@@ -50,6 +50,8 @@ const GenAIApp = () => {
     const [isMistral, setIsMistral] = useState(false);
     const [isGpt4Turbo, setIsGpt4Turbo] = useState(false);
     const [isGeminiFast, setIsGeminiFast] = useState(false);
+    const [isPerplexityFast, setIsPerplexityFast] = useState(false);
+    const [isPerplexity, setIsPerplexity] = useState(false);
     const [isGeneratingGeminiFast, setIsGeneratingGeminiFast] = useState(false);
     const [isImage_Dall_e_3, setIsImage_Dall_e_3] = useState(false);
     const [isTTS, setIsTTS] = useState(false);
@@ -59,6 +61,8 @@ const GenAIApp = () => {
     const [isGeneratingMistral, setIsGeneratingMistral] = useState(false);
     const [isGeneratingLlama, setIsGeneratingLlama] = useState(false);
     const [isGeneratingGpt4Turbo, setIsGeneratingGpt4Turbo] = useState(false);
+    const [isGeneratingPerplexityFast, setIsGeneratingPerplexityFast] = useState(false);
+    const [isGeneratingPerplexity, setIsGeneratingPerplexity] = useState(false);
     const [voiceName, setVoiceName] = useState('en-US-AriaNeural');
     const [genaiPrompts, setGenaiPrompts] = useState([]);
     const [showEditPopup, setShowEditPopup] = useState(false);
@@ -83,6 +87,8 @@ const GenAIApp = () => {
     const [modelGeminiFast, setModelGeminiFast] = useState('gemini-flash-fast');
     const [modelGpt4Turbo, setModelGpt4Turbo] = useState('gpt-4-turbo');
     const [modelImageDallE3, setModelImageDallE3] = useState('dall-e-3');
+    const [modelPerplexityFast, setModelPerplexityFast] = useState('perplexity-fast');
+    const [modelPerplexity, setModelPerplexity] = useState('perplexity');
 
     // Helper function to save prompt
     const handleSavePrompt = async () => {
@@ -365,7 +371,7 @@ const GenAIApp = () => {
         }
 
         // Check if at least one model is selected
-        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiFast) {
+        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiFast && !isPerplexityFast && !isPerplexity) {
             alert('Please select at least one model.');
             return;
         }
@@ -418,6 +424,16 @@ const GenAIApp = () => {
         if (isGpt4Turbo) {
             setIsGeneratingGpt4Turbo(true); // Set generating state to true
             callAPI(modelGpt4Turbo);
+        }
+
+        if (isPerplexityFast) {
+            setIsGeneratingPerplexityFast(true); // Set generating state to true
+            callAPI(modelPerplexityFast);
+        }
+
+        if (isPerplexity) {
+            setIsGeneratingPerplexity(true); // Set generating state to true
+            callAPI(modelPerplexity);
         }
 
         // **Handle DALL·E 3 Selection**
@@ -507,6 +523,13 @@ const GenAIApp = () => {
             if (selectedModel === modelGeminiFast) {
             setIsGeneratingGeminiFast(false);
             }
+            if (selectedModel === modelPerplexityFast) {
+            setIsGeneratingPerplexityFast(false);
+            }
+            if (selectedModel === modelPerplexity) {
+            setIsGeneratingPerplexity(false);
+            }
+
         }
         };
 
@@ -554,6 +577,8 @@ const GenAIApp = () => {
                 setIsGpt4Turbo(false);
                 setIsGpt4oMini(false);
                 setIsGeminiFast(false);
+                setIsPerplexityFast(false);
+                setIsPerplexity(false);
             }
 
             // Set the promptSelect dropdown to "image"
@@ -754,6 +779,27 @@ const GenAIApp = () => {
                         />
                         o1
                     </label>
+                    <label className={isGeneratingPerplexityFast ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
+                        <input
+
+                            type="checkbox"
+                            value="perplexity-fast"
+                            onChange={(e) => setIsPerplexityFast(e.target.checked)}
+                            checked={isPerplexityFast}
+                        />
+                        Perplexity-Fast
+                    </label>
+                    <label className={isGeneratingPerplexity ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
+                            
+                        <input
+                            type="checkbox"
+                            value="perplexity"
+                            onChange={(e) => setIsPerplexity(e.target.checked)}
+                            checked={isPerplexity}
+                        />
+                        Perplexity
+                    </label>
+
                     <label style={{ marginLeft: '8px' }}>
                         Temp:
                         <input
@@ -905,6 +951,8 @@ const GenAIApp = () => {
                     <option value="gpt-4-turbo">Gpt4Turbo</option>
                     <option value="gpt-4o-mini">Gpt4oMini</option>
                     <option value="gemini-flash-fast">GeminiFast</option>
+                    <option value="perplexity-fast">PerplexityFast</option>
+                    <option value="perplexity">Perplexity</option>
                 </select>
                 {showEditPopup && (
                     <div style={{ border: '4px' }}>
