@@ -72,7 +72,17 @@ const GenAIApp = () => {
     const [temperature, setTemperature] = useState(0.7);
     const [top_p, setTop_p] = useState(0.8);
     const [showGpt4Turbo, setShowGpt4Turbo] = useState(true);
-
+    const [modelAnthropic, setModelAnthropic] = useState('claude');
+    const [modelGemini, setModelGemini] = useState('gemini');
+    const [modelOpenAI, setModelOpenAI] = useState('gpt-4o');
+    const [modelGpto1Mini, setModelGpto1Mini] = useState('o1-mini');
+    const [modelo1, setModelo1] = useState('o1');
+    const [modelLlama, setModelLlama] = useState('llama');
+    const [modelMistral, setModelMistral] = useState('mistral');
+    const [modelGpt4oMini, setModelGpt4oMini] = useState('gpt-4o-mini');
+    const [modelGeminiFast, setModelGeminiFast] = useState('gemini-flash-fast');
+    const [modelGpt4Turbo, setModelGpt4Turbo] = useState('gpt-4-turbo');
+    const [modelImageDallE3, setModelImageDallE3] = useState('dall-e-3');
 
     // Helper function to save prompt
     const handleSavePrompt = async () => {
@@ -363,58 +373,57 @@ const GenAIApp = () => {
         // Generate API calls for each selected model
         if (isAnthropic) {
             setIsGeneratingAnthropic(true); // Set generating state to true
-            callAPI('claude');
+            callAPI(modelAnthropic);
         }
 
         if (isGemini) {
             setIsGeneratingGemini(true); // Set generating state to true
-            callAPI('gemini');
+            callAPI(modelGemini);
         }
-
         if (isOpenAI) {
             setIsGenerating(true); // Set generating state to true
-            callAPI('gpt-4o');
+            callAPI(modelOpenAI);
         }
 
         if (isGpto1Mini) {
             setIsGeneratingo1Mini(true); // Set generating state to true
-            callAPI('o1-mini');
+            callAPI(modelGpto1Mini);
         }
 
         if (iso1) {
             setIsGeneratingo1(true); // Set generating state to true
-            callAPI('o1');
+            callAPI(modelo1);
         }
 
         if (isLlama) {
             setIsGeneratingLlama(true); // Set generating state to true
-            callAPI('llama');
+            callAPI(modelLlama);
         }
 
         if (isMistral) {
             setIsGeneratingMistral(true); // Set generating state to true
-            callAPI('mistral');
+            callAPI(modelMistral);
         }
 
         if (isGpt4oMini) {
             setIsGeneratingGpt4oMini(true); // Set generating state to true
-            callAPI('gpt-4o-mini');
+            callAPI(modelGpt4oMini);
         }
 
         if (isGeminiFast) {
             setIsGeneratingGeminiFast(true); // Set generating state to true
-            callAPI('gemini-flash-fast');
+            callAPI(modelGeminiFast);
         }
 
         if (isGpt4Turbo) {
             setIsGeneratingGpt4Turbo(true); // Set generating state to true
-            callAPI('gpt-4-turbo');
+            callAPI(modelGpt4Turbo);
         }
 
         // **Handle DALL·E 3 Selection**
         if (isImage_Dall_e_3) {
             setIsGeneratingImage_Dall_e_3(true); // Set generating state to true
-            callAPI('dall-e-3');
+            callAPI(modelImageDallE3);
         }
 
         // **Handle TTS Selection**
@@ -423,36 +432,36 @@ const GenAIApp = () => {
             //
 
             if (promptInput.length > 2) {
-                /* const chunks = [];
-                 for (let i = 0; i < promptInput.length; i += 3999) {
-                   chunks.push(promptInput.substring(i, i + 3999));
-                 }
-                 for (const chunk of chunks) {
-                   callTTSAPI(chunk);
-                 }*/
-                callTTSAPI(promptInput, process.env.REACT_APP_TTS_API_URL);
+            /* const chunks = [];
+             for (let i = 0; i < promptInput.length; i += 3999) {
+               chunks.push(promptInput.substring(i, i + 3999));
+             }
+             for (const chunk of chunks) {
+               callTTSAPI(chunk);
+             }*/
+            callTTSAPI(promptInput, process.env.REACT_APP_TTS_API_URL);
             }
             else {
-                callTTSAPI(promptInput, 'https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18');
+            callTTSAPI(promptInput, 'https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18');
             }
         }
-    };
+        };
 
-    const callAPI = async (selectedModel) => {
+        const callAPI = async (selectedModel) => {
         console.log('Calling API with model:', selectedModel + ' URL: ' + process.env.REACT_APP_GENAI_API_URL);
 
         try {
             const response = await fetch(process.env.REACT_APP_GENAI_API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid, temperature: temperature, top_p: top_p })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid, temperature: temperature, top_p: top_p })
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to generate content.');
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to generate content.');
             }
             const data = await response.json();
             console.log('Response:', data);
@@ -465,41 +474,41 @@ const GenAIApp = () => {
             searchModel = 'All';
             console.log('Fetching data after generating content');
             fetchData(uid);
-            if (selectedModel === 'openai') {
-                setIsGenerating(false);
+            if (selectedModel === modelOpenAI) {
+            setIsGenerating(false);
             }
-            if (selectedModel === 'anthropic') {
-                setIsGeneratingAnthropic(false);
+            if (selectedModel === modelAnthropic) {
+            setIsGeneratingAnthropic(false);
             }
-            if (selectedModel === 'gemini') {
-                setIsGeneratingGemini(false);
+            if (selectedModel === modelGemini) {
+            setIsGeneratingGemini(false);
             }
-            if (selectedModel === 'o1-mini') {
-                setIsGeneratingo1Mini(false);
+            if (selectedModel === modelGpto1Mini) {
+            setIsGeneratingo1Mini(false);
             }
-            if (selectedModel === 'o1') {
-                setIsGeneratingo1(false);
+            if (selectedModel === modelo1) {
+            setIsGeneratingo1(false);
             }
-            if (selectedModel === 'dall-e-3') {
-                setIsGeneratingImage_Dall_e_3(false);
+            if (selectedModel === modelImageDallE3) {
+            setIsGeneratingImage_Dall_e_3(false);
             }
-            if (selectedModel === 'mistral') {
-                setIsGeneratingMistral(false);
+            if (selectedModel === modelMistral) {
+            setIsGeneratingMistral(false);
             }
-            if (selectedModel === 'llama') {
-                setIsGeneratingLlama(false);
+            if (selectedModel === modelLlama) {
+            setIsGeneratingLlama(false);
             }
-            if (selectedModel === 'gpt-4-turbo') {
-                setIsGeneratingGpt4Turbo(false);
+            if (selectedModel === modelGpt4Turbo) {
+            setIsGeneratingGpt4Turbo(false);
             }
-            if (selectedModel === 'gpt-4o-mini') {
-                setIsGeneratingGpt4oMini(false);
+            if (selectedModel === modelGpt4oMini) {
+            setIsGeneratingGpt4oMini(false);
             }
-            if (selectedModel === 'gemini-fast') {
-                setIsGeneratingGeminiFast(false);
+            if (selectedModel === modelGeminiFast) {
+            setIsGeneratingGeminiFast(false);
             }
         }
-    };
+        };
 
     // Function to call the TTS API
     const callTTSAPI = async (message, apiUrl) => {
