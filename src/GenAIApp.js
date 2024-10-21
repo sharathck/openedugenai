@@ -40,13 +40,17 @@ const GenAIApp = () => {
     const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false);
     const [isGeneratingo1Mini, setIsGeneratingo1Mini] = useState(false);
     const [isGeneratingImage_Dall_e_3, setIsGeneratingImage_Dall_e_3] = useState(false);
-    const [isOpenAI, setIsOpenAI] = useState(false);
+    const [isGpt4oMini, setIsGpt4oMini] = useState(false);
+    const [isGeneratingGpt4oMini, setIsGeneratingGpt4oMini] = useState(false);
+    const [isOpenAI, setIsOpenAI] = useState(true);
     const [isAnthropic, setIsAnthropic] = useState(false);
-    const [isGemini, setIsGemini] = useState(true);
+    const [isGemini, setIsGemini] = useState(false);
     const [isGpto1Mini, setIsGpto1Mini] = useState(false);
     const [isLlama, setIsLlama] = useState(false);
     const [isMistral, setIsMistral] = useState(false);
     const [isGpt4Turbo, setIsGpt4Turbo] = useState(false);
+    const [isGeminiFast, setIsGeminiFast] = useState(false);
+    const [isGeneratingGeminiFast, setIsGeneratingGeminiFast] = useState(false);
     const [isImage_Dall_e_3, setIsImage_Dall_e_3] = useState(false);
     const [isTTS, setIsTTS] = useState(false);
     const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
@@ -351,7 +355,7 @@ const GenAIApp = () => {
         }
 
         // Check if at least one model is selected
-        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo) {
+        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiFast) {
             alert('Please select at least one model.');
             return;
         }
@@ -393,8 +397,13 @@ const GenAIApp = () => {
         }
 
         if (isGpt4oMini) {
-            setIsGeneratingGpt4Turbo(true); // Set generating state to true
+            setIsGeneratingGpt4oMini(true); // Set generating state to true
             callAPI('gpt-4o-mini');
+        }
+
+        if (isGeminiFast) {
+            setIsGeneratingGeminiFast(true); // Set generating state to true
+            callAPI('gemini-fast');
         }
 
         if (isGpt4Turbo) {
@@ -438,7 +447,7 @@ const GenAIApp = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid , temperature: temperature, top_p: top_p })
+                body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid, temperature: temperature, top_p: top_p })
             });
 
             if (!response.ok) {
@@ -483,6 +492,12 @@ const GenAIApp = () => {
             if (selectedModel === 'gpt-4-turbo') {
                 setIsGeneratingGpt4Turbo(false);
             }
+            if (selectedModel === 'gpt-4o-mini') {
+                setIsGeneratingGpt4oMini(false);
+            }
+            if (selectedModel === 'gemini-fast') {
+                setIsGeneratingGeminiFast(false);
+            }
         }
     };
 
@@ -525,6 +540,11 @@ const GenAIApp = () => {
                 setIsGpto1Mini(false);
                 setIso1(false);
                 setIsTTS(false);
+                setIsLlama(false);
+                setIsMistral(false);
+                setIsGpt4Turbo(false);
+                setIsGpt4oMini(false);
+                setIsGeminiFast(false);
             }
 
             // Set the promptSelect dropdown to "image"
@@ -628,7 +648,7 @@ const GenAIApp = () => {
                         />
                         ChatGPT
                     </label>
-                    <label  className={isGeneratingAnthropic ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
+                    <label className={isGeneratingAnthropic ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
                         <input
                             type="checkbox"
                             value="anthropic"
@@ -694,6 +714,24 @@ const GenAIApp = () => {
                         />
                         Gpt4Turbo
                     </label>}
+                    <label className={isGeneratingGpt4oMini ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
+                        <input
+                            type="checkbox"
+                            value="gpt4mini"
+                            onChange={(e) => setIsGpt4oMini(e.target.checked)}
+                            checked={isGpt4oMini}
+                        />
+                        Gpt4oMini
+                    </label>
+                    <label className={isGeneratingGeminiFast ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
+                        <input
+                            type="checkbox"
+                            value="gemini-fast"
+                            onChange={(e) => setIsGeminiFast(e.target.checked)}
+                            checked={isGeminiFast}
+                        />
+                        Gemini-Fast
+                    </label>
                     <label className={isGeneratingo1 ? 'flashing' : ''} style={{ marginLeft: '8px' }}>
                         <input
                             type="checkbox"
@@ -801,10 +839,12 @@ const GenAIApp = () => {
                             isGeneratingAnthropic ||
                             isGeneratingo1Mini ||
                             isGeneratingo1 ||
-                            isGeneratingImage_Dall_e_3 || isGeneratingTTS ||
+                            isGeneratingImage_Dall_e_3 ||
+                            isGeneratingTTS ||
                             isGeneratingMistral ||
                             isGeneratingLlama ||
-                            isGeneratingGpt4Turbo ? (
+                            isGeneratingGpt4Turbo ||
+                            isGeneratingGpt4oMini ? (
                             <FaSpinner className="spinning" />
                         ) : (
                             'GenAI'
@@ -851,6 +891,11 @@ const GenAIApp = () => {
                     <option value="o1-preview">o1</option>
                     <option value="azure-tts">TTS</option>
                     <option value="dall-e-3">IMAGE</option>
+                    <option value="Mistral-large-2407">Mistral</option>
+                    <option value="meta-llama-3.1-405b-instruct">Llama</option>
+                    <option value="gpt-4-turbo">Gpt4Turbo</option>
+                    <option value="gpt-4o-mini">Gpt4oMini</option>
+                    <option value="gemini-fast">GeminiFast</option>
                 </select>
                 {showEditPopup && (
                     <div style={{ border: '4px' }}>
