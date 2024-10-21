@@ -617,12 +617,12 @@ const GenAIApp = () => {
             })
         })
             .then((res) => res.json())
-            .then((text) => {
-                setGenaiData(JSON.parse(text));
+            .then((data) => {
+                setGenaiData(data);
                 setIsLoading(false);
             })
             .catch((error) => {
-                console.error("Invalid JSON format:", error);
+                console.error("Error fetching data:", error);
                 setIsLoading(false);
             });
     }
