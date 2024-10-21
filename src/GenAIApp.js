@@ -12,6 +12,7 @@ import App from './App';
 import { auth, db } from './Firebase';
 import VoiceSelect from './VoiceSelect';
 import { TbEmpathize } from "react-icons/tb";
+import { MdSettingsInputComponent } from "react-icons/md";
 
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
@@ -427,13 +428,13 @@ const GenAIApp = () => {
         }
 
         if (isPerplexityFast) {
-            setIsGeneratingPerplexityFast(true); // Set generating state to true
-            callAPI(modelPerplexityFast);
+            await setIsGeneratingPerplexityFast(true); // Set generating state to true
+            await callAPI(modelPerplexityFast);
         }
 
         if (isPerplexity) {
-            setIsGeneratingPerplexity(true); // Set generating state to true
-            callAPI(modelPerplexity);
+            await setIsGeneratingPerplexity(true); // Set generating state to true
+            await callAPI(modelPerplexity);
         }
 
         // **Handle DALL·E 3 Selection**
@@ -465,6 +466,11 @@ const GenAIApp = () => {
 
         const callAPI = async (selectedModel) => {
         console.log('Calling API with model:', selectedModel + ' URL: ' + process.env.REACT_APP_GENAI_API_URL);
+        let inputText = promptInput;
+
+        if (selectedModel === modelPerplexityFast || selectedModel === modelPerplexity) {
+            inputText = inputText +  " focusing on the latest information";
+        }
 
         try {
             const response = await fetch(process.env.REACT_APP_GENAI_API_URL, {
@@ -472,7 +478,7 @@ const GenAIApp = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ prompt: promptInput, model: selectedModel, uid: uid, temperature: temperature, top_p: top_p })
+            body: JSON.stringify({ prompt: inputText, model: selectedModel, uid: uid, temperature: temperature, top_p: top_p })
             });
 
             if (!response.ok) {
@@ -899,6 +905,9 @@ const GenAIApp = () => {
                             isGeneratingMistral ||
                             isGeneratingLlama ||
                             isGeneratingGpt4Turbo ||
+                            isGeminiFast ||
+                            isPerplexityFast ||
+                            isPerplexity ||
                             isGeneratingGpt4oMini ? (
                             <FaSpinner className="spinning" />
                         ) : (
