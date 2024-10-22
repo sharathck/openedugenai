@@ -452,6 +452,7 @@ const GenAIApp = () => {
             const fullTexts = docsSnapshot.docs.map(doc => doc.data().fullText);
             autoPromptInput = promptInput;
             autoPromptInput = autoPromptInput + "    " + fullTexts.join("\n");
+            setPromptInput(autoPromptInput);
         } catch (error) {
             console.error('Error searching prompts:', error);
             alert(`Error: ${error.message}`);
