@@ -436,12 +436,12 @@ const GenAIApp = () => {
 
     const searchPrompts = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_GENAI_API_URL}prompt-search`, {
+            const response = await fetch(`${process.env.REACT_APP_GENAI_API_URL}search`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ q: promptInput, uid: user.uid, limit: autoPromptLimit })
+                body: JSON.stringify({ q: promptInput, uid: user.uid, collection: 'prompts', limit: autoPromptLimit })
             });
 
             if (!response.ok) {
