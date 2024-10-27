@@ -230,7 +230,7 @@ const GenAIApp = () => {
             }
         });
         return () => unsubscribe();
-    }, []);
+    }, [showEditPopup]);
 
     const fetchGenAIParameters = async () => {
         try {
