@@ -49,7 +49,7 @@ const GenAIApp = () => {
     const [isAnthropic, setIsAnthropic] = useState(true);
     const [isGemini, setIsGemini] = useState(false);
     const [isGpto1Mini, setIsGpto1Mini] = useState(false);
-    const [isLlama, setIsLlama] = useState(true);
+    const [isLlama, setIsLlama] = useState(false);
     const [isMistral, setIsMistral] = useState(false);
     const [isGpt4Turbo, setIsGpt4Turbo] = useState(false);
     const [isGeminiFast, setIsGeminiFast] = useState(false);
@@ -276,7 +276,7 @@ const GenAIApp = () => {
     const fetchPrompts = async (userID) => {
         try {
             const genaiCollection = collection(db, 'genai', userID, 'prompts');
-            const q = query(genaiCollection, limit(100), orderBy('modifiedDateTime', 'desc'));
+            const q = query(genaiCollection, limit(1000), orderBy('modifiedDateTime', 'desc'));
             const genaiSnapshot = await getDocs(q);
             const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setGenaiPrompts(genaiList);
@@ -1057,7 +1057,6 @@ const GenAIApp = () => {
                             <br />
                             <textarea
                                 value={editPromptFullText}
-                                style={{ height: '100px', width: '96%' }}
                                 onChange={(e) => setEditPromptFullText(e.target.value)}
                                 className="promptFullTextInput"
                             />

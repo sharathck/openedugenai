@@ -50,7 +50,7 @@
   padding: 2px;
   font-size: 16px;
   height:140px; /* Increase the height */
-  box-shadow: 4px 4px 4px rgba(4, 4, 4, 0.8);
+  box-shadow: 2px 4px 3px rgba(4, 4, 4, 0.8);
   margin-bottom: 8px;
 }
 .promptFullTextInput
@@ -59,7 +59,7 @@
   padding: 2px;
   font-size: 16px;
   height:400px; /* Increase the height */
-  box-shadow: 4px 4px 4px rgba(4, 4, 4, 0.8);
+  box-shadow: 2px 4px 3px rgba(4, 4, 4, 0.8);
   margin-bottom: 8px;
 }
 .promptTag
