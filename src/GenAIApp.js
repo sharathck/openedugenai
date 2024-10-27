@@ -256,7 +256,7 @@ const GenAIApp = () => {
 
             });
         } catch (error) {
-            console.error("Error fetching voice names: ", error);
+            console.error("Error fetching genAI Admin Settings: ", error);
             return [];
         }
     };
@@ -298,7 +298,7 @@ const GenAIApp = () => {
                 setShowo1(data.showo1);
             });
         } catch (error) {
-            console.error("Error fetching voice names: ", error);
+            console.error("Error fetching genAI parameters: ", error);
             return [];
         }
     };
