@@ -606,6 +606,7 @@ const GenAIApp = () => {
             }
             if (!response.ok) {
                 const errorData = await response.json();
+                alert(errorData.error + 'Failed to generate content');
                 throw new Error(errorData.error || 'Failed to generate content.');
             }
             const data = await response.json();
@@ -1028,8 +1029,7 @@ const GenAIApp = () => {
                     <option value="All">All</option>
                     <option value="chatgpt-4o-latest">ChatGPT</option>
                     <option value="gemini-1.5-pro-002">Gemini</option>
-                    <option value="gemini-1.5-pro-exp-0827">gemini-1.5-pro-exp-0827</option>
-                    <option value="claude-3-5-sonnet-20240620">Claude</option>
+                    <option value="claude-3-5-sonnet-latest">Claude</option>
                     <option value="o1-mini">o1-mini</option>
                     <option value="o1-preview">o1</option>
                     <option value="azure-tts">TTS</option>
@@ -1041,6 +1041,7 @@ const GenAIApp = () => {
                     <option value="gemini-flash-fast">GeminiFast</option>
                     <option value="perplexity-fast">PerplexityFast</option>
                     <option value="perplexity">Perplexity</option>
+                    <option value="codestral">CodeStral</option>
                 </select>
                 {showEditPopup && (
                     <div style={{ border: '4px' }}>
