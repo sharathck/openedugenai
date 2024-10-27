@@ -83,18 +83,18 @@ const GenAIApp = () => {
     const [autoPromptLimit, setAutoPromptLimit] = useState(1);
     const [showGpt4Turbo, setShowGpt4Turbo] = useState(true);
     const [showMistral, setShowMistral] = useState(true);
-    const [showLlama, setShowLlama] = useState(true);
-    const [showGpt4oMini, setShowGpt4oMini] = useState(true);
+    const [showLlama, setShowLlama] = useState(false);
+    const [showGpt4oMini, setShowGpt4oMini] = useState(false);
     const [showGeminiFast, setShowGeminiFast] = useState(true);
-    const [showPerplexityFast, setShowPerplexityFast] = useState(true);
+    const [showPerplexityFast, setShowPerplexityFast] = useState(false);
     const [showPerplexity, setShowPerplexity] = useState(true);
     const [showCodeStral, setShowCodeStral] = useState(true);
     const [showGemini, setShowGemini] = useState(true);
     const [showAnthropic, setShowAnthropic] = useState(true);
     const [showOpenAI, setShowOpenAI] = useState(true);
-    const [showo1, setShowo1] = useState(true);
-    const [showImageDallE3, setShowImageDallE3] = useState(true);
-    const [showTTS, setShowTTS] = useState(true);
+    const [showo1, setShowo1] = useState(false);
+    const [showImageDallE3, setShowImageDallE3] = useState(false);
+    const [showTTS, setShowTTS] = useState(false);
     const [showo1Mini, setShowo1Mini] = useState(true);
     const [modelAnthropic, setModelAnthropic] = useState('claude');
     const [modelGemini, setModelGemini] = useState('gemini');
@@ -145,7 +145,7 @@ const GenAIApp = () => {
             let docId = '';
             const currentDateTime = new Date();
             const promptSize = editPromptFullText.length; // Calculate the size of the prompt
-    
+
             if (!user) {
                 console.error("No user is signed in");
                 return;
@@ -180,7 +180,7 @@ const GenAIApp = () => {
             setEditPromptFullText('');
             setShowEditPopup(false);
             return;
-    
+
         } catch (error) {
             console.error("Error saving prompt: ", error);
         }
@@ -221,9 +221,10 @@ const GenAIApp = () => {
                 setUid(currentUser.uid);
                 console.log('User is signed in:', currentUser.uid);
                 // Fetch data for the authenticated user
-                await fetchData(currentUser.uid);
+                fetchData(currentUser.uid);
                 fetchPrompts(currentUser.uid);
-                fetchGenAIParameters();
+                await fetchGenAIParameters();
+                await fetchAdminSettings(currentUser.email);
             }
             else {
                 console.log('No user is signed in');
@@ -231,6 +232,34 @@ const GenAIApp = () => {
         });
         return () => unsubscribe();
     }, [showEditPopup]);
+
+    const fetchAdminSettings = async (userEmail) => {
+        try {
+            console.log('Fetching ADMIN Settings parameters...' + userEmail);
+            const fetchAdminSettingsCollection = collection(db, 'public');
+            const q = query(fetchAdminSettingsCollection, where('setup', '==', 'genaiAdmin'), limit(1));
+            const fetchAdminSettingsSnapshot = await getDocs(q);
+            fetchAdminSettingsSnapshot.forEach(doc => {
+                const data = doc.data();
+                console.log('Data:', data.emailAddresses, data.showTTS, data.showImageDallE3);
+                if (data.emailAddresses.includes(userEmail)) {
+                    console.log('User is admin');
+                    setShowTTS(data.showTTS);
+                    setShowImageDallE3(data.showImageDallE3);
+                    setShowGeminiFast(data.showGeminiFast);
+                    setShowGpt4Turbo(data.showGpt4Turbo);
+                    setShowPerplexityFast(data.showPerplexityFast);
+                    setShowGpt4oMini(data.showGpt4oMini);
+                    setShowLlama(data.showLlama);
+                    setShowo1(data.showo1);
+                }
+
+            });
+        } catch (error) {
+            console.error("Error fetching voice names: ", error);
+            return [];
+        }
+    };
 
     const fetchGenAIParameters = async () => {
         try {
@@ -265,13 +294,14 @@ const GenAIApp = () => {
                 setShowGpt4oMini(data.showGpt4oMini);
                 setShowGeminiFast(data.showGeminiFast);
                 setShowCodeStral(data.showCodeStral);
+                setShowLlama(data.showLlama);
+                setShowo1(data.showo1);
             });
         } catch (error) {
             console.error("Error fetching voice names: ", error);
             return [];
         }
     };
-
     // Fetch prompts from Firestore
     const fetchPrompts = async (userID) => {
         try {
@@ -844,9 +874,11 @@ const GenAIApp = () => {
                     <button className={isGpto1Mini ? 'button_selected' : 'button'} onClick={() => setIsGpto1Mini(!isGpto1Mini)}>
                         <label className={isGeneratingo1Mini ? 'flashing' : ''}>o1-mini</label>
                     </button>
+                    {showLlama && (
                     <button className={isLlama ? 'button_selected' : 'button'} onClick={() => setIsLlama(!isLlama)}>
                         <label className={isGeneratingLlama ? 'flashing' : ''}>Llama</label>
                     </button>
+                    )}
                     <button className={isMistral ? 'button_selected' : 'button'} onClick={() => setIsMistral(!isMistral)}>
                         <label className={isGeneratingMistral ? 'flashing' : ''}>Mistral</label>
                     </button>
@@ -865,23 +897,27 @@ const GenAIApp = () => {
                             <label className={isGeneratingGpt4oMini ? 'flashing' : ''}>Gpt4oMini</label>
                         </button>
                     )}
+                    {showo1 && (
                     <button className={iso1 ? 'button_selected' : 'button'} onClick={() => setIso1(!iso1)}>
                         <label className={isGeneratingo1 ? 'flashing' : ''}>o1</label>
                     </button>
+                    )}
                     {showPerplexityFast && (
                         <button className={isPerplexityFast ? 'button_selected' : 'button'} onClick={() => setIsPerplexityFast(!isPerplexityFast)}>
                             <label className={isGeneratingPerplexityFast ? 'flashing' : ''}>Perplexity-Fast</label>
                         </button>
                     )}
-                    <button className={isPerplexity ? 'button_selected' : 'button'} onClick={() => setIsPerplexity(!isPerplexity)}>
-                        <label className={isGeneratingPerplexity ? 'flashing' : ''}>Plxty</label>
-                    </button>
+                    {showPerplexity && (
+                        <button className={isPerplexity ? 'button_selected' : 'button'} onClick={() => setIsPerplexity(!isPerplexity)}>
+                            <label className={isGeneratingPerplexity ? 'flashing' : ''}>Plxty</label>
+                        </button>
+                    )}
                     {showCodeStral && (
                         <button className={isCodestral ? 'button_selected' : 'button'} onClick={() => setIsCodestral(!isCodestral)}>
                             <label className={isGeneratingCodeStral ? 'flashing' : ''}>CodeStral</label>
                         </button>
                     )}
-                             
+
                     <label style={{ marginLeft: '8px' }}>
                         Temp:
                         <input
@@ -909,9 +945,9 @@ const GenAIApp = () => {
                     {showImageDallE3 && <button className={isImage_Dall_e_3 ? 'button_selected' : 'button'} onClick={() => handleDall_e_3Change(!isImage_Dall_e_3)}>
                         <label className={isGeneratingImage_Dall_e_3 ? 'flashing' : ''}>IMAGE</label>
                     </button>}
-                    <button className={isTTS ? 'button_selected' : 'button'} onClick={() => handleTTSChange(!isTTS)}>
+                    {showTTS && (<button className={isTTS ? 'button_selected' : 'button'} onClick={() => handleTTSChange(!isTTS)}>
                         <label className={isGeneratingTTS ? 'flashing' : ''}>TTS</label>
-                    </button>
+                    </button>)}
                     {isTTS && (
                         <VoiceSelect
                             selectedVoice={voiceName} // Current selected voice
@@ -999,7 +1035,7 @@ const GenAIApp = () => {
                 <label>
                     Limit:
                     <input
-                    className="limitInput"
+                        className="limitInput"
                         type="number"
                         onBlur={(event) => handleLimitChange(event)}
                         onKeyDown={(event) => (event.key === "Enter" || event.key === "Tab") && handleLimitChange(event)}
@@ -1021,7 +1057,7 @@ const GenAIApp = () => {
                 />
 
                 <select
-                className="modelInput"
+                    className="modelInput"
                     value={searchModel}
                     onChange={(e) => handleModelChange(e.target.value)}
                     style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
