@@ -143,6 +143,9 @@ const GenAIApp = () => {
         try {
             const user = auth.currentUser;
             let docId = '';
+            const currentDateTime = new Date();
+            const promptSize = editPromptFullText.length; // Calculate the size of the prompt
+    
             if (!user) {
                 console.error("No user is signed in");
                 return;
@@ -152,11 +155,13 @@ const GenAIApp = () => {
                 console.log('Adding new prompt');
                 const newDocRef = await addDoc(genaiCollection, {
                     tag: editPromptTag,
-                    fullText: editPromptFullText
+                    fullText: editPromptFullText,
+                    createdDateTime: currentDateTime,
+                    modifiedDateTime: currentDateTime,
+                    size: promptSize
                 });
                 docId = newDocRef.id;
-            }
-            else {
+            } else {
                 console.log('Updating prompt');
                 const q = query(genaiCollection, where('tag', '==', selectedPrompt), limit(1));
                 const genaiSnapshot = await getDocs(q);
@@ -164,7 +169,9 @@ const GenAIApp = () => {
                 const docRef = doc(db, 'genai', user.uid, 'prompts', genaiList[0].id);
                 await updateDoc(docRef, {
                     tag: editPromptTag,
-                    fullText: editPromptFullText
+                    fullText: editPromptFullText,
+                    modifiedDateTime: currentDateTime,
+                    size: promptSize
                 });
                 docId = docRef.id;
             }
@@ -173,12 +180,11 @@ const GenAIApp = () => {
             setEditPromptFullText('');
             setShowEditPopup(false);
             return;
-
+    
         } catch (error) {
             console.error("Error saving prompt: ", error);
         }
     };
-
 
     // Helper function to get URL parameters
     const getUrlParameter = (name) => {
@@ -270,7 +276,7 @@ const GenAIApp = () => {
     const fetchPrompts = async (userID) => {
         try {
             const genaiCollection = collection(db, 'genai', userID, 'prompts');
-            const q = query(genaiCollection, limit(100), orderBy('tag', 'asc'));
+            const q = query(genaiCollection, limit(100), orderBy('modifiedDateTime', 'desc'));
             const genaiSnapshot = await getDocs(q);
             const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setGenaiPrompts(genaiList);
@@ -1046,14 +1052,14 @@ const GenAIApp = () => {
                                 type="text"
                                 value={editPromptTag}
                                 onChange={(e) => setEditPromptTag(e.target.value)}
-                                className="popup-input"
+                                className="promptTag"
                             />
                             <br />
                             <textarea
                                 value={editPromptFullText}
                                 style={{ height: '100px', width: '96%' }}
                                 onChange={(e) => setEditPromptFullText(e.target.value)}
-                                className="popup-textarea"
+                                className="promptFullTextInput"
                             />
                             <div>
                                 <button onClick={handleSavePrompt} className="signinbutton">Save</button>
