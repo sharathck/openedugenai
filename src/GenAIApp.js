@@ -45,10 +45,10 @@ const GenAIApp = () => {
     const [isGeneratingImage_Dall_e_3, setIsGeneratingImage_Dall_e_3] = useState(false);
     const [isGpt4oMini, setIsGpt4oMini] = useState(false);
     const [isGeneratingGpt4oMini, setIsGeneratingGpt4oMini] = useState(false);
-    const [isOpenAI, setIsOpenAI] = useState(true);
+    const [isOpenAI, setIsOpenAI] = useState(false);
     const [isAnthropic, setIsAnthropic] = useState(true);
-    const [isGemini, setIsGemini] = useState(false);
-    const [isGpto1Mini, setIsGpto1Mini] = useState(false);
+    const [isGemini, setIsGemini] = useState(true);
+    const [isGpto1Mini, setIsGpto1Mini] = useState(true);
     const [isLlama, setIsLlama] = useState(false);
     const [isMistral, setIsMistral] = useState(false);
     const [isGpt4Turbo, setIsGpt4Turbo] = useState(false);
@@ -61,7 +61,7 @@ const GenAIApp = () => {
     const [isTTS, setIsTTS] = useState(false);
     const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
     const [iso1, setIso1] = useState(false); // New state for o1
-    const [isGeneratingo1, setIsGeneratingo1] = useState(false); // New state for generating o1
+    const [isGeneratingo1, setIsGeneratingo1] = useState(false); 
     const [isGeneratingMistral, setIsGeneratingMistral] = useState(false);
     const [isGeneratingLlama, setIsGeneratingLlama] = useState(false);
     const [isGeneratingGpt4Turbo, setIsGeneratingGpt4Turbo] = useState(false);
