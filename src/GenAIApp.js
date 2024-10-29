@@ -14,6 +14,10 @@ import VoiceSelect from './VoiceSelect';
 import { TbEmpathize } from "react-icons/tb";
 import { MdSettingsInputComponent } from "react-icons/md";
 import { FaK } from "react-icons/fa6";
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+// import style manually
+import 'react-markdown-editor-lite/lib/index.css';
 
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
@@ -111,6 +115,7 @@ const GenAIApp = () => {
     const [modelPerplexity, setModelPerplexity] = useState('perplexity');
     const [modelCodestralApi, setModelCodestralApi] = useState('mistral-codestral-api'); // New state
     const [autoPrompt, setAutoPrompt] = useState(true);
+    const mdParser = new MarkdownIt(/* Markdown-it options */);
 
     const embedPrompt = async (docId) => {
         try {
@@ -1097,11 +1102,13 @@ const GenAIApp = () => {
                                 className="promptTag"
                             />
                             <br />
-                            <textarea
-                                value={editPromptFullText}
-                                onChange={(e) => setEditPromptFullText(e.target.value)}
-                                className="promptFullTextInput"
-                            />
+                        <MdEditor
+                            style={{ height: '400px', fontSize: '2rem' }}
+                            value={editPromptFullText}
+                            renderHTML={editPromptFullText => mdParser.render(editPromptFullText)}
+                            onChange={({ text }) => setEditPromptFullText(text)}
+                            config={{ view: { menu: true, md: false, html: true } }} 
+                        />
                             <div>
                                 <button onClick={handleSavePrompt} className="signinbutton">Save</button>
                                 <button onClick={() => setShowEditPopup(false)} className="signoutbutton">Cancel</button>
