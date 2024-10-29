@@ -65,7 +65,7 @@ const GenAIApp = () => {
     const [isTTS, setIsTTS] = useState(false);
     const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
     const [iso1, setIso1] = useState(false); // New state for o1
-    const [isGeneratingo1, setIsGeneratingo1] = useState(false); 
+    const [isGeneratingo1, setIsGeneratingo1] = useState(false);
     const [isGeneratingMistral, setIsGeneratingMistral] = useState(false);
     const [isGeneratingLlama, setIsGeneratingLlama] = useState(false);
     const [isGeneratingGpt4Turbo, setIsGeneratingGpt4Turbo] = useState(false);
@@ -224,6 +224,7 @@ const GenAIApp = () => {
                     setGenAIParameter(true);
                 }
                 setUid(currentUser.uid);
+                setEmail(currentUser.email);
                 console.log('User is signed in:', currentUser.uid);
                 // Fetch data for the authenticated user
                 fetchData(currentUser.uid);
@@ -864,6 +865,9 @@ const GenAIApp = () => {
         <div>
             <div>
                 <div>
+                    {email == 'erpgenai@gmail.com' &&
+                        (<h3>This site is created by Sharath K for Demo purpose only.</h3>)
+                    }
                     <textarea
                         className="promptInput"
                         value={promptInput}
@@ -885,9 +889,9 @@ const GenAIApp = () => {
                         <label className={isGeneratingo1Mini ? 'flashing' : ''}>o1-mini</label>
                     </button>
                     {showLlama && (
-                    <button className={isLlama ? 'button_selected' : 'button'} onClick={() => setIsLlama(!isLlama)}>
-                        <label className={isGeneratingLlama ? 'flashing' : ''}>Llama</label>
-                    </button>
+                        <button className={isLlama ? 'button_selected' : 'button'} onClick={() => setIsLlama(!isLlama)}>
+                            <label className={isGeneratingLlama ? 'flashing' : ''}>Llama</label>
+                        </button>
                     )}
                     <button className={isMistral ? 'button_selected' : 'button'} onClick={() => setIsMistral(!isMistral)}>
                         <label className={isGeneratingMistral ? 'flashing' : ''}>Mistral</label>
@@ -908,9 +912,9 @@ const GenAIApp = () => {
                         </button>
                     )}
                     {showo1 && (
-                    <button className={iso1 ? 'button_selected' : 'button'} onClick={() => setIso1(!iso1)}>
-                        <label className={isGeneratingo1 ? 'flashing' : ''}>o1</label>
-                    </button>
+                        <button className={iso1 ? 'button_selected' : 'button'} onClick={() => setIso1(!iso1)}>
+                            <label className={isGeneratingo1 ? 'flashing' : ''}>o1</label>
+                        </button>
                     )}
                     {showPerplexityFast && (
                         <button className={isPerplexityFast ? 'button_selected' : 'button'} onClick={() => setIsPerplexityFast(!isPerplexityFast)}>
@@ -1102,13 +1106,13 @@ const GenAIApp = () => {
                                 className="promptTag"
                             />
                             <br />
-                        <MdEditor
-                            style={{ height: '400px', fontSize: '2rem' }}
-                            value={editPromptFullText}
-                            renderHTML={editPromptFullText => mdParser.render(editPromptFullText)}
-                            onChange={({ text }) => setEditPromptFullText(text)}
-                            config={{ view: { menu: true, md: false, html: true } }} 
-                        />
+                            <MdEditor
+                                style={{ height: '400px', fontSize: '2rem' }}
+                                value={editPromptFullText}
+                                renderHTML={editPromptFullText => mdParser.render(editPromptFullText)}
+                                onChange={({ text }) => setEditPromptFullText(text)}
+                                config={{ view: { menu: true, md: false, html: true } }}
+                            />
                             <div>
                                 <button onClick={handleSavePrompt} className="signinbutton">Save</button>
                                 <button onClick={() => setShowEditPopup(false)} className="signoutbutton">Cancel</button>
