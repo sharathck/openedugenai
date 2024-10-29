@@ -110,7 +110,7 @@ const GenAIApp = () => {
     const [modelPerplexityFast, setModelPerplexityFast] = useState('perplexity-fast');
     const [modelPerplexity, setModelPerplexity] = useState('perplexity');
     const [modelCodestralApi, setModelCodestralApi] = useState('mistral-codestral-api'); // New state
-    const [autoPrompt, setAutoPrompt] = useState(false);
+    const [autoPrompt, setAutoPrompt] = useState(true);
 
     const embedPrompt = async (docId) => {
         try {
@@ -256,6 +256,7 @@ const GenAIApp = () => {
                     setTop_p(data.top_p);
                     setAutoPromptLimit(data.autoPromptLimit);
                     dataLimit = data.dataLimit;
+                    setAutoPrompt(data.autoPrompt);
                 }
 
             });
