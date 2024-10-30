@@ -117,6 +117,9 @@ const GenAIApp = () => {
     const [autoPrompt, setAutoPrompt] = useState(true);
     const mdParser = new MarkdownIt(/* Markdown-it options */);
 
+    // Add new state
+    const [selectedReaction, setSelectedReaction] = useState(null);
+
     const embedPrompt = async (docId) => {
         try {
             console.log('Embedding prompt:', docId);
@@ -861,6 +864,28 @@ const GenAIApp = () => {
         );
     }
 
+    // Update saveReaction function to include docId
+    const saveReaction = async (docId, reaction) => {
+        try {
+            const docRef = doc(db, 'genai', uid, 'MyGenAI', docId);
+            await updateDoc(docRef, {
+                reaction: reaction,
+                updatedAt: new Date()
+            });
+
+            // Update local state to reflect the change
+            const updatedData = genaiData.map(item => {
+                if (item.id === docId) {
+                    return { ...item, reaction: reaction };
+                }
+                return item;
+            });
+            setGenaiData(updatedData);
+        } catch (error) {
+            console.error('Error saving reaction:', error);
+        }
+    };
+
     return (
         <div>
             <div className={`main-content ${showEditPopup ? 'dimmed' : ''}`}>
@@ -1181,10 +1206,38 @@ const GenAIApp = () => {
                                     <div style={{ fontSize: '16px' }}>
                                         {item.showRawAnswer ? item.answer : <ReactMarkdown>{item.answer}</ReactMarkdown>}
                                     </div>
+
+                                <br />
+                                <br />
+                                {/* Add reaction buttons JSX */}
+                                <div className="reaction-buttons">
+                                    <button 
+                                        className={`reaction-btn ${item.reaction === 'love' ? 'active' : ''}`}
+                                        onClick={() => saveReaction(item.id, 'love')}
+                                    >
+                                         🌟 Extremely Helpful
+                                    </button>
+                                    <button 
+                                        className={`reaction-btn ${item.reaction === 'like' ? 'active' : ''}`}
+                                        onClick={() => saveReaction(item.id, 'like')}
+                                    >
+                                        👍 Helpful
+                                    </button>
+                                    <button 
+                                        className={`reaction-btn ${item.reaction === 'okay' ? 'active' : ''}`}
+                                        onClick={() => saveReaction(item.id, 'okay')}
+                                    >
+                                        😐 Not Bad
+                                    </button>
+                                    <button 
+                                        className={`reaction-btn ${item.reaction === 'improve' ? 'active' : ''}`}
+                                        onClick={() => saveReaction(item.id, 'improve')}
+                                    >
+                                        🤔 Could Be Better
+                                    </button>
                                 </div>
-                                <br />
-                                <br />
-                            </div>
+                                </div>
+                                                            </div>
                         ))}
                         <button className="fetchButton" onClick={fetchMoreData} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px' }}>
                             Show more information
