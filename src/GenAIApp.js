@@ -863,7 +863,7 @@ const GenAIApp = () => {
 
     return (
         <div>
-            <div>
+            <div className={`main-content ${showEditPopup ? 'dimmed' : ''}`}>
                 <div>
                     {email == 'erpgenai@gmail.com' &&
                         (<h3>This site is created by Sharath K for Demo purpose only.</h3>)
@@ -1094,8 +1094,8 @@ const GenAIApp = () => {
                     <option value="codestral">CodeStral</option>
                 </select>
                 {showEditPopup && (
-                    <div style={{ border: '4px' }}>
-                        <div className="popup-inner">
+                    <div className="modal-overlay">
+                        <div className="modal-content">
                             <br />
                             <h3>Add/Edit Prompt</h3>
                             <label>Tag:</label>
@@ -1107,7 +1107,7 @@ const GenAIApp = () => {
                             />
                             <br />
                             <MdEditor
-                                style={{ height: '400px', fontSize: '2rem' }}
+                                style={{ height: '500px', fontSize: '2rem' }}
                                 value={editPromptFullText}
                                 renderHTML={editPromptFullText => mdParser.render(editPromptFullText)}
                                 onChange={({ text }) => setEditPromptFullText(text)}
@@ -1192,7 +1192,7 @@ const GenAIApp = () => {
                     </div>}
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 
