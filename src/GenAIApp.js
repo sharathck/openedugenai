@@ -993,11 +993,11 @@ const GenAIApp = () => {
                         </button>
                     )}
                     <button className={autoPrompt ? 'button_selected' : 'button'} onClick={() => setAutoPrompt(!autoPrompt)}>
-                        AutoAI
+                        AutoPrompt
                     </button>
                     <button
                         onClick={handleGenerate}
-                        className="signonpagebutton"
+                        className="generateButton"
                         style={{ marginLeft: '16px', padding: '9px 9px', fontSize: '16px' }}
                         disabled={
                             isGenerating ||
