@@ -1155,12 +1155,12 @@ const GenAIApp = () => {
           )}*/}
 
                 {/* **Existing Data Display** */}
-                <div className="outputFormat">
+                <div>
                     {isLoading && <p> Loading Data...</p>}
                     {!isLoading && <div>
                         {genaiData.map((item) => (
-                            <div key={item.createdDateTime}>
-                                <div style={{ border: "1px dotted black", padding: "2px", backgroundColor: "#e4ede8" }}>
+                            <div className="outputDetailsFormat" key={item.createdDateTime}>
+                                <div className="responseFormat">
                                     <h4 style={{ color: "brown" }}>
                                         <span style={{ color: "#a3780a", fontWeight: "bold" }}> Prompt </span>
                                         @ <span style={{ color: "black", fontSize: "16px" }}>{new Date(item.createdDateTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</span>
