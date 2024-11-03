@@ -508,6 +508,8 @@ const GenAIApp = () => {
             const docsQuery = query(genaiCollection, where('__name__', 'in', docIds));
             const docsSnapshot = await getDocs(docsQuery);
             const fullTexts = docsSnapshot.docs.map(doc => doc.data().fullText);
+            const promptTag = docsSnapshot.docs.map(doc => doc.data().tag);
+            setSelectedPrompt(promptTag);
             autoPromptInput = promptInput;
             autoPromptInput = autoPromptInput + "\n" + autoPromptSeparator + "\n" + fullTexts.join("\n");
         } catch (error) {
@@ -1074,6 +1076,11 @@ const GenAIApp = () => {
                         </button>
                     ) : (
                         <button className='signoutbutton' onClick={handleSignOut}><FaSignOutAlt /> </button>
+                    )}
+                    {autoPrompt && selectedPrompt && (
+                        <div style={{ marginTop: '10px', fontSize: '16px' }}>
+                            Source document(s): <strong>{selectedPrompt}</strong>
+                        </div>
                     )}
                 </div>
                 <label>
