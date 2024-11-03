@@ -31,7 +31,7 @@ let promptSuggestion = 'NA';
 let autoPromptInput = '';
 let fullPromptInput = '';
 let autoPromptSeparator = '### all the text from below is strictly for reference and prompt purpose to answer the question asked above this line. ######### '
-let questionTrimLength = 80;
+let questionTrimLength = 200;
 let appendPrompt = ' ';
 
 const GenAIApp = () => {
@@ -209,8 +209,13 @@ const GenAIApp = () => {
 
     // Helper function to truncate questions based on limit
     const getQuestionSubstring = (question) => {
-        if (questionLimit) {
-            return question.substring(0, parseInt(questionLimit));
+        const marker = '###';
+        const markerIndex = question.indexOf(marker);
+        console.log('Marker Index:', markerIndex);
+        console.log('questionTrimLength:', questionTrimLength);
+        console.log ('Question:', question.substring(0,Math.min(markerIndex, questionTrimLength)));
+        if (markerIndex !== -1) {
+            return question.substring(0, Math.min(markerIndex, questionTrimLength));
         }
         return question;
     };
@@ -1216,7 +1221,7 @@ const GenAIApp = () => {
                                         </button>
                                     </h4>
                                     <div style={{ fontSize: '16px' }}>
-                                        {item.showRawQuestion ? item.question : (showFullQuestion[item.id] ? <ReactMarkdown>{item.question}</ReactMarkdown> : <ReactMarkdown>{item.question.substring(0, questionTrimLength)}</ReactMarkdown>)}
+                                        {item.showRawQuestion ? item.question : (showFullQuestion[item.id] ? <ReactMarkdown>{item.question}</ReactMarkdown> : <ReactMarkdown>{getQuestionSubstring(item.question)}</ReactMarkdown>)}
                                     </div>
                                     <button onClick={() => {
                                         setShowFullQuestion(prev => ({
