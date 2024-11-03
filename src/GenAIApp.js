@@ -119,6 +119,7 @@ const GenAIApp = () => {
     const [modelPerplexity, setModelPerplexity] = useState('perplexity');
     const [modelCodestralApi, setModelCodestralApi] = useState('mistral-codestral-api'); // New state
     const [autoPrompt, setAutoPrompt] = useState(true);
+    const [showSaveButton, setShowSaveButton] = useState(false);
     const mdParser = new MarkdownIt(/* Markdown-it options */);
 
     const embedPrompt = async (docId) => {
@@ -508,7 +509,11 @@ const GenAIApp = () => {
             const docsQuery = query(genaiCollection, where('__name__', 'in', docIds));
             const docsSnapshot = await getDocs(docsQuery);
             const fullTexts = docsSnapshot.docs.map(doc => doc.data().fullText);
+            setEditPromptFullText(fullTexts.join("\n"));
             const promptTag = docsSnapshot.docs.map(doc => doc.data().tag);
+            setEditPromptTag(promptTag);
+            console.log('Edit Prompt:', editPromptTag);
+            console.log('Select Prompt Tag:', fullTexts);
             setSelectedPrompt(promptTag);
             autoPromptInput = promptInput;
             autoPromptInput = autoPromptInput + "\n" + autoPromptSeparator + "\n" + fullTexts.join("\n");
@@ -802,8 +807,16 @@ const GenAIApp = () => {
     const handleEditPrompt = () => {
         setShowEditPopup(true);
         if (selectedPrompt) {
+            setShowSaveButton(true);
             setEditPromptTag(selectedPrompt);
             setEditPromptFullText(selectedPromptFullText);
+        }
+    };
+
+    const handleEditSource = async () => {
+        if (selectedPrompt) {
+            setShowSaveButton(false);
+            setShowEditPopup(true);
         }
     };
 
@@ -1079,7 +1092,16 @@ const GenAIApp = () => {
                     )}
                     {autoPrompt && selectedPrompt && (
                         <div style={{ marginTop: '10px', fontSize: '16px' }}>
-                            Source document(s): <strong>{selectedPrompt}</strong>
+                            Source document(s): <button 
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleEditSource();
+                            }}
+                            className="sourceDocumentButton"
+                        >
+                        {selectedPrompt}
+                    
+                    </button>
                         </div>
                     )}
                 </div>
@@ -1151,7 +1173,7 @@ const GenAIApp = () => {
                                 config={{ view: { menu: true, md: false, html: true } }}
                             />
                             <div>
-                                <button onClick={handleSavePrompt} className="signinbutton">Save</button>
+                                {showSaveButton && (<button onClick={handleSavePrompt} className="signinbutton">Save</button>)}
                                 <button onClick={() => setShowEditPopup(false)} className="signoutbutton">Cancel</button>
                             </div>
                             <br />
