@@ -921,18 +921,31 @@ const GenAIApp = () => {
                     />
                 </div>
                 <div style={{ marginBottom: '20px' }}>
-                    <button className={isOpenAI ? 'button_selected' : 'button'} onClick={() => setIsOpenAI(!isOpenAI)}>
-                        <label className={isGenerating ? 'flashing' : ''}>ChatGPT</label>
-                    </button>
-                    <button className={isAnthropic ? 'button_selected' : 'button'} onClick={() => setIsAnthropic(!isAnthropic)}>
-                        <label className={isGeneratingAnthropic ? 'flashing' : ''}>Claude</label>
-                    </button>
-                    <button className={isGemini ? 'button_selected' : 'button'} onClick={() => setIsGemini(!isGemini)}>
-                        <label className={isGeneratingGemini ? 'flashing' : ''}>Gemini</label>
-                    </button>
-                    <button className={isGpto1Mini ? 'button_selected' : 'button'} onClick={() => setIsGpto1Mini(!isGpto1Mini)}>
-                        <label className={isGeneratingo1Mini ? 'flashing' : ''}>o1-mini</label>
-                    </button>
+                    {showOpenAI && (
+                        <button className={isOpenAI ? 'button_selected' : 'button'} onClick={() => setIsOpenAI(!isOpenAI)}>
+                            <label className={isGenerating ? 'flashing' : ''}>ChatGPT</label>
+                        </button>
+                    )}
+                    {showAnthropic && (
+                        <button className={isAnthropic ? 'button_selected' : 'button'} onClick={() => setIsAnthropic(!isAnthropic)}>
+                            <label className={isGeneratingAnthropic ? 'flashing' : ''}>Claude</label>
+                        </button>
+                    )}
+                    {showGemini && (
+                        <button className={isGemini ? 'button_selected' : 'button'} onClick={() => setIsGemini(!isGemini)}>
+                            <label className={isGeneratingGemini ? 'flashing' : ''}>Gemini</label>
+                        </button>
+                    )}
+                    {showMistral && (
+                        <button className={isMistral ? 'button_selected' : 'button'} onClick={() => setIsMistral(!isMistral)}>
+                            <label className={isGeneratingMistral ? 'flashing' : ''}>Mistral</label>
+                        </button>
+                    )}
+                    {showo1Mini && (
+                        <button className={isGpto1Mini ? 'button_selected' : 'button'} onClick={() => setIsGpto1Mini(!isGpto1Mini)}>
+                            <label className={isGeneratingo1Mini ? 'flashing' : ''}>o1-mini</label>
+                        </button>
+                    )}
                     {showLlama && (
                         <button className={isLlama ? 'button_selected' : 'button'} onClick={() => setIsLlama(!isLlama)}>
                             <label className={isGeneratingLlama ? 'flashing' : ''}>Llama</label>
