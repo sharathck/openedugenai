@@ -951,9 +951,6 @@ const GenAIApp = () => {
                             <label className={isGeneratingLlama ? 'flashing' : ''}>Llama</label>
                         </button>
                     )}
-                    <button className={isMistral ? 'button_selected' : 'button'} onClick={() => setIsMistral(!isMistral)}>
-                        <label className={isGeneratingMistral ? 'flashing' : ''}>Mistral</label>
-                    </button>
                     {showGpt4Turbo && (
                         <button className={isGpt4Turbo ? 'button_selected' : 'button'} onClick={() => setIsGpt4Turbo(!isGpt4Turbo)}>
                             <label className={isGeneratingGpt4Turbo ? 'flashing' : ''}>Gpt4Turbo</label>
