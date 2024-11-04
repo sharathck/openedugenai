@@ -123,6 +123,13 @@ const GenAIApp = () => {
     const [showSourceDocument, setShowSourceDocument] = useState(false);
     const mdParser = new MarkdownIt(/* Markdown-it options */);
 
+    // Add new state variables for Claude-Haiku
+    const [isClaudeHaiku, setIsClaudeHaiku] = useState(false);
+    const [isGeneratingClaudeHaiku, setIsGeneratingClaudeHaiku] = useState(false);
+
+    // Add showClaudeHaiku state variable
+    const [showClaudeHaiku, setShowClaudeHaiku] = useState(true); // Set to true or false as needed
+
     const embedPrompt = async (docId) => {
         try {
             console.log('Embedding prompt:', docId);
@@ -325,6 +332,7 @@ const GenAIApp = () => {
                 if (data.questionTrimLength > 0) {
                     questionTrimLength = data.questionTrimLength;
                 }
+                setShowClaudeHaiku(data.showClaudeHaiku);
             });
         } catch (error) {
             console.error("Error fetching genAI parameters: ", error);
@@ -542,7 +550,7 @@ const GenAIApp = () => {
         }
 
         // Check if at least one model is selected
-        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiFast && !isPerplexityFast && !isPerplexity && !isCodestral) {
+        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiFast && !isPerplexityFast && !isPerplexity && !isCodestral && !isClaudeHaiku) {
             alert('Please select at least one model.');
             return;
         }
@@ -637,6 +645,11 @@ const GenAIApp = () => {
                 callTTSAPI(promptInput, 'https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18');
             }
         }
+
+        if (isClaudeHaiku) {
+            setIsGeneratingClaudeHaiku(true); // Set generating state to true
+            callAPI('Claude-Haiku');
+        }
     };
 
     const callAPI = async (selectedModel) => {
@@ -725,6 +738,9 @@ const GenAIApp = () => {
             }
             if (selectedModel === modelCodestralApi) {
                 setIsGeneratingCodeStral(false);
+            }
+            if (selectedModel === 'Claude-Haiku') {
+                setIsGeneratingClaudeHaiku(false);
             }
 
         }
@@ -984,7 +1000,11 @@ const GenAIApp = () => {
                             <label className={isGeneratingCodeStral ? 'flashing' : ''}>CodeStral</label>
                         </button>
                     )}
-
+                    {showClaudeHaiku && (
+                        <button className={isClaudeHaiku ? 'button_selected' : 'button'} onClick={() => setIsClaudeHaiku(!isClaudeHaiku)}>
+                            <label className={isGeneratingClaudeHaiku ? 'flashing' : ''}>Claude-Haiku</label>
+                        </button>
+                    )}
                     <label style={{ marginLeft: '8px' }}>
                         Temp:
                         <input
@@ -1066,8 +1086,9 @@ const GenAIApp = () => {
                             isGeneratingGeminiFast ||
                             isGeneratingPerplexity ||
                             isGeneratingPerplexityFast ||
+                            isGeneratingCodeStral ||
                             isGeneratingGpt4oMini ||
-                            isGeneratingCodeStral
+                            isGeneratingClaudeHaiku
                         }
                     >
                         {isGenerating ||
@@ -1084,7 +1105,8 @@ const GenAIApp = () => {
                             isGeneratingPerplexity ||
                             isGeneratingPerplexityFast ||
                             isGeneratingCodeStral ||
-                            isGeneratingGpt4oMini ? (
+                            isGeneratingGpt4oMini ||
+                            isGeneratingClaudeHaiku ? (
                             <FaSpinner className="spinning" />
                         ) : (
                             'GenAI'
@@ -1159,6 +1181,7 @@ const GenAIApp = () => {
                     <option value="perplexity-fast">PerplexityFast</option>
                     <option value="perplexity">Perplexity</option>
                     <option value="codestral">CodeStral</option>
+                    <option value="Claude-Haiku">Claude-Haiku</option>
                 </select>
                 {showEditPopup && (
                     <div className="modal-overlay">
