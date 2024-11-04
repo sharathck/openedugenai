@@ -90,7 +90,7 @@ const GenAIApp = () => {
     const [top_p, setTop_p] = useState(0.8);
     const [autoPromptLimit, setAutoPromptLimit] = useState(1);
     const [showGpt4Turbo, setShowGpt4Turbo] = useState(true);
-    const [showMistral, setShowMistral] = useState(true);
+    const [showMistral, setShowMistral] = useState(false);
     const [showLlama, setShowLlama] = useState(false);
     const [showGpt4oMini, setShowGpt4oMini] = useState(false);
     const [showGeminiFast, setShowGeminiFast] = useState(true);
@@ -247,8 +247,7 @@ const GenAIApp = () => {
                 // Fetch data for the authenticated user
                 fetchData(currentUser.uid);
                 fetchPrompts(currentUser.uid);
-                await fetchGenAIParameters();
-                await fetchAdminSettings(currentUser.email);
+                await fetchGenAIParameters(currentUser.uid);
             }
             else {
                 console.log('No user is signed in');
@@ -257,82 +256,59 @@ const GenAIApp = () => {
         return () => unsubscribe();
     }, [showEditPopup]);
 
-    const fetchAdminSettings = async (userEmail) => {
-        try {
-            console.log('Fetching ADMIN Settings parameters...' + userEmail);
-            const fetchAdminSettingsCollection = collection(db, 'public');
-            const q = query(fetchAdminSettingsCollection, where('setup', '==', 'genaiAdmin'), limit(1));
-            const fetchAdminSettingsSnapshot = await getDocs(q);
-            fetchAdminSettingsSnapshot.forEach(doc => {
-                const data = doc.data();
-                console.log('Data:', data.emailAddresses, data.showTTS, data.showImageDallE3);
-                if (data.emailAddresses.includes(userEmail)) {
-                    console.log('User is admin');
-                    setShowTTS(data.showTTS);
-                    setShowImageDallE3(data.showImageDallE3);
-                    setShowGeminiFast(data.showGeminiFast);
-                    setShowGpt4Turbo(data.showGpt4Turbo);
-                    setShowPerplexityFast(data.showPerplexityFast);
-                    setShowGpt4oMini(data.showGpt4oMini);
-                    setShowLlama(data.showLlama);
-                    setShowo1(data.showo1);
-                    setTemperature(data.temperature);
-                    setTop_p(data.top_p);
-                    setAutoPromptLimit(data.autoPromptLimit);
-                    dataLimit = data.dataLimit;
-                    setAutoPrompt(data.autoPrompt);
-                }
-
-            });
-        } catch (error) {
-            console.error("Error fetching genAI Admin Settings: ", error);
-            return [];
-        }
-    };
-
-    const fetchGenAIParameters = async () => {
+    const fetchGenAIParameters = async (firebaseUserID) => {
         try {
             console.log('Fetching genai parameters...');
-            const voiceNamesCollection = collection(db, 'public');
-            const q = query(voiceNamesCollection, where('setup', '==', 'genai'));
+            const configurationCollection = collection(db, 'genai', firebaseUserID, 'configuration');
+            const q = query(configurationCollection, where('setup', '==', 'genai'));
             const voiceNamesSnapshot = await getDocs(q);
             voiceNamesSnapshot.forEach(doc => {
                 const data = doc.data();
                 console.log('Data:', data.temperature, data.top_p);
-                setTemperature(data.temperature);
-                setTop_p(data.top_p);
-                setAutoPrompt(data.autoPrompt);
-                setAutoPromptLimit(data.autoPromptLimit);
-                dataLimit = data.dataLimit;
-                setIsAnthropic(data.isAnthropic);
-                setIsGemini(data.isGemini);
-                setIsOpenAI(data.isOpenAI);
-                setIsGpto1Mini(data.isGpto1Mini);
-                setIso1(data.iso1);
-                setIsImage_Dall_e_3(data.isImage_Dall_e_3);
-                setIsTTS(data.isTTS);
-                setIsLlama(data.isLlama);
-                setIsMistral(data.isMistral);
-                setIsGpt4Turbo(data.isGpt4Turbo);
-                setIsGpt4oMini(data.isGpt4oMini);
-                setIsGeminiFast(data.isGeminiFast);
-                setIsPerplexityFast(data.isPerplexityFast);
-                setIsPerplexity(data.isPerplexity);
-                setIsCodestral(data.isCodestral);
-                setShowGpt4Turbo(data.showGpt4Turbo);
-                setShowPerplexityFast(data.showPerplexityFast);
-                setShowGpt4oMini(data.showGpt4oMini);
-                setShowGeminiFast(data.showGeminiFast);
-                setShowCodeStral(data.showCodeStral);
-                setShowLlama(data.showLlama);
-                setShowo1(data.showo1);
-                if (data.autoPromptSeparator.length > 9) {
+                if (data.temperature !== undefined) setTemperature(data.temperature);
+                if (data.top_p !== undefined) setTop_p(data.top_p);
+                if (data.autoPrompt !== undefined) setAutoPrompt(data.autoPrompt);
+                if (data.autoPromptLimit !== undefined) setAutoPromptLimit(data.autoPromptLimit);
+                if (data.dataLimit !== undefined) dataLimit = data.dataLimit;
+                if (data.isAnthropic !== undefined) setIsAnthropic(data.isAnthropic);
+                if (data.isGemini !== undefined) setIsGemini(data.isGemini);
+                if (data.isOpenAI !== undefined) setIsOpenAI(data.isOpenAI);
+                if (data.isGpto1Mini !== undefined) setIsGpto1Mini(data.isGpto1Mini);
+                if (data.iso1 !== undefined) setIso1(data.iso1);
+                if (data.isImage_Dall_e_3 !== undefined) setIsImage_Dall_e_3(data.isImage_Dall_e_3);
+                if (data.isTTS !== undefined) setIsTTS(data.isTTS);
+                if (data.isLlama !== undefined) setIsLlama(data.isLlama);
+                if (data.isMistral !== undefined) setIsMistral(data.isMistral);
+                if (data.isGpt4Turbo !== undefined) setIsGpt4Turbo(data.isGpt4Turbo);
+                if (data.isGpt4oMini !== undefined) setIsGpt4oMini(data.isGpt4oMini);
+                if (data.isGeminiFast !== undefined) setIsGeminiFast(data.isGeminiFast);
+                if (data.isPerplexityFast !== undefined) setIsPerplexityFast(data.isPerplexityFast);
+                if (data.isPerplexity !== undefined) setIsPerplexity(data.isPerplexity);
+                if (data.isCodestral !== undefined) setIsCodestral(data.isCodestral);
+                if (data.isClaudeHaiku !== undefined) setIsClaudeHaiku(data.isClaudeHaiku);
+                if (data.showAnthropic !== undefined) setShowAnthropic(data.showAnthropic);
+                if (data.showGemini !== undefined) setShowGemini(data.showGemini);
+                if (data.showOpenAI !== undefined) setShowOpenAI(data.showOpenAI);
+                if (data.showGpt4Turbo !== undefined) setShowGpt4Turbo(data.showGpt4Turbo);
+                if (data.showMistral !== undefined) setShowMistral(data.showMistral);
+                if (data.showPerplexityFast !== undefined) setShowPerplexityFast(data.showPerplexityFast);
+                if (data.showGpt4oMini !== undefined) setShowGpt4oMini(data.showGpt4oMini);
+                if (data.showGeminiFast !== undefined) setShowGeminiFast(data.showGeminiFast);
+                if (data.showCodeStral !== undefined) setShowCodeStral(data.showCodeStral);
+                if (data.showLlama !== undefined) setShowLlama(data.showLlama);
+                if (data.showo1 !== undefined) setShowo1(data.showo1);
+                if (data.showo1Mini !== undefined) setShowo1Mini(data.showo1Mini);
+                if (data.showClaudeHaiku !== undefined) setShowClaudeHaiku(data.showClaudeHaiku);
+                if (data.showTTS !== undefined) {
+                    setShowTTS(data.showTTS);
+                }
+                if (data.showImageDallE3 !== undefined) setShowImageDallE3(data.showImageDallE3);
+                if (data.autoPromptSeparator !== undefined) {
                     autoPromptSeparator = data.autoPromptSeparator;
                 }
-                if (data.questionTrimLength > 0) {
+                if (data.questionTrimLength !== undefined) {
                     questionTrimLength = data.questionTrimLength;
                 }
-                setShowClaudeHaiku(data.showClaudeHaiku);
             });
         } catch (error) {
             console.error("Error fetching genAI parameters: ", error);
