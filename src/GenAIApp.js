@@ -219,9 +219,6 @@ const GenAIApp = () => {
     const getQuestionSubstring = (question) => {
         const marker = '###';
         const markerIndex = question.indexOf(marker);
-        console.log('Marker Index:', markerIndex);
-        console.log('questionTrimLength:', questionTrimLength);
-        console.log ('Question:', question.substring(0,Math.min(markerIndex, questionTrimLength)));
         if (markerIndex !== -1) {
             return question.substring(0, Math.min(markerIndex, questionTrimLength));
         }
@@ -390,7 +387,7 @@ const GenAIApp = () => {
             .replace(/[^a-zA-Z0-9\s]/g, ' ') // Remove special characters
             .replace(/\s+/g, ' ') // Replace multiple spaces with single space
             .trim(); // Remove leading/trailing spaces
-        
+
         if (isiPhone) {
             window.scrollTo(0, 0);
             alert('Please go to top of the page to check status and listen to the audio');
@@ -466,7 +463,7 @@ const GenAIApp = () => {
          const q = query(genaiCollection, where('tag', '==', promptValue), limit(1));
          const genaiSnapshot = await getDocs(q);
          const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); */
-        fullPromptInput =  promptValue;
+        fullPromptInput = promptValue;
     };
 
     // Sign Out
@@ -626,6 +623,50 @@ const GenAIApp = () => {
             setIsGeneratingClaudeHaiku(true); // Set generating state to true
             callAPI('Claude-Haiku');
         }
+
+        try {
+            const configurationCollection = collection(db, 'genai', user.uid, 'configuration');
+            const q = query(configurationCollection, where('setup', '==', 'genai'));
+            const configSnapshot = await getDocs(q);
+            if (configSnapshot.empty) {
+                console.log('No configuration found');
+                return;
+            }
+            configSnapshot.forEach(async (doc) => {
+                await updateDoc(doc.ref, {
+                    // Model states
+                    isOpenAI,
+                    isAnthropic,
+                    isGemini,
+                    isGpto1Mini,
+                    isLlama,
+                    isMistral,
+                    isGpt4Turbo,
+                    isGeminiFast,
+                    isPerplexityFast,
+                    isPerplexity,
+                    isCodestral,
+                    isClaudeHaiku,
+                    iso1,
+
+                    // Feature states
+                    isTTS,
+                    isImage_Dall_e_3,
+
+                    // Parameters
+                    temperature,
+                    top_p,
+                    dataLimit,
+                    autoPrompt,
+
+                    // Update timestamp
+                    lastUpdated: new Date()
+                }, { merge: true });
+            } );  // Optionally, refresh data
+
+        } catch (error) {
+            console.error('Error updating configuration:', error);
+        }
     };
 
     const callAPI = async (selectedModel) => {
@@ -718,7 +759,6 @@ const GenAIApp = () => {
             if (selectedModel === 'Claude-Haiku') {
                 setIsGeneratingClaudeHaiku(false);
             }
-
         }
     };
 
@@ -936,14 +976,14 @@ const GenAIApp = () => {
                             <label className={isGeneratingGemini ? 'flashing' : ''}>Gemini</label>
                         </button>
                     )}
-                    {showMistral && (
-                        <button className={isMistral ? 'button_selected' : 'button'} onClick={() => setIsMistral(!isMistral)}>
-                            <label className={isGeneratingMistral ? 'flashing' : ''}>Mistral</label>
-                        </button>
-                    )}
                     {showo1Mini && (
                         <button className={isGpto1Mini ? 'button_selected' : 'button'} onClick={() => setIsGpto1Mini(!isGpto1Mini)}>
                             <label className={isGeneratingo1Mini ? 'flashing' : ''}>o1-mini</label>
+                        </button>
+                    )}
+                    {showMistral && (
+                        <button className={isMistral ? 'button_selected' : 'button'} onClick={() => setIsMistral(!isMistral)}>
+                            <label className={isGeneratingMistral ? 'flashing' : ''}>Mistral</label>
                         </button>
                     )}
                     {showLlama && (
@@ -1108,16 +1148,16 @@ const GenAIApp = () => {
                     )}
                     {autoPrompt && selectedPrompt && showSourceDocument && (
                         <div style={{ marginTop: '10px', fontSize: '16px' }}>
-                            Source document(s): <button 
-                            onClick={(e) => {
-                                e.preventDefault();
-                                handleEditSource();
-                            }}
-                            className="sourceDocumentButton"
-                        >
-                        {selectedPrompt}
-                    
-                    </button>
+                            Source document(s): <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleEditSource();
+                                }}
+                                className="sourceDocumentButton"
+                            >
+                                {selectedPrompt}
+
+                            </button>
                         </div>
                     )}
                 </div>
@@ -1241,7 +1281,7 @@ const GenAIApp = () => {
                                             [item.id]: !prev[item.id]
                                         }));
                                     }}>            {showFullQuestion[item.id] ? 'Less' : 'More'}
-</button>
+                                    </button>
 
                                 </div>
                                 <div style={{ border: "1px solid black" }}>
