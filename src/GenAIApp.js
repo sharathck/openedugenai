@@ -544,16 +544,15 @@ const GenAIApp = () => {
             alert('Please select at least one model.');
             return;
         }
-        
-        if (isSambanova) {
-            setIsGeneratingSambanova(true); // Set generating state to true
-            callAPI(modelSambanova);
-        }
-
 
         if (isGroq) {
             setIsGeneratingGroq(true); // Set generating state to true
             callAPI(modelGroq);
+        }
+        
+        if (isSambanova) {
+            setIsGeneratingSambanova(true); // Set generating state to true
+            callAPI(modelSambanova);
         }
 
         // Generate API calls for each selected model
@@ -997,14 +996,14 @@ const GenAIApp = () => {
                     />
                 </div>
                 <div style={{ marginBottom: '20px' }}>
-                   {showSambanova && (
-                        <button className={isSambanova ? 'button_selected' : 'button'} onClick={() => setIsSambanova(!isSambanova)}>
-                            <label className={isGeneratingSambanova ? 'flashing' : ''}>Llama(S)</label>
-                        </button>
-                    )}
                     {showGroq && (
                         <button className={isGroq ? 'button_selected' : 'button'} onClick={() => setIsGroq(!isGroq)}>
                             <label className={isGeneratingGroq ? 'flashing' : ''}>Llama(G)</label>
+                        </button>
+                    )}
+                    {showSambanova && (
+                        <button className={isSambanova ? 'button_selected' : 'button'} onClick={() => setIsSambanova(!isSambanova)}>
+                            <label className={isGeneratingSambanova ? 'flashing' : ''}>Llama(S)</label>
                         </button>
                     )}
                     {showOpenAI && (
@@ -1355,11 +1354,11 @@ const GenAIApp = () => {
                                         </button>
                                     </div>
                                     <div style={{ fontSize: '16px' }}>
-                                        {item.showRawAnswer ? item.answer :                             (<MdEditor
-                                value={editPromptFullText}
-                                renderHTML={editPromptFullText => mdParser.render(item.answer)}
-                                config={{ view: { menu: false, md: false, html: true } }}
-                            />)}
+                                        {item.showRawAnswer ? item.answer : (<MdEditor
+                                            value={editPromptFullText}
+                                            renderHTML={editPromptFullText => mdParser.render(item.answer)}
+                                            config={{ view: { menu: false, md: false, html: true } }}
+                                        />)}
                                     </div>
 
                                     <br />
