@@ -136,6 +136,12 @@ const GenAIApp = () => {
     const [showSambanova, setShowSambanova] = useState(false);
     const [modelSambanova, setModelSambanova] = useState('sambanova');
 
+    // Add new state variables near other model state variables
+    const [isGroq, setIsGroq] = useState(true);
+    const [isGeneratingGroq, setIsGeneratingGroq] = useState(false);
+    const [showGroq, setShowGroq] = useState(false);
+    const [modelGroq, setModelGroq] = useState('groq');
+
     const embedPrompt = async (docId) => {
         try {
             console.log('Embedding prompt:', docId);
@@ -306,6 +312,7 @@ const GenAIApp = () => {
                 if (data.showo1Mini !== undefined) setShowo1Mini(data.showo1Mini);
                 if (data.showClaudeHaiku !== undefined) setShowClaudeHaiku(data.showClaudeHaiku);
                 if (data.showSambanova !== undefined) setShowSambanova(data.showSambanova);
+                if (data.showGroq !== undefined) setShowGroq(data.showGroq);
                 if (data.showTTS !== undefined) {
                     setShowTTS(data.showTTS);
                 }
@@ -533,7 +540,7 @@ const GenAIApp = () => {
         }
 
         // Check if at least one model is selected
-        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiFast && !isPerplexityFast && !isPerplexity && !isCodestral && !isClaudeHaiku && !isSambanova) {
+        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiFast && !isPerplexityFast && !isPerplexity && !isCodestral && !isClaudeHaiku && !isSambanova && !isGroq) {
             alert('Please select at least one model.');
             return;
         }
@@ -541,6 +548,12 @@ const GenAIApp = () => {
         if (isSambanova) {
             setIsGeneratingSambanova(true); // Set generating state to true
             callAPI(modelSambanova);
+        }
+
+
+        if (isGroq) {
+            setIsGeneratingGroq(true); // Set generating state to true
+            callAPI(modelGroq);
         }
 
         // Generate API calls for each selected model
@@ -664,6 +677,7 @@ const GenAIApp = () => {
                     isClaudeHaiku,
                     iso1,
                     isSambanova, // Add this line
+                    isGroq,
 
                     // Feature states
                     isTTS,
@@ -777,6 +791,9 @@ const GenAIApp = () => {
             }
             if (selectedModel === modelSambanova) {
                 setIsGeneratingSambanova(false);
+            }
+            if (selectedModel === modelGroq) {
+                setIsGeneratingGroq(false);
             }
         }
     };
@@ -982,7 +999,12 @@ const GenAIApp = () => {
                 <div style={{ marginBottom: '20px' }}>
                    {showSambanova && (
                         <button className={isSambanova ? 'button_selected' : 'button'} onClick={() => setIsSambanova(!isSambanova)}>
-                            <label className={isGeneratingSambanova ? 'flashing' : ''}>Llama</label>
+                            <label className={isGeneratingSambanova ? 'flashing' : ''}>Llama(S)</label>
+                        </button>
+                    )}
+                    {showGroq && (
+                        <button className={isGroq ? 'button_selected' : 'button'} onClick={() => setIsGroq(!isGroq)}>
+                            <label className={isGeneratingGroq ? 'flashing' : ''}>Llama(G)</label>
                         </button>
                     )}
                     {showOpenAI && (
@@ -1139,7 +1161,8 @@ const GenAIApp = () => {
                             isGeneratingCodeStral ||
                             isGeneratingGpt4oMini ||
                             isGeneratingClaudeHaiku ||
-                            isGeneratingSambanova
+                            isGeneratingSambanova ||
+                            isGeneratingGroq
                         }
                     >
                         {isGenerating ||
@@ -1158,7 +1181,8 @@ const GenAIApp = () => {
                             isGeneratingCodeStral ||
                             isGeneratingGpt4oMini ||
                             isGeneratingClaudeHaiku ||
-                            isGeneratingSambanova ? (
+                            isGeneratingSambanova ||
+                            isGeneratingGroq ? (
                             <FaSpinner className="spinning" />
                         ) : (
                             'GenAI'
@@ -1235,6 +1259,7 @@ const GenAIApp = () => {
                     <option value="codestral">CodeStral</option>
                     <option value="Claude-Haiku">Claude-Haiku</option>
                     <option value="sambanova-1">Sambanova</option>
+                    <option value="groq-mixtral">Groq</option>
                 </select>
                 {showEditPopup && (
                     <div className="modal-overlay">
