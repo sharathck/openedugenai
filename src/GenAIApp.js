@@ -131,7 +131,7 @@ const GenAIApp = () => {
     const [showClaudeHaiku, setShowClaudeHaiku] = useState(true); // Set to true or false as needed
 
     // Add new state variables for Sambanova
-    const [isSambanova, setIsSambanova] = useState(true);
+    const [isSambanova, setIsSambanova] = useState(false);
     const [isGeneratingSambanova, setIsGeneratingSambanova] = useState(false);
     const [showSambanova, setShowSambanova] = useState(false);
     const [modelSambanova, setModelSambanova] = useState('sambanova');
@@ -545,89 +545,94 @@ const GenAIApp = () => {
             return;
         }
 
-        if (isGroq) {
+        if (isGroq && showGroq) {
             setIsGeneratingGroq(true); // Set generating state to true
             callAPI(modelGroq);
         }
-        
-        if (isSambanova) {
+
+        if (isSambanova && showSambanova) {
             setIsGeneratingSambanova(true); // Set generating state to true
             callAPI(modelSambanova);
         }
 
+        if (isClaudeHaiku && showClaudeHaiku) {
+            setIsGeneratingClaudeHaiku(true); // Set generating state to true
+            callAPI('Claude-Haiku');
+        }
+        
         // Generate API calls for each selected model
-        if (isAnthropic) {
+        if (isAnthropic && showAnthropic) {
             setIsGeneratingAnthropic(true); // Set generating state to true
             callAPI(modelAnthropic);
         }
 
-        if (isGemini) {
+        if (isGemini && showGemini) {
             setIsGeneratingGemini(true); // Set generating state to true
             callAPI(modelGemini);
         }
-        if (isOpenAI) {
+        if (isOpenAI && showOpenAI) {
             setIsGenerating(true); // Set generating state to true
             callAPI(modelOpenAI);
         }
 
-        if (isGpto1Mini) {
+        if (isGpto1Mini && showo1Mini) {
             setIsGeneratingo1Mini(true); // Set generating state to true
             callAPI(modelGpto1Mini);
         }
 
-        if (iso1) {
+        if (iso1 && showo1) {
             setIsGeneratingo1(true); // Set generating state to true
             callAPI(modelo1);
         }
 
-        if (isLlama) {
+        if (isLlama && showLlama) {
             setIsGeneratingLlama(true); // Set generating state to true
             callAPI(modelLlama);
         }
 
-        if (isMistral) {
+        if (isMistral && showMistral) {
             setIsGeneratingMistral(true); // Set generating state to true
             callAPI(modelMistral);
         }
 
-        if (isGpt4oMini) {
+        if (isGpt4oMini && showGpt4oMini) {
             setIsGeneratingGpt4oMini(true); // Set generating state to true
             callAPI(modelGpt4oMini);
         }
 
-        if (isGeminiFast) {
+        if (isGeminiFast && showGeminiFast) {
             setIsGeneratingGeminiFast(true); // Set generating state to true
             callAPI(modelGeminiFast);
         }
 
-        if (isGpt4Turbo) {
+        if (isGpt4Turbo && showGpt4Turbo) {
             setIsGeneratingGpt4Turbo(true); // Set generating state to true
             callAPI(modelGpt4Turbo);
         }
 
-        if (isPerplexityFast) {
+        if (isPerplexityFast && showPerplexityFast) {
             setIsGeneratingPerplexityFast(true); // Set generating state to true
             callAPI(modelPerplexityFast);
         }
 
-        if (isPerplexity) {
+        if (isPerplexity && showPerplexity) {
             setIsGeneratingPerplexity(true); // Set generating state to true
             callAPI(modelPerplexity);
         }
 
-        if (isCodestral) {
+        if (isCodestral && showCodeStral) {
             setIsGeneratingCodeStral(true); // Set generating state to true
             callAPI(modelCodestralApi);
         }
 
         // **Handle DALL·E 3 Selection**
-        if (isImage_Dall_e_3) {
+        if (isImage_Dall_e_3 && showImageDallE3) {
             setIsGeneratingImage_Dall_e_3(true); // Set generating state to true
             callAPI(modelImageDallE3);
         }
 
         // **Handle TTS Selection**
-        if (isTTS) {
+        if (isTTS && showTTS) {
             // if promptInput is > 9000 characters, then split it into chunks and call TTS API for each chunk
             //
 
@@ -644,11 +649,6 @@ const GenAIApp = () => {
             else {
                 callTTSAPI(promptInput, 'https://us-central1-reviewtext-ad5c6.cloudfunctions.net/function-18');
             }
-        }
-
-        if (isClaudeHaiku) {
-            setIsGeneratingClaudeHaiku(true); // Set generating state to true
-            callAPI('Claude-Haiku');
         }
 
         try {
