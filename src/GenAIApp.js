@@ -1559,8 +1559,8 @@ const GenAIApp = () => {
                                                 </button>
                                                 )}
                                                 {(showImagesSearchWordsButton && <button className={isGeneratingo1 && isImagesSearch ? 'button_selected' : 'button'} onClick={() => {
-                                                    youtubePromptInput = imagesSearchPrompt + item.answer;
-                                                    youtubeSelected = true;
+                                                    imagePromptInput = imagesSearchPrompt + item.answer;
+                                                    imageSelected = true;
                                                     setIsImagesSearch(true);
                                                     setIso1(true);
                                                     setIsGeneratingo1(true);
