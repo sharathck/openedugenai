@@ -92,6 +92,8 @@ const GenAIApp = () => {
     const [temperature, setTemperature] = useState(0.7);
     const [top_p, setTop_p] = useState(0.8);
     const [autoPromptLimit, setAutoPromptLimit] = useState(1);
+    const [showTemp, setShowTemp] = useState(true);
+    const [showTop_p, setShowTop_p] = useState(true);
     const [showGpt4Turbo, setShowGpt4Turbo] = useState(true);
     const [showMistral, setShowMistral] = useState(false);
     const [showLlama, setShowLlama] = useState(false);
@@ -107,6 +109,7 @@ const GenAIApp = () => {
     const [showImageDallE3, setShowImageDallE3] = useState(false);
     const [showTTS, setShowTTS] = useState(false);
     const [showo1Mini, setShowo1Mini] = useState(true);
+    const [showAutoPrompt, setShowAutoPrompt] = useState(true);
     const [modelAnthropic, setModelAnthropic] = useState('claude');
     const [modelGemini, setModelGemini] = useState('gemini');
     const [modelOpenAI, setModelOpenAI] = useState('gpt-4o');
@@ -309,6 +312,7 @@ const GenAIApp = () => {
                 if (data.autoPrompt !== undefined) setAutoPrompt(data.autoPrompt);
                 if (data.autoPromptLimit !== undefined) setAutoPromptLimit(data.autoPromptLimit);
                 if (data.dataLimit !== undefined) dataLimit = data.dataLimit;
+                if (data.isGroq !== undefined) setIsGroq(data.isGroq);
                 if (data.isAnthropic !== undefined) setIsAnthropic(data.isAnthropic);
                 if (data.isGemini !== undefined) setIsGemini(data.isGemini);
                 if (data.isOpenAI !== undefined) setIsOpenAI(data.isOpenAI);
@@ -890,11 +894,15 @@ const GenAIApp = () => {
         if (checked) {
             // Turn off TTS if it's on
             setIsTTS(false);
+            setShowTTS(false);
             // Turn off all text models
             setVisibilityOfTextModels(false);
         } else {
             // Restore model states from configuration
             await fetchGenAIParameters(uid);
+            setShowTemp(true);
+            setShowTop_p(true);
+            setShowAutoPrompt(true);
         }
         setIsImage_Dall_e_3(checked);
     };
@@ -904,11 +912,15 @@ const GenAIApp = () => {
         if (checked) {
             // Turn off Image if it's on
             setIsImage_Dall_e_3(false);
+            setShowImageDallE3(false);
             // Turn off all text models
             setVisibilityOfTextModels(false);
         } else {
             // Restore model states from configuration
             await fetchGenAIParameters(uid);
+            setShowTemp(true);
+            setShowTop_p(true);
+            setShowAutoPrompt(true);
         }
         setIsTTS(checked);
     };
@@ -952,6 +964,9 @@ const GenAIApp = () => {
         setShowSambanova(status);
         setShowGroq(status);
         setShowNova(status);
+        setShowTemp(status);
+        setShowTop_p(status);
+        setShowAutoPrompt(status);
     };
 
     // Add this helper function to handle LLM model selection
@@ -1181,6 +1196,7 @@ const GenAIApp = () => {
                             <label className={isGeneratingNova ? 'flashing' : ''}>{labelNova}</label>
                         </button>
                     )}
+                    {showTemp && (
                     <label style={{ marginLeft: '8px' }}>
                         Temp:
                         <input
@@ -1193,6 +1209,8 @@ const GenAIApp = () => {
                             style={{ width: '50px', marginLeft: '5px' }}
                         />
                     </label>
+                    )}
+                    {showTop_p && (
                     <label style={{ marginLeft: '8px' }}>
                         Top_p:
                         <input
@@ -1205,6 +1223,7 @@ const GenAIApp = () => {
                             style={{ width: '50px', marginLeft: '5px' }}
                         />
                     </label>
+                    )}
                     {showImageDallE3 &&
                         <button className={isImage_Dall_e_3 ? 'button_selected' : 'button'}
                             onClick={() => handleDall_e_3Change(!isImage_Dall_e_3)}>
@@ -1251,9 +1270,11 @@ const GenAIApp = () => {
                             <FaEdit />
                         </button>
                     )}
+                    {showAutoPrompt && (
                     <button className={autoPrompt ? 'button_selected' : 'button'} onClick={() => setAutoPrompt(!autoPrompt)}>
                         AutoPrompt
                     </button>
+                    )}
                     <button
                         onClick={handleGenerate}
                         className="generateButton"
