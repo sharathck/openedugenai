@@ -18,6 +18,8 @@ import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
+import speakerIcon from './loud_speaker.png';
+import imageIcon from './image.png';
 
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
@@ -138,7 +140,7 @@ const GenAIApp = () => {
     const [modelSambanova, setModelSambanova] = useState('sambanova');
 
     // Add new state variables near other model state variables
-    const [isGroq, setIsGroq] = useState(true);
+    const [isGroq, setIsGroq] = useState(false);
     const [isGeneratingGroq, setIsGeneratingGroq] = useState(false);
     const [showGroq, setShowGroq] = useState(false);
     const [modelGroq, setModelGroq] = useState('groq');
@@ -884,66 +886,83 @@ const GenAIApp = () => {
         }
     };
     // Handler for DALL·E 3 Checkbox Change
-    const handleDall_e_3Change = (checked) => {
-        setIsImage_Dall_e_3(checked);
+    const handleDall_e_3Change = async (checked) => {
         if (checked) {
-            // Turn off all other models
-            setIsOpenAI(false);
-            setIsAnthropic(false);
-            setIsGemini(false);
-            setIsGpto1Mini(false);
-            setIso1(false);
+            // Turn off TTS if it's on
             setIsTTS(false);
-            setIsLlama(false);
-            setIsMistral(false);
-            setIsGpt4Turbo(false);
-            setIsGpt4oMini(false);
-            setIsGeminiFast(false);
-            setIsPerplexityFast(false);
-            setIsPerplexity(false);
-            setIsCodestral(false);
-            setIsClaudeHaiku(false);
-            setIsSambanova(false);
-            setIsGroq(false);
-            setIsNova(false);
+            // Turn off all text models
+            setVisibilityOfTextModels(false);
+        } else {
+            // Restore model states from configuration
+            await fetchGenAIParameters(uid);
         }
+        setIsImage_Dall_e_3(checked);
     };
 
-// Handler for TTS Checkbox Change
-const handleTTSChange = (checked) => {
-    setIsTTS(checked);
-    if (checked) {
-        // Turn off all other models
-        setIsOpenAI(false);
-        setIsAnthropic(false);
-        setIsGemini(false);
-        setIsGpto1Mini(false);
-        setIso1(false);
-        setIsImage_Dall_e_3(false);
-        setIsLlama(false);
-        setIsMistral(false);
-        setIsGpt4Turbo(false);
-        setIsGpt4oMini(false);
-        setIsGeminiFast(false);
-        setIsPerplexityFast(false);
-        setIsPerplexity(false);
-        setIsCodestral(false);
-        setIsClaudeHaiku(false);
-        setIsSambanova(false);
-        setIsGroq(false);
-        setIsNova(false);
-    }
-};
+    // Handler for TTS Checkbox Change
+    const handleTTSChange = async (checked) => {
+        if (checked) {
+            // Turn off Image if it's on
+            setIsImage_Dall_e_3(false);
+            // Turn off all text models
+            setVisibilityOfTextModels(false);
+        } else {
+            // Restore model states from configuration
+            await fetchGenAIParameters(uid);
+        }
+        setIsTTS(checked);
+    };
 
-// Add this helper function to handle LLM model selection
-const handleLLMChange = (setter, value) => {
-    setter(value);
-    if (value) {
-        // Turn off TTS and Image
-        setIsTTS(false);
-        setIsImage_Dall_e_3(false);
-    }
-};
+    // Add this helper function to manage text model visibility
+    const setVisibilityOfTextModels = (status) => {
+        // Set all "is" states to false/true
+        setIsOpenAI(status);
+        setIsAnthropic(status);
+        setIsGemini(status);
+        setIsGpto1Mini(status);
+        setIso1(status);
+        setIsLlama(status);
+        setIsMistral(status);
+        setIsGpt4Turbo(status);
+        setIsGpt4oMini(status);
+        setIsGeminiFast(status);
+        setIsPerplexityFast(status);
+        setIsPerplexity(status);
+        setIsCodestral(status);
+        setIsClaudeHaiku(status);
+        setIsSambanova(status);
+        setIsGroq(status);
+        setIsNova(status);
+
+        // Set all "show" states to false/true
+        setShowOpenAI(status);
+        setShowAnthropic(status);
+        setShowGemini(status);
+        setShowo1Mini(status);
+        setShowo1(status);
+        setShowLlama(status);
+        setShowMistral(status);
+        setShowGpt4Turbo(status);
+        setShowGpt4oMini(status);
+        setShowGeminiFast(status);
+        setShowPerplexityFast(status);
+        setShowPerplexity(status);
+        setShowCodeStral(status);
+        setShowClaudeHaiku(status);
+        setShowSambanova(status);
+        setShowGroq(status);
+        setShowNova(status);
+    };
+
+    // Add this helper function to handle LLM model selection
+    const handleLLMChange = (setter, value) => {
+        setter(value);
+        if (value) {
+            // Turn off TTS and Image
+            setIsTTS(false);
+            setIsImage_Dall_e_3(false);
+        }
+    };
 
     const handleEditPrompt = () => {
         setShowEditPopup(true);
@@ -1073,91 +1092,91 @@ const handleLLMChange = (setter, value) => {
                         </button>
                     )}
                     {showOpenAI && (
-                        <button className={isOpenAI ? 'button_selected' : 'button'} 
+                        <button className={isOpenAI ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsOpenAI, !isOpenAI)}>
                             <label className={isGenerating ? 'flashing' : ''}>{labelOpenAI}</label>
                         </button>
                     )}
                     {showAnthropic && (
-                        <button className={isAnthropic ? 'button_selected' : 'button'} 
+                        <button className={isAnthropic ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsAnthropic, !isAnthropic)}>
                             <label className={isGeneratingAnthropic ? 'flashing' : ''}>{labelAnthropic}</label>
                         </button>
                     )}
                     {showGemini && (
-                        <button className={isGemini ? 'button_selected' : 'button'} 
+                        <button className={isGemini ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsGemini, !isGemini)}>
                             <label className={isGeneratingGemini ? 'flashing' : ''}>{labelGemini}</label>
                         </button>
                     )}
                     {showo1Mini && (
-                        <button className={isGpto1Mini ? 'button_selected' : 'button'} 
+                        <button className={isGpto1Mini ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsGpto1Mini, !isGpto1Mini)}>
                             <label className={isGeneratingo1Mini ? 'flashing' : ''}>{labelGpto1Mini}</label>
                         </button>
                     )}
                     {showMistral && (
-                        <button className={isMistral ? 'button_selected' : 'button'} 
+                        <button className={isMistral ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsMistral, !isMistral)}>
                             <label className={isGeneratingMistral ? 'flashing' : ''}>{labelMistral}</label>
                         </button>
                     )}
                     {showLlama && (
-                        <button className={isLlama ? 'button_selected' : 'button'} 
+                        <button className={isLlama ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsLlama, !isLlama)}>
                             <label className={isGeneratingLlama ? 'flashing' : ''}>{labelLlama}</label>
                         </button>
                     )}
                     {showGpt4Turbo && (
-                        <button className={isGpt4Turbo ? 'button_selected' : 'button'} 
+                        <button className={isGpt4Turbo ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsGpt4Turbo, !isGpt4Turbo)}>
                             <label className={isGeneratingGpt4Turbo ? 'flashing' : ''}>{labelGpt4Turbo}</label>
                         </button>
                     )}
                     {showGeminiFast && (
-                        <button className={isGeminiFast ? 'button_selected' : 'button'} 
+                        <button className={isGeminiFast ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsGeminiFast, !isGeminiFast)}>
                             <label className={isGeneratingGeminiFast ? 'flashing' : ''}>{labelGeminiFast}</label>
                         </button>
                     )}
                     {showGpt4oMini && (
-                        <button className={isGpt4oMini ? 'button_selected' : 'button'} 
+                        <button className={isGpt4oMini ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsGpt4oMini, !isGpt4oMini)}>
                             <label className={isGeneratingGpt4oMini ? 'flashing' : ''}>{labelGpt4oMini}</label>
                         </button>
                     )}
                     {showo1 && (
-                        <button className={iso1 ? 'button_selected' : 'button'} 
+                        <button className={iso1 ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIso1, !iso1)}>
                             <label className={isGeneratingo1 ? 'flashing' : ''}>{labelo1}</label>
                         </button>
                     )}
                     {showPerplexityFast && (
-                        <button className={isPerplexityFast ? 'button_selected' : 'button'} 
+                        <button className={isPerplexityFast ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsPerplexityFast, !isPerplexityFast)}>
                             <label className={isGeneratingPerplexityFast ? 'flashing' : ''}>{labelPerplexityFast}</label>
                         </button>
                     )}
                     {showPerplexity && (
-                        <button className={isPerplexity ? 'button_selected' : 'button'} 
+                        <button className={isPerplexity ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsPerplexity, !isPerplexity)}>
                             <label className={isGeneratingPerplexity ? 'flashing' : ''}>{labelPerplexity}</label>
                         </button>
                     )}
                     {showCodeStral && (
-                        <button className={isCodestral ? 'button_selected' : 'button'} 
+                        <button className={isCodestral ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsCodestral, !isCodestral)}>
                             <label className={isGeneratingCodeStral ? 'flashing' : ''}>{labelCodestral}</label>
                         </button>
                     )}
                     {showClaudeHaiku && (
-                        <button className={isClaudeHaiku ? 'button_selected' : 'button'} 
+                        <button className={isClaudeHaiku ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsClaudeHaiku, !isClaudeHaiku)}>
                             <label className={isGeneratingClaudeHaiku ? 'flashing' : ''}>{labelClaudeHaiku}</label>
                         </button>
                     )}
                     {showNova && (
-                        <button className={isNova ? 'button_selected' : 'button'} 
+                        <button className={isNova ? 'button_selected' : 'button'}
                             onClick={() => handleLLMChange(setIsNova, !isNova)}>
                             <label className={isGeneratingNova ? 'flashing' : ''}>{labelNova}</label>
                         </button>
@@ -1186,12 +1205,22 @@ const handleLLMChange = (setter, value) => {
                             style={{ width: '50px', marginLeft: '5px' }}
                         />
                     </label>
-                    {showImageDallE3 && <button className={isImage_Dall_e_3 ? 'button_selected' : 'button'} onClick={() => handleDall_e_3Change(!isImage_Dall_e_3)}>
-                        <label className={isGeneratingImage_Dall_e_3 ? 'flashing' : ''}>IMAGE</label>
-                    </button>}
-                    {showTTS && (<button className={isTTS ? 'button_selected' : 'button'} onClick={() => handleTTSChange(!isTTS)}>
-                        <label className={isGeneratingTTS ? 'flashing' : ''}>TTS</label>
-                    </button>)}
+                    {showImageDallE3 &&
+                        <button className={isImage_Dall_e_3 ? 'button_selected' : 'button'}
+                            onClick={() => handleDall_e_3Change(!isImage_Dall_e_3)}>
+                            <label className={isGeneratingImage_Dall_e_3 ? 'flashing' : ''}>
+                                Image    <img src={imageIcon} alt="image" style={{ width: '16px', verticalAlign: 'middle', marginLeft: '4px' }} />
+                            </label>
+                        </button>
+                    }
+                    {showTTS &&
+                        <button className={isTTS ? 'button_selected' : 'button'}
+                            onClick={() => handleTTSChange(!isTTS)}>
+                            <label className={isGeneratingTTS ? 'flashing' : ''}>
+                                Audio    <img src={speakerIcon} alt="speaker" style={{ width: '16px', verticalAlign: 'middle', marginLeft: '4px' }} />
+                            </label>
+                        </button>
+                    }
                     {isTTS && (
                         <VoiceSelect
                             selectedVoice={voiceName} // Current selected voice
@@ -1334,8 +1363,8 @@ const handleLLMChange = (setter, value) => {
                     <option value="claude-3-5-sonnet-latest">Claude</option>
                     <option value="o1-mini">o1-mini</option>
                     <option value="o1-preview">o1</option>
-                    <option value="azure-tts">TTS</option>
-                    <option value="dall-e-3">IMAGE</option>
+                    <option value="azure-tts">Audio</option>
+                    <option value="dall-e-3">Image</option>
                     <option value="Mistral-large-2407">Mistral</option>
                     <option value="meta-llama-3.1-405b-instruct">Llama</option>
                     <option value="gpt-4-turbo">Gpt4Turbo</option>
