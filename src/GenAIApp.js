@@ -34,7 +34,6 @@ let promptSuggestion = 'NA';
 let autoPromptInput = '';
 let youtubePromptInput = '';
 let googleSearchPromptInput = '';
-let googleSearchPrompt = '  ####  prompt starts from here #####  search for up-to-date and latest news and information about above topic(s). --Provide response with maximum details possible in response. Use all max tokens available to the max in response.';
 let youtubeSelected = false;
 let youtubeTitlePrompt = 'Generate a catchy, clickable and search engine optimized YouTube title, description for the content below  ::::  ';
 let imagesSearchPrompt = 'For the following content, I would like to search for images for my reserach project. Please divide following content in 5-10 logical and relevant image descriptions that I can use to search in google images.::: For each image description, include clickable url to search google images ::::: below is the full content ::::: ';
@@ -1187,9 +1186,10 @@ const GenAIApp = () => {
 
         // Correct the tag name and add null check
         const prompt = genaiPrompts.find(prompt => prompt.tag === 'Intelligent-Questions');
-        const intelligentQuestionsPrompt = prompt ? prompt.fullText : '';
+        let intelligentQuestionsPrompt = prompt ? prompt.fullText : '';
 
         if (intelligentQuestionsPrompt === '') {
+            intelligentQuestionsPrompt = '--------- please generate practice questions based on the topic(s) mentioned above ---------  Text from below is prompt purpose only :::::::::::::::: Rules for practice questions for home work to students ::::* design 20 questions that are tricky, intelligent and brain twister questions    * questions should provoke thinking in student mind * ask questions with more practical and real-life scenarios ### ---------  response should be  markdown table with only two columns1. Category2. Question------------------------';
             console.error('Intelligent-Questions prompt not found.');
         }
 
@@ -1204,6 +1204,18 @@ const GenAIApp = () => {
     // Add handler for AI Search
     const handleAISearch = async () => {
         setIsAISearch(true);
+                // Ensure genaiPrompts is populated
+                if (genaiPrompts.length === 0) {
+                    await fetchPrompts(uid); // Fetch prompts if not already loaded
+                }
+        
+                // Correct the tag name and add null check
+                const prompt = genaiPrompts.find(prompt => prompt.tag === 'Search-GenAI');
+                let googleSearchPrompt = prompt ? prompt.fullText : '';
+        
+                if (googleSearchPrompt === '') {
+                    googleSearchPrompt = '  ####  prompt starts from here #####  search for current, up-to-date and latest news and information about above topic(s) from google search. --Provide response with maximum details possible in response. Use all max tokens available to the max in response.';
+                }
         // Append the search prompt to promptInput
         googleSearchPromptInput = promptInput + googleSearchPrompt;
         setIsGeneratingGeminiSearch(true);
