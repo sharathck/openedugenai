@@ -1236,7 +1236,7 @@ const GenAIApp = () => {
         }
 
         // Correct the tag name and add null check
-        const prompt = genaiPrompts.find(prompt => prompt.tag === 'Intelligent-Questions');
+        const prompt = genaiPrompts.find(prompt => prompt.tag === 'Questions');
         let intelligentQuestionsPrompt = prompt ? prompt.fullText : '';
 
         if (intelligentQuestionsPrompt === '') {
@@ -1246,10 +1246,10 @@ const GenAIApp = () => {
 
         // Append the prompt to promptInput
         homeWorkInput = promptInput + intelligentQuestionsPrompt;
-        setIsGeneratingGeminiFlash(true);
-        callAPI(modelGeminiFlash, 'homeWork');
-        setIsGeneratingo1(true); // Set generating state to true
-        callAPI(modelo1, 'homeWork');
+        setIsGeneratingGemini(true);
+        callAPI(modelGemini, 'homeWork');
+        setIsGeneratingo1Mini(true); // Set generating state to true
+        callAPI(modelGpto1Mini, 'homeWork');
     };
 
     // Add handler for AI Search
@@ -1278,7 +1278,7 @@ const GenAIApp = () => {
         <div>
             <div className={`main-content ${showEditPopup ? 'dimmed' : ''}`}>
                 <div>
-                    {email == 'erpgenai@gmail.com' &&
+                    {email === 'erpgenai@gmail.com' &&
                         (<h3>This site is created by Sharath K for Demo purpose only.</h3>)
                     }
                     <textarea
