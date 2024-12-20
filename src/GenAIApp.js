@@ -205,6 +205,13 @@ const GenAIApp = () => {
     // Add new state variable for YouTube audio title button
     const [isGeneratingYouTubeAudioTitle, setIsGeneratingYouTubeAudioTitle] = useState({});
 
+    // Add new model "Cerebras" state variables
+    const [isCerebras, setIsCerebras] = useState(false);
+    const [isGeneratingCerebras, setIsGeneratingCerebras] = useState(false);
+    const [showCerebras, setShowCerebras] = useState(false);
+    const [modelCerebras, setModelCerebras] = useState('llama-c');
+    const [labelCerebras, setLabelCerebras] = useState('Llama-C');
+
     const embedPrompt = async (docId) => {
         try {
             console.log('Embedding prompt:', docId);
@@ -426,6 +433,9 @@ const GenAIApp = () => {
                 if (data.silence_break !== undefined) {
                     silence_break = data.silence_break;
                 }
+                if (data.isCerebras !== undefined) setIsCerebras(data.isCerebras);
+                if (data.showCerebras !== undefined) setShowCerebras(data.showCerebras);
+                if (data.labelCerebras !== undefined) setLabelCerebras(data.labelCerebras);
             });
         } catch (error) {
             console.error("Error fetching genAI parameters: ", error);
@@ -666,7 +676,7 @@ const GenAIApp = () => {
         }
 
         // Check if at least one model is selected
-        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiSearch && !isGeminiFlash && !isPerplexityFast && !isPerplexity && !isCodestral && !isClaudeHaiku && !isSambanova && !isGroq && !isNova) {
+        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isImage_Dall_e_3 && !isTTS && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiSearch && !isGeminiFlash && !isPerplexityFast && !isPerplexity && !isCodestral && !isClaudeHaiku && !isSambanova && !isGroq && !isNova && !isCerebras) {
             alert('Please select at least one model.');
             return;
         }
@@ -785,6 +795,11 @@ const GenAIApp = () => {
             callAPI(modelNova);
         }
 
+        if (isCerebras && showCerebras) {
+            setIsGeneratingCerebras(true); // Set generating state to true
+            callAPI(modelCerebras);
+        }
+
         try {
             const configurationCollection = collection(db, 'genai', user.uid, 'configuration');
             const q = query(configurationCollection, where('setup', '==', 'genai'));
@@ -813,6 +828,7 @@ const GenAIApp = () => {
                     isSambanova, // Add this line
                     isGroq,
                     isNova,
+                    isCerebras,
 
                     // Feature states
                     isTTS,
@@ -981,6 +997,9 @@ const GenAIApp = () => {
             if (selectedModel === modelNova) {
                 setIsGeneratingNova(false);
             }
+            if (selectedModel === modelCerebras) {
+                setIsGeneratingCerebras(false);
+            }
         }
     };
 
@@ -1084,6 +1103,7 @@ const GenAIApp = () => {
         setIsSambanova(status);
         setIsGroq(status);
         setIsNova(status);
+        setIsCerebras(status);
 
         // Set all "show" states to false/true
         setShowOpenAI(status);
@@ -1104,6 +1124,7 @@ const GenAIApp = () => {
         setShowSambanova(status);
         setShowGroq(status);
         setShowNova(status);
+        setShowCerebras(status);
         setShowTemp(status);
         setShowTop_p(status);
         setShowAutoPrompt(status);
@@ -1399,6 +1420,12 @@ const GenAIApp = () => {
                             <label className={isGeneratingNova ? 'flashing' : ''}>{labelNova}</label>
                         </button>
                     )}
+                    {showCerebras && (
+                        <button className={isCerebras ? 'button_selected' : 'button'}
+                            onClick={() => handleLLMChange(setIsCerebras, !isCerebras)}>
+                            <label className={isGeneratingCerebras ? 'flashing' : ''}>{labelCerebras}</label>
+                        </button>
+                    )}
                     {showTemp && (
                         <label style={{ marginLeft: '8px' }}>
                             Temp:
@@ -1501,7 +1528,8 @@ const GenAIApp = () => {
                                 isGeneratingClaudeHaiku ||
                                 isGeneratingSambanova ||
                                 isGeneratingGroq ||
-                                isGeneratingNova
+                                isGeneratingNova ||
+                                isGeneratingCerebras
                             }
                         >
                             {isGenerating ||
@@ -1523,7 +1551,8 @@ const GenAIApp = () => {
                                 isGeneratingClaudeHaiku ||
                                 isGeneratingSambanova ||
                                 isGeneratingGroq ||
-                                isGeneratingNova ? (
+                                isGeneratingNova ||
+                                isGeneratingCerebras ? (
                                 <FaSpinner className="spinning" />
                             ) : (
                                 'GenAI'
@@ -1627,6 +1656,7 @@ const GenAIApp = () => {
                     <option value="sambanova-1">Sambanova</option>
                     <option value="groq-mixtral">Groq</option>
                     <option value="nova">Nova</option>
+                    <option value="llama-c">Cerebras</option>
                 </select>
                 {showEditPopup && (
                     <div className="modal-overlay">
