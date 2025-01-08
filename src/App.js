@@ -363,6 +363,7 @@ useEffect(() => {
               <button
                 onClick={() => handlehomeWork(topic,'homeWork')}
                 className="practiceButton"
+                style={{ backgroundColor: 'darkBlue', color: 'white', marginLeft: '10px' }}
               >
                 {ishomeWork
                   ? (<FaSpinner className="spinning" />)
