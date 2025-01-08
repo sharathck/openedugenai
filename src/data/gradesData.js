@@ -48,7 +48,7 @@ export const gradesData = {
   },
   'Grade 3': {
     Mathematics: [
-      'Multiplication concepts',
+      'Single Digit to Single Digit Multiplications',
       'Multiplication facts (0-10)',
       'Division concepts',
       'Division facts (0-10)',
