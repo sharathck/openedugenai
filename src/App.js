@@ -1,101 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
-import { auth } from './Firebase';  // Add this import
-
-const gradesData = {
-  'Grade 2': {
-    Mathematics: [
-      'Number Sense and Operations',
-      'Addition and Subtraction within 100',
-      'Basic Multiplication Concepts',
-      'Time and Money',
-      'Basic Geometry and Measurement'
-    ],
-    Science: [
-      'Life Cycles of Plants and Animals',
-      'Earth Materials and Changes',
-      'Weather Patterns',
-      'States of Matter',
-      'Force and Motion'
-    ],
-    Reading: [
-      'Phonics and Word Recognition',
-      'Reading Comprehension Strategies',
-      'Story Elements and Structure',
-      'Vocabulary Development',
-      'Reading Fluency'
-    ]
-  },
-  'Grade 3': {
-    Mathematics: [
-      'Multiplication and Division',
-      'Fractions Introduction',
-      'Area and Perimeter',
-      'Data Analysis and Graphs',
-      'Problem Solving Strategies'
-    ],
-    Science: [
-      'Ecosystems and Habitats',
-      'Forces and Interactions',
-      'Weather and Climate',
-      'Life Cycles and Traits',
-      'Energy in Systems'
-    ],
-    Reading: [
-      'Advanced Comprehension',
-      'Literary Analysis',
-      'Informational Text Features',
-      "Author's Purpose",
-      'Research Skills'
-    ]
-  },
-  'Grade 4': {
-    Mathematics: [
-      'Multi-digit Multiplication',
-      'Division Strategies',
-      'Fraction Operations',
-      'Decimals Introduction',
-      'Geometric Measurements'
-    ],
-    Science: [
-      'Energy and Electricity',
-      "Earth's Processes",
-      'Animal Adaptations',
-      'Simple Machines',
-      'Matter Properties'
-    ],
-    Reading: [
-      'Text Analysis',
-      'Compare and Contrast',
-      'Main Idea and Details',
-      'Poetry and Figurative Language',
-      'Research Writing'
-    ]
-  },
-  'Grade 5': {
-    Mathematics: [
-      'Decimal Operations',
-      'Advanced Fractions',
-      'Volume and Geometry',
-      'Order of Operations',
-      'Pattern Analysis'
-    ],
-    Science: [
-      'Earth Systems',
-      'Matter and Energy',
-      'Space Systems',
-      'Living Systems',
-      'Engineering Design'
-    ],
-    Reading: [
-      'Complex Text Analysis',
-      'Literature Genres',
-      'Writing Strategies',
-      'Research Projects',
-      'Digital Literacy'
-    ]
-  }
-};
+import { auth } from './Firebase';
+import { gradesData } from './data/gradesData';  // Add this import
 
 function App({ user }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(null);
@@ -250,13 +156,26 @@ Real-world Applications:
     }
 
     return (
+
       <div className="subject-content">
+        <button
+          className="back-button"
+          onClick={() => {
+            setSelectedGrade(null);  // Add this line to clear selected grade
+            setSelectedSubject(null);
+            setGeneratedContent('');
+            setSelectedTopic(null);
+            setTopicExplanation('');
+          }}
+        >
+          Back to Subjects
+        </button>
         <h2>{grade} - {subject}</h2>
         <div className="topics-container">
           {gradesData[grade][subject].map((topic, index) => (
             <div key={index} className="topic-item">
               <h3>{topic}</h3>
-              <button 
+              <button
                 className="explain-button"
                 onClick={() => {
                   setSelectedTopic(topic);
@@ -268,7 +187,7 @@ Real-world Applications:
               {selectedTopic === topic && (
                 <div className="topic-explanation">
                   <pre>{topicExplanation}</pre>
-                  <button 
+                  <button
                     className="close-button"
                     onClick={() => {
                       setSelectedTopic(null);
@@ -282,18 +201,6 @@ Real-world Applications:
             </div>
           ))}
         </div>
-        <button 
-          className="back-button"
-          onClick={() => {
-            setSelectedGrade(null);  // Add this line to clear selected grade
-            setSelectedSubject(null);
-            setGeneratedContent('');
-            setSelectedTopic(null);
-            setTopicExplanation('');
-          }}
-        >
-          Back to Subjects
-        </button>
       </div>
     );
   };
