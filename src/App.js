@@ -83,8 +83,11 @@ function App({ user }) {  // Add user prop
 const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
  const [quizButtonLabel, setQuizButtonLabel] = useState('');
  
- useEffect(() => {
-   fetchTexts();
+useEffect(() => {
+  const initializeApp = async () => {
+    await fetchTexts();
+  };
+  initializeApp();
 }, []);
 
   const handleSignOut = async () => {
@@ -151,7 +154,6 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     setIshomeWork(true);
     setTemperature(0.4);
     setTop_p(0.5);
-    await fetchTexts();
     // Need to wait for state updates to be applied
     await new Promise(resolve => setTimeout(resolve, 1000));
     // Append the prompt to promptInput
@@ -172,7 +174,6 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     setIsExplain(true);
     setTemperature(0.7);
     setTop_p(0.8);
-    await fetchTexts();
     // Need to wait for state updates to be applied
     await new Promise(resolve => setTimeout(resolve, 500));
     // Append the prompt to promptInput
@@ -193,7 +194,6 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     setTemperature(0.3);
     setTop_p(0.5);
     setIsQuiz(true);
-    await fetchTexts();
     // Need to wait for state updates to be applied
     await new Promise(resolve => setTimeout(resolve, 1000));
     // Append the prompt to promptInput
