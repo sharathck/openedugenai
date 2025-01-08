@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import './App.css';
-import { auth } from './Firebase';
+import { auth, db } from './Firebase';
+import { collection, doc, where, addDoc, getDocs, getDoc, query, orderBy, startAfter, limit, updateDoc } from 'firebase/firestore';
 import { gradesData } from './data/gradesData';  // Add this import
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
@@ -58,42 +59,34 @@ function App({ user }) {  // Add user prop
   const [isGeneratingYouTubeMusic, setIsGeneratingYouTubeMusic] = useState(false);
   const [isExplain, setIsExplain] = useState(false);
  
-  const [uid, setUid] = useState(null);
+  const [uid, setUid] = useState(user.uid);
   const [isGeneratingGeminiSearch, setIsGeneratingGeminiSearch] = useState(false);
 
   const [temperature, setTemperature] = useState(0.7);
   const temperatureRef = useRef(temperature);
   const [top_p, setTop_p] = useState(0.8);
   const top_pRef = useRef(top_p);
-  const [modelAnthropic, setModelAnthropic] = useState('claude');
   const [modelGemini, setModelGemini] = useState('gemini');
   const [modelOpenAI, setModelOpenAI] = useState('gpt-4o');
   const [modelGpto1Mini, setModelGpto1Mini] = useState('o1-mini');
   const [modelo1, setModelo1] = useState('o1');
   const [modelLlama, setModelLlama] = useState('llama');
   const [modelMistral, setModelMistral] = useState('mistral');
-  const [modelGpt4oMini, setModelGpt4oMini] = useState('gpt-4o-mini');
-  const [modelGeminiSearch, setModelGeminiSearch] = useState('gemini-search');
-  const [modelGeminiFlash, setModelGeminiFlash] = useState('gemini-flash');
-  const [modelGpt4Turbo, setModelGpt4Turbo] = useState('gpt-4-turbo');
-  const [modelImageDallE3, setModelImageDallE3] = useState('dall-e-3');
-  const [modelPerplexityFast, setModelPerplexityFast] = useState('perplexity-fast');
-  const [modelPerplexity, setModelPerplexity] = useState('perplexity');
-  const [modelCodestralApi, setModelCodestralApi] = useState('mistral-codestral-api'); // New state
-  const [modelClaudeHaiku, setModelClaudeHaiku] = useState('claude-haiku');
-  const [modelSambanova, setModelSambanova] = useState('sambanova');
-  const [modelGroq, setModelGroq] = useState('groq');
-  const [modelNova, setModelNova] = useState('nova');
   const [ishomeWork, setIshomeWork] = useState(false);
   const [isQuiz, setIsQuiz] = useState(false);
   const [currentDocId, setCurrentDocId] = useState(null);
   // Add new states for Quiz-Multiple Choices
   const [isQuizMultipleChoice, setIsQuizMultipleChoice] = useState(false);
-
+  const [showMainApp, setShowMainApp] = useState(false);
+  const [showhomeWorkApp, setShowhomeWorkApp] = useState(false);
   /* Add new state variables for fetched texts */
 const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
  const [quizButtonLabel, setQuizButtonLabel] = useState('');
  
+ useEffect(() => {
+   fetchTexts();
+}, []);
+
   const handleSignOut = async () => {
     try {
       await auth.signOut();
@@ -101,6 +94,57 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
       console.error('Error signing out:', error);
     }
   };
+
+
+  const fetchTexts = async () => {
+    let q;
+    try {
+            console.log('Fetching Texts from public collection');
+            q = query(
+                collection(db, 'public'),
+                where('tag', '>', ''),
+                where('fullText', '>', '')
+            );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            //  console.log('fetchTexts Data:', data.tag, '    ', data.fullText);
+            switch (data.tag) {
+                case 'practice-button-label':
+                    setPracticeButtonLabel(data.fullText);
+                    break;
+                case 'quiz-button-label':
+                    setQuizButtonLabel(data.fullText);
+                    break;
+                case 'autoPromptSeparator':
+                    autoPromptSeparator = data.fullText;
+                    break;
+                case 'quiz_with_choices':
+                    quizMultipleChoicesPrompt = data.fullText;
+                    break;
+                case 'quiz_Multiple_Choices_Label':
+                    quiz_Multiple_Choices_Label = data.fullText;
+                    break;
+                case 'bedtime_stories':
+                    story_teller_prompt = data.fullText;
+                    break;
+                case 'quiz':
+                    quizPrompt = data.fullText;
+                    break;
+                case 'practice_questions':
+                    intelligentQuestionsPrompt = data.fullText;
+                    break;
+                case 'explain':
+                    explainPrompt = data.fullText;
+                    break;
+                default:
+                    break;
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching texts: ", error);
+    }
+};
 
   const handlehomeWork = async (message) => {
     if (!message.trim()) {
@@ -114,7 +158,8 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     await new Promise(resolve => setTimeout(resolve, 1000));
     // Append the prompt to promptInput
     homeWorkInput = message + intelligentQuestionsPrompt;
-    await callAPI(modelGemini, 'homeWork');
+    console.log('homeWorkInput:', homeWorkInput);
+    await callAPI(promptInput, 'homeWork');
     setIshomeWork(false);
   };
 
@@ -133,7 +178,8 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     await new Promise(resolve => setTimeout(resolve, 500));
     // Append the prompt to promptInput
     explainInput = message + explainPrompt;
-    await callAPI(modelGemini, 'explain');
+    console.log('explainInput:', explainInput);
+    await callAPI(promptInput, 'explain');
     setIsExplain(false);
   };
   // Add handleQuiz function after handlehomeWork
@@ -152,7 +198,8 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     await new Promise(resolve => setTimeout(resolve, 1000));
     // Append the prompt to promptInput
     quizInput = message + quizPrompt;
-    await callAPI(modelGemini, 'quiz');
+    console.log('quizInput:', quizInput);
+    await callAPI(promptInput, 'quiz');
     setIsQuiz(false);
   };
 
@@ -169,18 +216,14 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     // Append the prompt to promptInput
     await new Promise(resolve => setTimeout(resolve, 1000));
     quizMultipleChoicesInput = message + quizMultipleChoicesPrompt;
-    await callAPI(modelGemini, 'quiz_with_choices');
+    console.log('quizMultipleChoicesInput:', quizMultipleChoicesInput);
+    await callAPI(promptInput, 'quiz_with_choices');
     setIsQuizMultipleChoice(false);
   };
-  const callAPI = async (selectedModel, invocationType = 'GenAI') => {
-    console.log('Calling API with model:', selectedModel + ' URL: ' + process.env.REACT_APP_GENAI_API_URL, ' promptInput: ', promptInput, ' youtubePromptInput:', youtubePromptInput, '  youtubeDescriptionPromptInput : ', youtubeDescriptionPromptInput);
-    console.log('youtube Content Input prompt:', youtubeContentInput);
-    console.log('imageGenerationPromptInput :', imageGenerationPromptInput);
-    console.log('imagePromptsGenerationInput:', imagePromptsGenerationInput);
+  const callAPI = async (promptText, invocationType = 'GenAI') => {
+    console.log('Calling API with URL: ' + process.env.REACT_APP_GENAI_API_URL, ' invocationType: ', invocationType, '  promptText:', promptText);
     try {
       let response;
-      let promptText = promptInput;
-
       // Determine promptText based on invocation type
       switch (invocationType) {
         case 'homeWork':
@@ -198,11 +241,14 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
         case 'explain':
           promptText = explainInput;
           break;
-        case 'lyrics':
-          promptText = lyricsInput;
+        default:
           break;
       }
       console.log('temp:', temperatureRef.current.valueOf(), 'top_p:', top_pRef.current.valueOf());
+      console.log('promptText:', promptText);
+      console.log('invocationType:', invocationType);
+      console.log('modelGemini:', modelGemini);
+      console.log('uid:', uid);
 
       // Single API call with the determined promptText
       response = await fetch(process.env.REACT_APP_GENAI_API_URL, {
@@ -212,7 +258,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
         },
         body: JSON.stringify({
           prompt: promptText,
-          model: selectedModel,
+          model: modelGemini,
           uid: uid,
           temperature: temperatureRef.current.valueOf(),
           top_p: top_pRef.current.valueOf(),
@@ -231,8 +277,9 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
       generatedDocID = data[0].results[0].docID;
       console.log('Generated Doc ID:', generatedDocID, '  invocationType:', invocationType);
       if (['homeWork', 'quiz_with_choices', 'quiz'].includes(invocationType)) {
-        setCurrentDocId(data[0].results[0].docID);
+        setCurrentDocId(generatedDocID);
         console.log('currenDocID:', currentDocId);
+        setShowhomeWorkApp(true);
       }
       //console.log('Response:', data);
     } catch (error) {
@@ -246,9 +293,6 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
       youtubeSelected = false;
       imageSelected = false;
       console.log('Fetching data after generating content');
-      if (selectedModel === modelGeminiSearch) {
-        setIsGeneratingGeminiSearch(false);
-      }
       console.log('isGeneratingGeminiSearch:', isGeneratingGeminiSearch);
     }
   };
@@ -278,6 +322,22 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
       return <div>Loading...</div>;
     }
 
+
+    if (showMainApp) {
+      return (
+          <App user={user} />
+      );
+  }
+
+  if (showhomeWorkApp) {  // Add this block
+      return (
+          <Homework
+              user={user}
+              onBack={() => setShowhomeWorkApp(false)}
+              sourceDocumentID={currentDocId}
+          />
+      );
+  }
     return (
 
       <div className="subject-content">
@@ -300,16 +360,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
               <span>{topic}</span>
               <br />
               <button
-                onClick={() => handleExplain(selectedTopic)}
-                className="practiceButton"
-                style={{ backgroundColor: 'lightyellow', color: 'black', marginLeft: '10px' }}
-              >
-                {isExplain
-                  ? (<FaSpinner className="spinning" />)
-                  : ('Explain with Examples')}
-              </button>
-              <button
-                onClick={() => handlehomeWork(topic)}
+                onClick={() => handlehomeWork(topic,'homeWork')}
                 className="practiceButton"
               >
                 {ishomeWork
@@ -317,7 +368,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
                   : (practiceButtonLabel || 'Practice Questions')}
               </button>
               <button
-                onClick={() => handleQuiz(topic)}
+                onClick={() => handleQuiz(topic,'quiz')}
                 className="practiceButton"
                 style={{ backgroundColor: 'lightblue', color: 'black', marginLeft: '10px' }}
               >
@@ -326,7 +377,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
                   : (quizButtonLabel || 'Trivia/Quiz')}
               </button>
               <button
-                onClick={() => handleMultipleChoiceQuiz(topic)}
+                onClick={() => handleMultipleChoiceQuiz(topic,'quiz_with_choices')}
                 className="practiceButton"
                 style={{ backgroundColor: 'lightgreen', color: 'black', marginLeft: '10px' }}
               >
@@ -334,6 +385,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
                   ? (<FaSpinner className="spinning" />)
                   : (quiz_Multiple_Choices_Label || 'Quiz-Choices')}
               </button>
+              < br />
               < br />
               < br />
 
