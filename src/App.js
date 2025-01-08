@@ -99,16 +99,13 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
   const fetchTexts = async () => {
     let q;
     try {
-            console.log('Fetching Texts from public collection');
-            q = query(
-                collection(db, 'public'),
-                where('tag', '>', ''),
-                where('fullText', '>', '')
-            );
+      console.log('Fetching Texts from user collection');
+      q = query(collection(db, 'genai', 'bTGBBpeYPmPJonItYpUOCYhdIlr1', 'prompts'), where('tag', '>', ''),
+          where('fullText', '>', ''), orderBy('modifiedDateTime', 'asc'));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            //  console.log('fetchTexts Data:', data.tag, '    ', data.fullText);
+            console.log('fetchTexts Data:', data.tag, '    ', data.fullText);
             switch (data.tag) {
                 case 'practice-button-label':
                     setPracticeButtonLabel(data.fullText);
@@ -154,11 +151,12 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     setIshomeWork(true);
     setTemperature(0.4);
     setTop_p(0.5);
+    await fetchTexts();
     // Need to wait for state updates to be applied
     await new Promise(resolve => setTimeout(resolve, 1000));
     // Append the prompt to promptInput
     homeWorkInput = message + intelligentQuestionsPrompt;
-    console.log('homeWorkInput:', homeWorkInput);
+    console.log('homeWorkInput: ', homeWorkInput);
     await callAPI(promptInput, 'homeWork');
     setIshomeWork(false);
   };
@@ -174,6 +172,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     setIsExplain(true);
     setTemperature(0.7);
     setTop_p(0.8);
+    await fetchTexts();
     // Need to wait for state updates to be applied
     await new Promise(resolve => setTimeout(resolve, 500));
     // Append the prompt to promptInput
@@ -194,6 +193,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     setTemperature(0.3);
     setTop_p(0.5);
     setIsQuiz(true);
+    await fetchTexts();
     // Need to wait for state updates to be applied
     await new Promise(resolve => setTimeout(resolve, 1000));
     // Append the prompt to promptInput
@@ -213,6 +213,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
     setTemperature(0.3);
     setTop_p(0.5);
     setIsQuizMultipleChoice(true);
+    await fetchTexts();
     // Append the prompt to promptInput
     await new Promise(resolve => setTimeout(resolve, 1000));
     quizMultipleChoicesInput = message + quizMultipleChoicesPrompt;
