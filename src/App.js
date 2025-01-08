@@ -365,7 +365,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
               >
                 {ishomeWork
                   ? (<FaSpinner className="spinning" />)
-                  : (practiceButtonLabel || 'Practice Questions')}
+                  : 'Practice Questions'}
               </button>
               <button
                 onClick={() => handleQuiz(topic,'quiz')}
@@ -374,7 +374,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
               >
                 {isQuiz
                   ? (<FaSpinner className="spinning" />)
-                  : (quizButtonLabel || 'Trivia/Quiz')}
+                  : 'Trivia/Quiz'}
               </button>
               <button
                 onClick={() => handleMultipleChoiceQuiz(topic,'quiz_with_choices')}
@@ -383,7 +383,7 @@ const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
               >
                 {isQuizMultipleChoice
                   ? (<FaSpinner className="spinning" />)
-                  : (quiz_Multiple_Choices_Label || 'Quiz-Choices')}
+                  : 'Quiz-Choices'}
               </button>
               < br />
               < br />
