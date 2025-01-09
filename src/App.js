@@ -5,7 +5,10 @@ import { collection, doc, where, addDoc, getDocs, getDoc, query, orderBy, startA
 import { schoolGradesData } from './data/schoolGradesData';  // Add this import
 import { collegeData } from './data/collegeData';  // Add this import 
 import { automationTestingData} from './data/automationTestingData';
-import {mastersData} from './data/mastersData';
+import { mastersData } from './data/mastersData';
+import { awsCertificationData } from './data/awsCertificationData';
+import { azureCertificationData } from "./data/azureCertificationsData";  
+import { gcpCertificationData } from "./data/gcpCertificationData";
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
 import GenAIApp from './GenAIApp';
@@ -95,6 +98,15 @@ function App({ user, grade, subject }) {  // Add user prop
       }
       if (params.get('source') === 'mastersData') {
         setGradesData(mastersData);
+      }
+      if (params.get('source') === 'awsCertificationData') {
+        setGradesData(awsCertificationData);
+      }
+      if (params.get('source') === 'azureCertificationData') {
+        setGradesData(azureCertificationData);
+      }
+      if (params.get('source') === 'gcpCertificationData') {
+        setGradesData(gcpCertificationData);
       }
       await fetchTexts();
     };
