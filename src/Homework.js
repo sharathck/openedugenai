@@ -5,22 +5,28 @@ import { auth, db } from './Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FaArrowLeft } from 'react-icons/fa';
 import App from './App';
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+// import style manually
+import 'react-markdown-editor-lite/lib/index.css';
+import ReactMarkdown from "react-markdown";
 
-const Homework = ({ sourceDocumentID }) => {
+const Homework = ({ user, sourceDocumentID, invocationType, grade, subject }) => {
     // Add new state variables for labels
     const [copyUrlButtonLabel, setCopyUrlButtonLabel] = useState('Copy URL to Share');
     const [printGridButtonLabel, setPrintGridButtonLabel] = useState('Print');
     const [practiceNote, setPracticeNote] = useState('The student URL copied above does not require App Login. Students can access from any device without signing up.');
     // Convert markdown content to JSON
     const [problems, setProblems] = useState([]);
-    const [user, setUser] = useState(null);
     const [showMainApp, setShowMainApp] = useState(false);
     const [showAnswers, setShowAnswers] = useState(false);
     const [pinInput, setPinInput] = useState('');
     const [showPinModal, setShowPinModal] = useState(false);
     const [sourceDocID, setSourceDocID] = useState(sourceDocumentID);
     const [showMainAppButton, setShowMainAppButton] = useState(false);
+    const [itemAnswer, setItemAnswer] = useState('');
     const CORRECT_PIN = '463859';
+    const mdParser = new MarkdownIt(/* Markdown-it options */);
 
     const initializeHomeworkData = async (firestoreData, userId) => {
         try {
@@ -28,7 +34,7 @@ const Homework = ({ sourceDocumentID }) => {
             const homeworkCollection = collection(db, 'genai', userId, 'homework');
             const q = query(homeworkCollection, where('sourceDocumentID', '==', sourceDocID));
             const snapshot = await getDocs(q);
-            
+
             if (snapshot.docs.length > 2) {
                 console.log('Existing homework data found. Skipping initialization');
                 return;
@@ -149,6 +155,21 @@ const Homework = ({ sourceDocumentID }) => {
         }
     };
 
+    const fetchItemAnswer = async (userID, docID) => {
+        try {
+            const docRef = doc(db, 'genai', userID, 'MyGenAI', docID);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data().answer;
+                setItemAnswer(data);
+
+            }
+        } catch (error) {
+            console.error("Error fetching item answer:", error);
+        }
+    };
+
     const handleSourceDocIDChange = async (event) => {
         const newSourceDocID = event.target.value;
         setSourceDocID(newSourceDocID);
@@ -221,22 +242,24 @@ const Homework = ({ sourceDocumentID }) => {
     };
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const homeworkParam = urlParams.get('g');
-        if (homeworkParam && homeworkParam.length > 5) {
-            setShowMainAppButton(false);
-        }
-        else {
+        if (invocationType === 'explain') {
+            fetchItemAnswer(user.uid, sourceDocumentID);
             setShowMainAppButton(true);
         }
-        console.log('Source Document ID:', sourceDocumentID);
-        loadQuestions();
-        fetchTexts(); // Add this line
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-        });
-        return () => unsubscribe();
-    }, [user]);
+        else {
+            const urlParams = new URLSearchParams(window.location.search);
+            const homeworkParam = urlParams.get('g');
+            if (homeworkParam && homeworkParam.length > 5) {
+                setShowMainAppButton(false);
+            }
+            else {
+                setShowMainAppButton(true);
+            }
+            console.log('Source Document ID:', sourceDocumentID);
+            loadQuestions();
+            fetchTexts(); // Add this line
+        }
+    }, [user, sourceDocumentID, invocationType]);
 
     const handleAnswerChange = async (index, value) => {
         try {
@@ -282,25 +305,54 @@ const Homework = ({ sourceDocumentID }) => {
     };
 
     if (showMainApp) {
-        return <App user={user} />;
+        return <App user={user} grade={grade} subject={subject} />;
     }
 
     return (
         <div className="homework-container">
             <div className="homework-header">
-                {showMainAppButton && (
-                    <button className='signoutbutton' onClick={() => setShowMainApp(!showMainApp)}>
-                        <FaArrowLeft />
+                {showMainAppButton && (invocationType !== 'explain') && (
+                    <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
+                        Back to Previous Page
                     </button>
                 )}
-                <div className="source-doc-container">
-                    <button
-                        className="button"
-                        onClick={() => {
-                            const printWindow = window.open('', '', 'height=500,width=800');
-                            printWindow.document.write('<html><head><title>Homework</title>');
-                            printWindow.document.write('<style>');
-                            printWindow.document.write(`
+                {(invocationType === 'explain') ? (
+                    <div>
+                        {showMainAppButton && (
+                            <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
+                                Back to Previous Page
+                            </button>
+                        )}
+                        <MdEditor
+                            value={itemAnswer}
+                            renderHTML={text => mdParser.render(text || '')}
+                            readOnly={true}
+                            config={{
+                                view: {
+                                    menu: false,
+                                    md: false,
+                                    html: true
+                                },
+                                canView: {
+                                    menu: false,
+                                    md: false,
+                                    html: true,
+                                    fullScreen: false,
+                                    hideMenu: true
+                                }
+                            }}
+                        />
+                    </div>
+                ) : (
+                    <>
+                        <div className="source-doc-container">
+                            <button
+                                className="button"
+                                onClick={() => {
+                                    const printWindow = window.open('', '', 'height=500,width=800');
+                                    printWindow.document.write('<html><head><title>Homework</title>');
+                                    printWindow.document.write('<style>');
+                                    printWindow.document.write(`
                                 body { font-family: Arial, sans-serif; margin: 20px; }
                                 .grid { width: 100%; border-collapse: collapse; }
                                 .grid th, .grid td { 
@@ -310,67 +362,70 @@ const Homework = ({ sourceDocumentID }) => {
                                 }
                                 .grid th { background-color: #f2f2f2; }
                             `);
-                            printWindow.document.write('</style></head><body>');
+                                    printWindow.document.write('</style></head><body>');
 
-                            let tableHtml = '<table class="grid"><tr><th>Question</th>';
-                            if (showAnswers) {
-                                tableHtml += '<th>Correct Answer</th>';
-                            }
-                            tableHtml += '<th>Student Answer</th></tr>';
+                                    let tableHtml = '<table class="grid"><tr><th>Question</th>';
+                                    if (showAnswers) {
+                                        tableHtml += '<th>Correct Answer</th>';
+                                    }
+                                    tableHtml += '<th>Student Answer</th></tr>';
 
-                            problems.forEach(problem => {
-                                tableHtml += `<tr><td>${problem.question}</td>`;
-                                if (showAnswers) {
-                                    tableHtml += `<td>${problem.correctAnswer}</td>`;
-                                }
-                                tableHtml += `<td>${problem.userAnswer}</td></tr>`;
-                            });
-                            tableHtml += '</table>';
+                                    problems.forEach(problem => {
+                                        tableHtml += `<tr><td>${problem.question}</td>`;
+                                        if (showAnswers) {
+                                            tableHtml += `<td>${problem.correctAnswer}</td>`;
+                                        }
+                                        tableHtml += `<td>${problem.userAnswer}</td></tr>`;
+                                    });
+                                    tableHtml += '</table>';
 
-                            printWindow.document.write(tableHtml);
-                            printWindow.document.write('</body></html>');
-                            printWindow.document.close();
-                            printWindow.print();
-                        }}
-                    >
-                        {printGridButtonLabel}
-                    </button>
-                    <button
-                        className="button"
-                        onClick={() => {
-                            const baseUrl = window.location.href.split('?')[0];
-                            const newUrl = `${baseUrl}?h=${sourceDocID}`;
-                            navigator.clipboard.writeText(newUrl)
-                                .then(() => {
-                                    const notification = document.createElement('div');
-                                    notification.textContent = 'URL copied';
-                                    notification.style.cssText = 'position: fixed; right: 20px; top: 20px; background: rgba(0,0,0,0.7); color: white; padding: 10px 20px; border-radius: 4px; animation: fadeOut 2s forwards;';
-                                    document.body.appendChild(notification);
-                                    setTimeout(() => notification.remove(), 2000);
-                                })
-                                .catch(err => {
-                                    console.error('Failed to copy URL:', err);
-                                    alert('Failed to copy URL');
-                                });
-                        }}
-                    >
-                        {copyUrlButtonLabel}
-                    </button>
-                </div>
-                <button
-                    className='show-answers-button'
-                    onClick={handleShowAnswers}
-                >
-                    {showAnswers ? 'Hide Answers' : 'Show Answers'}
-                </button>
+                                    printWindow.document.write(tableHtml);
+                                    printWindow.document.write('</body></html>');
+                                    printWindow.document.close();
+                                    printWindow.print();
+                                }}
+                            >
+                                {printGridButtonLabel}
+                            </button>
+                            <button
+                                className="button"
+                                onClick={() => {
+                                    const baseUrl = window.location.href.split('?')[0];
+                                    const newUrl = `${baseUrl}?h=${sourceDocID}`;
+                                    navigator.clipboard.writeText(newUrl)
+                                        .then(() => {
+                                            const notification = document.createElement('div');
+                                            notification.textContent = 'URL copied';
+                                            notification.style.cssText = 'position: fixed; right: 20px; top: 20px; background: rgba(0,0,0,0.7); color: white; padding: 10px 20px; border-radius: 4px; animation: fadeOut 2s forwards;';
+                                            document.body.appendChild(notification);
+                                            setTimeout(() => notification.remove(), 2000);
+                                        })
+                                        .catch(err => {
+                                            console.error('Failed to copy URL:', err);
+                                            alert('Failed to copy URL');
+                                        });
+                                }}
+                            >
+                                {copyUrlButtonLabel}
+                            </button>
+                        </div>
+                        <button
+                            className='show-answers-button'
+                            onClick={handleShowAnswers}
+                        >
+                            {showAnswers ? 'Hide Answers' : 'Show Answers'}
+                        </button>
+                    </>
+                )}
             </div>
-            <div className="info-text" style={{
+            {(invocationType !== 'explain') && (<div className="info-text" style={{
                 fontSize: '12px',
                 color: '#666',
                 marginTop: '5px',
             }}>
                 {practiceNote}
             </div>
+            )}
             {showPinModal && (
                 <div className="pin-modal">
                     <div className="pin-modal-content">
@@ -387,7 +442,7 @@ const Homework = ({ sourceDocumentID }) => {
                 </div>
             )}
 
-            <div className="homework-grid">
+            {(invocationType !== 'explain') && (<div className="homework-grid">
                 <div className="grid-header">
                     <div className="question-col">Question</div>
                     {showAnswers && <div className="answer-col">Correct Answer</div>}
@@ -409,25 +464,27 @@ const Homework = ({ sourceDocumentID }) => {
                     </div>
                 ))}
             </div>
-            {showAnswers && (
-                <input
-                    type="text"
-                    className="source-doc-input"
-                    value={sourceDocID}
-                    onChange={(e) => setSourceDocID(e.target.value)}
-                    onBlur={handleSourceDocIDChange}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSourceDocIDChange(e)}
-                    placeholder="Enter Source Document ID"
-                />
             )}
             {showAnswers && (
-                <button
-                    className="fetch-button"
-                    onClick={() => loadQuestions(sourceDocID)}
-                >
-                    Fetch Questions
-                </button>
+                <>
+                    <input
+                        type="text"
+                        className="source-doc-input"
+                        value={sourceDocID}
+                        onChange={(e) => setSourceDocID(e.target.value)}
+                        onBlur={handleSourceDocIDChange}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSourceDocIDChange(e)}
+                        placeholder="Enter Source Document ID"
+                    />
+                    <button
+                        className="fetch-button"
+                        onClick={() => loadQuestions(sourceDocID)}
+                    >
+                        Fetch Questions
+                    </button>
+                </>
             )}
+
         </div>
     );
 };

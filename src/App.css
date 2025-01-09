@@ -595,9 +595,8 @@ button:hover {
 }
 
 .subject-button {
-  padding: 10px;
+  padding: 5px;
   background-color: #007bff;
-  box-shadow: #010a11;
   color: white;
   border: none;
   border-radius: 4px;

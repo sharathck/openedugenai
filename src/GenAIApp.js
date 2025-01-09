@@ -75,7 +75,7 @@ let lyricsPrompt = '';
 
 
 
-const GenAIApp = () => {
+const GenAIApp = ({user, grade, subject}) => {
     // **State Variables**
     const [isGeneratingImages, setIsGeneratingImages] = useState(false);
     const [isGeneratingYouTubeMusic, setIsGeneratingYouTubeMusic] = useState(false);
@@ -100,7 +100,6 @@ const GenAIApp = () => {
     const [goBack, setGoBack] = useState(false);
 
     // Authentication state
-    const [user, setUser] = useState(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [uid, setUid] = useState(null);
@@ -450,7 +449,6 @@ const GenAIApp = () => {
     // Listen for authentication state changes
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            setUser(currentUser);
             if (currentUser) {
                 userID = currentUser.uid;
                 console.log('User is signed in:', currentUser.uid);
@@ -475,6 +473,7 @@ const GenAIApp = () => {
                 await fetchTexts();
                 // Set visibility of back button based on admin status
                 setShowBackToAppButton(adminUser);
+                console.log('INSIDE login grade ', grade, ' subject ', subject);
             }
             else {
                 console.log('No user is signed in');
@@ -1810,8 +1809,9 @@ const GenAIApp = () => {
             });
     }
     if (showMainApp) {
+        console.log('showMainApp grade ', grade, ' subject ', subject);
         return (
-            <App user={user} />
+            <App user={user} grade={grade} subject={subject} />
         );
     }
 
@@ -2113,13 +2113,14 @@ const GenAIApp = () => {
     };
 
     if (goBack) {
-        return <App user={user} />;
+        console.log(' grade ', grade, ' subject ', subject);
+        return <App user={user} grade={grade} subject={subject}/>;
     }
 
     return (
         <div>
             <button className="subject-button" onClick={() => setGoBack(true)}>
-                Return to Grades - Subjects
+                Back to Previous Page
             </button>
             <div className={`main-content ${showEditPopup ? 'dimmed' : ''}`}>
                 <div>
@@ -2313,7 +2314,7 @@ const GenAIApp = () => {
                                     <div style={{ color: "green", fontWeight: "bold" }}>
                                         {item.model !== modelImageDallE3 && item.model !== modelGeminiImage && item.model !== 'azure-tts' && (
                                             <>
-                                                {(!isiPhone && showPrint && ( item.invocationType === 'explain') &&
+                                                {(!isiPhone && showPrint && (item.invocationType === 'explain') &&
                                                     <button
                                                         className={isLiveAudioPlaying[item.id] ? 'button_selected' : 'button'}
                                                         onClick={async () => {

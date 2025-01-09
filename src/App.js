@@ -8,7 +8,6 @@ import Homework from "./Homework";
 import GenAIApp from './GenAIApp';
 
 let searchQuery = '';
-let invocationType = '';
 let searchModel = 'All';
 let userID = '';
 let dataLimit = 21;
@@ -52,25 +51,23 @@ let lyricsPrompt = '';
 let modelQuiz = 'gemini-search';
 let modelQuizChoices = 'gpt-4o';
 let modelHomeWork = 'gemini';
+let modelExplain = 'gpt-4o';
 
-function App({ user }) {  // Add user prop
-  const [selectedGrade, setSelectedGrade] = useState(null);
-  const [selectedSubject, setSelectedSubject] = useState(null);
+function App({ user, grade, subject }) {  // Add user prop
+  const [selectedGrade, setSelectedGrade] = useState(grade);
+  const [invocationType, setInvocationType] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState(subject);
   const [generatedContent, setGeneratedContent] = useState('');
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [topicExplanation, setTopicExplanation] = useState('');
-  const [isGeneratingImages, setIsGeneratingImages] = useState(false);
-  const [isGeneratingYouTubeMusic, setIsGeneratingYouTubeMusic] = useState(false);
-  const [isExplain, setIsExplain] = useState(false);
-
   const [uid, setUid] = useState(user.uid);
   const [isGeneratingGeminiSearch, setIsGeneratingGeminiSearch] = useState(false);
-
   const [temperature, setTemperature] = useState(0.7);
   const temperatureRef = useRef(temperature);
   const [top_p, setTop_p] = useState(0.8);
   const top_pRef = useRef(top_p);
-  const [ishomeWork, setIshomeWork] = useState({});
+  const [ishomeWork, setIshomeWork] = useState([]);
+  const [isExplain, setIsExplain] = useState([]);
   const [isQuiz, setIsQuiz] = useState([]);
   const [currentDocId, setCurrentDocId] = useState([]);
   // Add new states for Quiz-Multiple Choices
@@ -176,7 +173,6 @@ function App({ user }) {  // Add user prop
       alert('Please enter content to explain.');
       return;
     }
-    setIsExplain(true);
     setTemperature(0.7);
     setTop_p(0.8);
     // Need to wait for state updates to be applied
@@ -184,8 +180,7 @@ function App({ user }) {  // Add user prop
     // Append the prompt to promptInput
     explainInput = message + explainPrompt;
     console.log('explainInput:', explainInput);
-    await callAPI(promptInput, 'explain');
-    setIsExplain(false);
+    await callAPI(modelExplain, promptInput, 'explain');
   };
   // Add handleQuiz function after handlehomeWork
   const handleQuiz = async (message) => {
@@ -276,11 +271,10 @@ function App({ user }) {  // Add user prop
       data = await response.json();
       generatedDocID = data[0].results[0].docID;
       console.log('Generated Doc ID:', generatedDocID, '  invocationType:', invocationType);
-      if (['homeWork', 'quiz_with_choices', 'quiz'].includes(invocationType)) {
-        setCurrentDocId(generatedDocID);
-        console.log('currenDocID:', currentDocId);
-        setShowhomeWorkApp(true);
-      }
+      setInvocationType(invocationType);
+      setCurrentDocId(generatedDocID);
+      console.log('currenDocID:', currentDocId);
+      setShowhomeWorkApp(true);
       //console.log('Response:', data);
     } catch (error) {
       console.error('Error generating content:', error);
@@ -318,7 +312,12 @@ function App({ user }) {  // Add user prop
   );
 
   if (showGenAIApp) {
-    return <GenAIApp />;
+    console.log('showGenAIApp:', showGenAIApp, ' grade ', selectedGrade, 'subject ', selectedSubject);
+    return <GenAIApp
+      user={user}
+      grade={selectedGrade}
+      subject={selectedSubject}
+    />;
   }
 
   const SubjectContent = ({ grade, subject }) => {
@@ -332,6 +331,9 @@ function App({ user }) {  // Add user prop
           user={user}
           onBack={() => setShowhomeWorkApp(false)}
           sourceDocumentID={currentDocId}
+          invocationType={invocationType}
+          grade={selectedGrade}
+          subject={selectedSubject}
         />
       );
     }
@@ -346,7 +348,7 @@ function App({ user }) {  // Add user prop
             setTopicExplanation('');
           }}
         >
-          Back to Grade - Subjects
+          Back to Previous Page
         </button>
         &nbsp;
         <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
@@ -358,6 +360,19 @@ function App({ user }) {  // Add user prop
             <div key={index} className="topic-item">
               <span>{topic}</span>
               &nbsp;&nbsp;
+              <button
+                onClick={async () => {
+                  setIsExplain(prev => ({ ...prev, [index]: true }));
+                  await handleExplain(grade + ' : ' + subject + ' : ' + topic);
+                  setIsExplain(prev => ({ ...prev, [index]: false }));
+                }}
+                className="button"
+                style={{ backgroundColor: '#90EE90', fontSize: '12px', color: 'black', marginLeft: '10px' }}
+              >
+                {isExplain[index]
+                  ? (<FaSpinner className="spinning" />)
+                  : 'Explain'}
+              </button>
               <button
                 onClick={async () => {
                   setIshomeWork(prev => ({ ...prev, [index]: true }));
@@ -414,6 +429,7 @@ function App({ user }) {  // Add user prop
       )}
     </div>
   );
+
 }
 
 export default App;
