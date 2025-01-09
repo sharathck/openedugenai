@@ -2313,7 +2313,7 @@ const GenAIApp = () => {
                                     <div style={{ color: "green", fontWeight: "bold" }}>
                                         {item.model !== modelImageDallE3 && item.model !== modelGeminiImage && item.model !== 'azure-tts' && (
                                             <>
-                                                {(!isiPhone && showPrint &&
+                                                {(!isiPhone && showPrint && ( item.invocationType === 'explain') &&
                                                     <button
                                                         className={isLiveAudioPlaying[item.id] ? 'button_selected' : 'button'}
                                                         onClick={async () => {
@@ -2330,20 +2330,6 @@ const GenAIApp = () => {
                                                             <FaPlay /> Speak
                                                         </label>
                                                     </button>
-                                                )}
-
-                                                {showPrint && (<button
-                                                    className={isGeneratingDownloadableAudio[item.id] ? 'button_selected' : 'button'}
-                                                    onClick={async () => {
-                                                        setIsGeneratingDownloadableAudio(prev => ({ ...prev, [item.id]: true }));
-                                                        await callTTSAPI(item.answer, process.env.REACT_APP_TTS_SSML_API_URL)
-                                                            .finally(() => setIsGeneratingDownloadableAudio(prev => ({ ...prev, [item.id]: false })));
-                                                    }}
-                                                >
-                                                    <label className={isGeneratingDownloadableAudio[item.id] ? 'flashing' : ''}>
-                                                        <FaCloudDownloadAlt /> Audio
-                                                    </label>
-                                                </button>
                                                 )}
                                             </>
                                         )}
