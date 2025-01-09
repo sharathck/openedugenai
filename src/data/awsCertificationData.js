@@ -225,7 +225,7 @@ export const awsCertificationData = {
         'Algorithm Selection: Choosing appropriate machine learning algorithms based on the problem type (classification, regression, clustering) and data characteristics.',
         'Model Training: Using SageMaker to train machine learning models, including configuring training jobs, optimizing hyperparameters, and utilizing different instance types.',
         'Model Evaluation: Evaluating model performance using metrics such as accuracy, precision, recall, F1-score, ROC curves, and AUC.',
-        'Hyperparameter Tuning: Implementing hyperparameter optimization techniques using SageMaker's automatic model tuning to enhance model performance.',
+        'Hyperparameter Tuning: Implementing hyperparameter optimization techniques using SageMaker\'s automatic model tuning to enhance model performance.',
          'Model Selection: Employing techniques such as cross-validation to select the best performing model.'
     ],
      MachineLearningAlgorithms: [
