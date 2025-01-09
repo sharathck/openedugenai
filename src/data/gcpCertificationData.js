@@ -130,5 +130,65 @@ export const gcpCertificationData = {
       'Migration Case Studies: Lessons learned from real-world GCP migrations',
       'Cost-Benefit Analysis: Justifying architectural decisions based on business value'
     ]
-  }
+  },
+  'GoogleCloud-DataScientist': {
+    "Data Engineering and Infrastructure": [
+       "BigQuery: Querying, loading, and exporting data; managing datasets and tables; optimizing query performance; understanding cost management.",
+       "Cloud Storage: Storing and managing data; working with different storage classes; using lifecycle management; data transfer options.",
+       "Cloud Composer: Building and managing workflows using Apache Airflow; integrating with other GCP services; creating DAGs.",
+        "Cloud Dataflow: Developing data processing pipelines; batch and stream processing; using Beam SDK; managing pipeline deployments.",
+       "Cloud Dataproc: Running Hadoop and Spark clusters; managing cluster resources; configuring cluster settings; integrating with other GCP services.",
+       "Dataflow SQL: Using SQL for data transformation within Dataflow pipelines; understanding SQL syntax and functions.",
+       "Cloud Functions: Serverless functions for data processing and event-driven tasks; deploying and managing functions.",
+       "Cloud Pub/Sub: Building real-time messaging systems; understanding topics and subscriptions; integrating with other GCP services.",
+       "Networking for Data: Understanding VPC networks, subnets, and firewalls; configuring network settings for data services.",
+       "Infrastructure as Code: Using tools like Terraform or Deployment Manager to provision and manage data infrastructure.",
+        "Data Lineage and Governance: Understanding data provenance, data quality, and data security; implementing data governance policies.",
+       "Data Security: Implementing security best practices for data storage, processing, and access; using IAM and encryption.",
+        "Hybrid and Multi-Cloud Data Management: Understanding data transfer options, interoperability, and data integration strategies across different environments."
+
+    ],
+    "Machine Learning and AI": [
+      "Vertex AI: Building, training, and deploying ML models; using pre-built models; managing model versions.",
+       "AutoML: Using automated ML for building models without coding; understanding different AutoML options.",
+      "TensorFlow: Building and training deep learning models; using Keras and other TensorFlow libraries.",
+      "PyTorch: Using PyTorch for building and training deep learning models; understanding its features and advantages.",
+      "ML APIs: Using pre-trained models for vision, language, and other tasks; integrating APIs into applications.",
+       "Feature Engineering: Selecting, transforming, and creating features for ML models; understanding feature importance.",
+      "Model Evaluation: Assessing model performance using metrics; understanding bias and variance; model validation strategies.",
+      "Hyperparameter Tuning: Optimizing model parameters; using techniques like grid search and Bayesian optimization.",
+      "Model Deployment: Deploying models for online prediction and batch processing; using Vertex AI endpoints.",
+      "Model Monitoring: Monitoring model performance over time; detecting drift and anomalies; retraining models.",
+        "Explainable AI: Understanding and interpreting model predictions; using techniques to explain feature importance.",
+        "Generative AI: Understanding the concepts and techniques of generative models, including GANs, VAEs, and diffusion models.",
+        "Ethical Considerations in AI: Addressing bias, fairness, and transparency in AI applications; implementing responsible AI practices."
+    ],
+    "Data Analysis and Visualization": [
+      "BigQuery ML: Using SQL to build and train ML models; integrating models with data analysis.",
+        "Data Visualization with Looker Studio: Creating dashboards and visualizations; connecting to different data sources; sharing reports.",
+      "Data Exploration: Using tools and techniques to explore and understand data; identifying patterns and insights.",
+      "Statistical Analysis: Applying statistical methods to data analysis; understanding distributions, hypothesis testing, and regression.",
+      "Data Wrangling: Cleaning, transforming, and preparing data for analysis; using tools and techniques for data quality.",
+        "A/B Testing: Designing and analyzing A/B tests to measure the impact of changes; using statistical methods for significance testing.",
+      "Data Storytelling: Communicating insights using visualizations and narratives; presenting findings to stakeholders."
+
+    ],
+    "Programming and Development": [
+       "Python Programming: Writing Python code for data analysis, machine learning, and data engineering; understanding libraries like Pandas, NumPy, and Scikit-learn.",
+       "SQL: Writing SQL queries for data extraction, transformation, and analysis; understanding database concepts.",
+       "Git and Version Control: Managing code using Git; understanding branching, merging, and pull requests.",
+        "Command Line Tools: Using command-line interfaces for interacting with GCP services and data.",
+        "Containerization with Docker: Building and deploying containerized applications; understanding Dockerfiles and images.",
+        "CI/CD: Implementing continuous integration and continuous delivery pipelines; automating code deployment.",
+        "Scripting: Automating data workflows using scripting languages like Bash or Python."
+    ],
+      "Business Acumen and Communication": [
+          "Business Understanding: Aligning data science solutions with business goals; understanding business needs and challenges.",
+          "Stakeholder Management: Communicating with stakeholders; understanding their needs and expectations.",
+          "Project Management: Planning and managing data science projects; understanding agile methodologies.",
+          "Documentation: Creating clear and concise documentation for data, models, and processes.",
+           "Presentation Skills: Presenting findings to technical and non-technical audiences; using visualizations and storytelling."
+      ]
+  },
+  
 }

@@ -139,5 +139,177 @@ export const azureCertificationData = {
       'Azure Security Center Regulatory Compliance: Assess compliance against regulatory standards',
       'Management Groups: Organize subscriptions for unified policy and access management'
     ]
-  }
+  },
+  'Azure-DataScientist': {
+    'Core Data Science Concepts': [
+      'Understanding the data science lifecycle: From problem definition to deployment',
+      'Exploratory data analysis (EDA): Techniques for summarizing and visualizing data',
+      'Feature engineering: Creating, selecting, and transforming features for modeling',
+      'Model selection: Choosing the right algorithm for the problem at hand',
+      'Model evaluation: Metrics for assessing model performance and generalizability',
+      'Bias and fairness in machine learning: Understanding and mitigating bias',
+      'Ethical considerations in data science: Responsible use of data and algorithms',
+      'Version control for data science projects: Using Git and GitHub'
+    ],
+    'Machine Learning Fundamentals': [
+        'Supervised learning: Classification, regression, and their use cases',
+        'Unsupervised learning: Clustering, dimensionality reduction, and anomaly detection',
+        'Reinforcement learning: Understanding the basic concepts and applications',
+        'Regression algorithms: Linear, polynomial, ridge, and lasso regression',
+        'Classification algorithms: Logistic regression, decision trees, random forests, support vector machines (SVM), and neural networks',
+        'Clustering algorithms: K-means, hierarchical clustering, and DBSCAN',
+        'Dimensionality reduction techniques: Principal component analysis (PCA) and t-distributed stochastic neighbor embedding (t-SNE)',
+        'Model ensembling: Combining multiple models for better performance'
+    ],
+    'Azure Machine Learning Service': [
+        'Creating and managing workspaces: Setting up the Azure Machine Learning environment',
+        'Data management: Uploading, exploring, and transforming data within the service',
+        'Compute resources: Creating and managing compute clusters, instances, and inference endpoints',
+        'Notebooks and experimentation: Developing and running machine learning experiments using Jupyter notebooks',
+        'Training models: Using built-in algorithms and custom models',
+        'Hyperparameter tuning: Optimizing model performance using automated techniques',
+        'Model deployment: Deploying models as web services or containers',
+        'Model monitoring and management: Tracking model performance and managing deployed models',
+        'Pipelines: Creating reusable and automated machine learning workflows',
+        'Azure Machine Learning SDK and CLI: Interacting with the service programmatically',
+        'Automated ML: Using automated machine learning to find the best model',
+        'MLOps: Implementing DevOps practices for machine learning'
+    ],
+    'Data Ingestion and Preparation': [
+      'Connecting to various data sources: Azure Blob Storage, Azure Data Lake Storage, Azure SQL Database, etc.',
+      'Data wrangling and cleaning: Handling missing values, outliers, and inconsistent data',
+      'Data transformation: Feature scaling, encoding categorical variables, and feature selection',
+      'Working with different data formats: CSV, JSON, Parquet, etc.',
+      'Using Azure Data Factory for data integration and transformation',
+      'Using Azure Databricks for large-scale data processing'
+    ],
+    'Model Training and Evaluation': [
+      'Choosing the right evaluation metrics: Accuracy, precision, recall, F1-score, AUC-ROC, etc.',
+      'Cross-validation: Ensuring model generalizability using k-fold cross-validation',
+      'Regularization techniques: L1 and L2 regularization to prevent overfitting',
+      'Hyperparameter optimization: Tuning model hyperparameters to improve performance',
+      'Model selection and comparison: Evaluating and selecting the best performing model',
+      'Understanding bias and variance: Diagnosing model underfitting and overfitting'
+    ],
+      'Deep Learning with Azure': [
+        'Understanding neural networks: Basic concepts of neural networks, activation functions, and backpropagation',
+        'Working with deep learning frameworks: TensorFlow, PyTorch, and Keras',
+        'Building and training neural networks: Creating and training deep learning models for various tasks',
+        'Transfer learning: Using pre-trained models for faster and more effective learning',
+        'Convolutional neural networks (CNNs): Image recognition and computer vision tasks',
+        'Recurrent neural networks (RNNs): Natural language processing and sequential data tasks',
+        'Generative models: GANs and VAEs',
+        'Using Azure GPU-enabled compute resources for deep learning'
+    ],
+    'Natural Language Processing (NLP)': [
+        'Text preprocessing techniques: Tokenization, stemming, lemmatization, and stop word removal',
+        'Text representation: Bag-of-words, TF-IDF, and word embeddings (Word2Vec, GloVe, and BERT)',
+        'Sentiment analysis: Determining the sentiment of a piece of text',
+        'Named entity recognition (NER): Identifying named entities in text',
+        'Text classification: Categorizing text into predefined categories',
+        'Language modeling: Predicting the next word in a sequence',
+        'Using Azure Cognitive Services for NLP tasks'
+    ],
+    'Computer Vision': [
+        'Image preprocessing techniques: Resizing, normalization, and augmentation',
+        'Image classification: Classifying images into predefined categories',
+        'Object detection: Locating and identifying objects in images',
+        'Image segmentation: Segmenting images into different regions',
+        'Using Azure Cognitive Services for computer vision tasks'
+      ],
+    'Deployment and Operationalization': [
+      'Deploying models as web services: Creating REST APIs for model access',
+      'Deploying models as containers: Containerizing models using Docker',
+      'Model monitoring: Tracking model performance and identifying issues',
+        'Implementing continuous integration and continuous deployment (CI/CD) for ML models',
+        'Managing model versions and updates',
+        'Scaling and optimizing model deployments'
+    ],
+      'Responsible AI': [
+        'Understanding fairness in machine learning: Identifying and mitigating bias in datasets and models',
+        'Explainable AI (XAI): Techniques for understanding and explaining model predictions',
+        'Privacy and security in machine learning: Protecting sensitive data and ensuring model security',
+        'Ethical guidelines and principles for AI development',
+        'Tools and techniques for responsible AI practices',
+        'Data governance and compliance'
+      ],
+    'Specialized ML Topics': [
+        'Time series analysis and forecasting: Modeling and predicting time-dependent data',
+        'Recommendation systems: Building systems for recommending products or content',
+        'Anomaly detection: Identifying unusual patterns or events in data',
+        'Graph-based machine learning: Modeling and analyzing relationships between entities',
+        'Reinforcement learning: Training agents to make decisions in dynamic environments'
+    ],
+        'Azure Data Services for ML': [
+          'Azure Databricks: Scalable platform for data engineering and machine learning',
+          'Azure Synapse Analytics: Unified platform for data analytics and machine learning',
+            'Azure Data Lake Storage: Scalable and secure data storage',
+            'Azure SQL Database: Managed relational database service',
+            'Azure Cosmos DB: Globally distributed multi-model database service'
+        ]
+  },
+  'Azure-MachineLearningEngineer': {
+    'CoreDataScienceConcepts': [
+      'Understanding of statistical concepts: Probability distributions, hypothesis testing, regression analysis.',
+      'Knowledge of machine learning algorithms: Supervised, unsupervised, and reinforcement learning.',
+      'Model evaluation metrics: Accuracy, precision, recall, F1-score, ROC curves, AUC.',
+      'Data preprocessing techniques: Cleaning, transformation, feature engineering, and handling missing data.',
+      'Understanding of bias and variance in models and how to mitigate them.',
+      'Cross-validation techniques: k-fold, stratified k-fold.',
+      'Regularization techniques: L1 and L2 regularization, dropout.',
+      'Understanding the ethical implications of AI and machine learning.'
+     ],
+    'AzureMachineLearningService': [
+       'Workspace management: Creating, configuring, and managing Azure Machine Learning workspaces.',
+       'Compute resources: Creating and managing compute instances, clusters, and serverless compute.',
+       'Data management: Registering datasets, creating datastores, and working with different data types.',
+       'Environment management: Creating and managing environments for model training and deployment.',
+       'Experiment tracking: Logging and tracking experiments, metrics, and artifacts.',
+       'Pipeline creation and management: Defining and running machine learning pipelines.',
+       'Model registration and versioning: Registering models and tracking versions.',
+       'Integration with other Azure services: Azure Storage, Azure Data Lake, Azure DevOps.',
+       'Using the Azure Machine Learning SDK, CLI, and UI.',
+       'Understanding of Azure Machine Learning components: datasets, datastores, compute targets, environments, and experiments.',
+       'Monitoring Azure Machine Learning resources using Azure Monitor and logs.',
+       'Implementing security best practices for Azure Machine Learning resources.',
+        'Cost management for Azure Machine Learning resources using Azure Cost Management.'
+    ],
+    'ModelTraining': [
+      'Choosing appropriate algorithms for different machine learning tasks: classification, regression, clustering, etc.',
+      'Implementing custom training scripts and models.',
+      'Using pre-built models and algorithms from Azure Machine Learning.',
+      'Hyperparameter tuning: Using techniques like grid search, random search, and Bayesian optimization.',
+      'Distributed training: Using distributed compute resources to train models faster.',
+       'Using automated machine learning (AutoML) to train models.',
+        'Understanding and mitigating overfitting and underfitting.'
+    ],
+    'ModelDeployment': [
+      'Deploying models as web services using Azure Container Instances (ACI) and Azure Kubernetes Service (AKS).',
+       'Deploying models to edge devices using Azure IoT Edge.',
+      'Batch deployment: Deploying models for batch scoring.',
+      'Real-time deployment: Deploying models for real-time scoring.',
+      'Model monitoring and retraining: Monitoring model performance and retraining when necessary.',
+      'Understanding model deployment options and choosing the appropriate method.',
+      'Managing and scaling model deployments.',
+      'Implementing A/B testing for deployed models.',
+       'Implementing security best practices for deployed models.'
+    ],
+     'MLOps': [
+      'Implementing CI/CD pipelines for machine learning using Azure DevOps or GitHub Actions.',
+      'Automating model training and deployment processes.',
+      'Version control for machine learning models, datasets, and code.',
+      'Monitoring model performance in production using Azure Monitor and Application Insights.',
+      'Implementing model retraining and redeployment workflows.',
+      'Collaborating on machine learning projects using Azure DevOps or GitHub.',
+      'Managing machine learning infrastructure as code (IaC).',
+        'Implementing data versioning for machine learning projects.'
+    ],
+    'SpecializedMachineLearningTasks': [
+        'Natural Language Processing (NLP): Using pre-trained models and building custom NLP models.',
+       'Computer Vision: Using pre-trained models and building custom computer vision models.',
+        'Time series forecasting: Using machine learning models for time series data.',
+       'Anomaly detection: Using machine learning models for anomaly detection.',
+        'Reinforcement learning: Implementing reinforcement learning models.'
+        ]
+  },
 }
