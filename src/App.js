@@ -368,22 +368,22 @@ function App({ user, grade, subject }) {  // Add user prop
             setGeneratedContent('');
             setSelectedTopic(null);
             setTopicExplanation('');
-          }}
-        >
-          Previous Page
-        </button>
-        &nbsp;
-        <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
-          Enter your own Topic
-        </button>
-        <h2>{grade} - {subject}</h2>
-        <div className="topics-container">
-          {gradesData[grade][subject].map((topic, index) => (
+            }}
+          >
+            Previous Page
+          </button>
+          &nbsp;
+          <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
+            Enter your own Topic
+          </button>
+          <h2> <span style={{color: 'darkBlue'}}>{grade}</span> - <span style={{color: 'darkGreen'}}>{subject}</span></h2>
+          <div className="topics-container">
+            {gradesData[grade][subject].map((topic, index) => (
             <div key={index} className="topic-item">
               <span>{topic}</span>
               &nbsp;&nbsp;
               <button
-                onClick={async () => {
+              onClick={async () => {
                   setIsExplain(prev => ({ ...prev, [index]: true }));
                   await handleExplain(grade + ' : ' + subject + ' : ' + topic);
                   setIsExplain(prev => ({ ...prev, [index]: false }));
