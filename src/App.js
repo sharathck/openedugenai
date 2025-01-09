@@ -413,12 +413,12 @@ function App({ user, grade, subject }) {  // Add user prop
         <SubjectContent grade={selectedGrade} subject={selectedSubject} />
       ) : (
         <div>
-          <span>Welcome, {user.email}</span>
-          <button className="signoutbutton" onClick={handleSignOut}>
-            Sign Out
-          </button>
           <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
             Enter your own Topic
+          </button>
+          &nbsp;&nbsp;&nbsp;
+          <button className="signoutbutton" onClick={handleSignOut}>
+            {user.email} <FaSignOutAlt />
           </button>
           <div className="grades-container">
             {Object.keys(gradesData).map(grade => (

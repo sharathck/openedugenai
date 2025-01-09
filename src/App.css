@@ -175,10 +175,8 @@
 }
 
 .signoutbutton {
-  background-color: rgb(237, 182, 15);
-  border: none;
-  color: #fff;
-  cursor: pointer;
+  background-color: rgb(244, 198, 61);
+  color: #1c0202;
   margin-left: 20px;
 }
 
