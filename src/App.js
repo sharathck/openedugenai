@@ -364,11 +364,11 @@ function App({ user }) {  // Add user prop
           {gradesData[grade][subject].map((topic, index) => (
             <div key={index} className="topic-item">
               <span >{topic}</span>
-              <br />
+               &nbsp;&nbsp;
               <button
                 onClick={() => handlehomeWork(topic, 'homeWork')}
-                className="practiceButton"
-                style={{ backgroundColor: 'darkBlue', color: 'white', marginLeft: '10px' }}
+                className="button"
+                style={{ backgroundColor: 'darkBlue', fontSize: '12px',color: 'white', marginLeft: '10px' }}
               >
                 {ishomeWork
                   ? (<FaSpinner className="spinning" />)
@@ -376,8 +376,8 @@ function App({ user }) {  // Add user prop
               </button>
               <button
                 onClick={() => handleQuiz(topic, 'quiz')}
-                className="practiceButton"
-                style={{ backgroundColor: 'lightblue', color: 'black', marginLeft: '10px' }}
+                className="button"
+                style={{ backgroundColor: 'lightblue', fontSize: '12px', color: 'black', marginLeft: '10px' }}
               >
                 {isQuiz
                   ? (<FaSpinner className="spinning" />)
@@ -385,17 +385,14 @@ function App({ user }) {  // Add user prop
               </button>
               <button
                 onClick={() => handleMultipleChoiceQuiz(topic, 'quiz_with_choices')}
-                className="practiceButton"
-                style={{ backgroundColor: 'lightgreen', color: 'black', marginLeft: '10px' }}
+                className="button"
+                style={{ backgroundColor: 'lightgreen', fontSize: '12px', color: 'black', marginLeft: '10px' }}
               >
                 {isQuizMultipleChoice
                   ? (<FaSpinner className="spinning" />)
                   : 'Quiz-Choices'}
               </button>
               < br />
-              < br />
-              < br />
-
             </div>
           ))}
         </div>

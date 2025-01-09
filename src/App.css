@@ -100,7 +100,7 @@
   margin-left: 10px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
   padding: 5px 5px;
-  font-size: 18px; /* make the button text extremely small */
+  font-size: 16px; /* make the button text extremely small */
 }
 .back-button {
   background-color: rgb(21, 122, 21);
@@ -110,7 +110,7 @@
   margin-left: 10px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
   padding: 5px 5px;
-  font-size: 18px; /* make the button text extremely small */
+  font-size: 16px; /* make the button text extremely small */
 }
 .sourceDocumentButton{
   background-color: rgb(196, 217, 244);
@@ -226,7 +226,6 @@ html, body {
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .popupContent {
@@ -462,7 +461,6 @@ form {
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
   display: flex;
   justify-content: center;
-  align-items: center;
   z-index: 1000;
 }
 
@@ -518,7 +516,6 @@ form {
 }
 
 .App {
-  text-align: center;
   padding: 20px;
 }
 
