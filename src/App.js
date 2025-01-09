@@ -48,9 +48,9 @@ let explainInput = '';
 let explainPrompt = '';
 let lyricsInput = '';
 let lyricsPrompt = '';
-let modelQuiz = 'llama-c';
+let modelQuiz = 'gemini-search';
 let modelQuizChoices = 'gpt-4o';
-let modelHomeWork = 'gemini-flash-fast';
+let modelHomeWork = 'gemini';
 
 function App({ user }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(null);
