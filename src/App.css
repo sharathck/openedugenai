@@ -687,4 +687,26 @@ button:hover {
   color: #666;
 }
 
+.data-source-select {
+  font-size: 16px;
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+  color: #333;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.data-source-select:hover {
+  border-color: #007bff;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.data-source-select:focus {
+  outline: none;
+  border-color: #0056b3;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
 /* ...rest of existing styles... */

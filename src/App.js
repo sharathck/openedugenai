@@ -515,6 +515,7 @@ function App({ user, source, grade, subject }) {  // Add user prop
               }
             }}
           >
+            <option value="">Select Category</option>
             <option value="schoolGradesData">School Grades</option>
             <option value="collegeData">Bachelors</option>
             <option value="mastersData">Masters</option>
