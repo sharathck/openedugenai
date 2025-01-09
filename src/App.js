@@ -4,6 +4,8 @@ import { auth, db } from './Firebase';
 import { collection, doc, where, addDoc, getDocs, getDoc, query, orderBy, startAfter, limit, updateDoc } from 'firebase/firestore';
 import { schoolGradesData } from './data/schoolGradesData';  // Add this import
 import { collegeData } from './data/collegeData';  // Add this import 
+import { automationTestingData} from './data/automationTestingData';
+import {mastersData} from './data/mastersData';
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
 import GenAIApp from './GenAIApp';
@@ -87,6 +89,12 @@ function App({ user, grade, subject }) {  // Add user prop
       console.log('Params:', params.get('source'));
       if (params.get('source') === 'collegeData') {
         setGradesData(collegeData);
+      }
+      if (params.get('source') === 'automationTestingData') {
+        setGradesData(automationTestingData);
+      }
+      if (params.get('source') === 'mastersData') {
+        setGradesData(mastersData);
       }
       await fetchTexts();
     };
