@@ -1,6 +1,6 @@
 {
-    "short_name": "Gen AI",
-    "name": "Gen AI Studio",
+    "short_name": "PracticeQ",
+    "name": "Practice Questions",
     "icons": [
       {
         "src": "ai.avif"
