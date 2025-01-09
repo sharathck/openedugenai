@@ -70,9 +70,9 @@ function App({ user }) {  // Add user prop
   const temperatureRef = useRef(temperature);
   const [top_p, setTop_p] = useState(0.8);
   const top_pRef = useRef(top_p);
-  const [ishomeWork, setIshomeWork] = useState(false);
-  const [isQuiz, setIsQuiz] = useState(false);
-  const [currentDocId, setCurrentDocId] = useState(null);
+  const [ishomeWork, setIshomeWork] = useState({});
+  const [isQuiz, setIsQuiz] = useState([]);
+  const [currentDocId, setCurrentDocId] = useState([]);
   // Add new states for Quiz-Multiple Choices
   const [isQuizMultipleChoice, setIsQuizMultipleChoice] = useState(false);
   const [showMainApp, setShowMainApp] = useState(false);
@@ -158,7 +158,6 @@ function App({ user }) {  // Add user prop
       alert('Please enter a prompt.');
       return;
     }
-    setIshomeWork(true);
     setTemperature(0.4);
     setTop_p(0.5);
     // Need to wait for state updates to be applied
@@ -167,7 +166,6 @@ function App({ user }) {  // Add user prop
     homeWorkInput = message + intelligentQuestionsPrompt;
     console.log('homeWorkInput: ', homeWorkInput);
     await callAPI(modelHomeWork, promptInput, 'homeWork');
-    setIshomeWork(false);
   };
 
   // Add handler function after handlehomeWork
@@ -200,14 +198,12 @@ function App({ user }) {  // Add user prop
     console.log('handleQuiz:', message);
     setTemperature(0.3);
     setTop_p(0.5);
-    setIsQuiz(true);
     // Need to wait for state updates to be applied
     await new Promise(resolve => setTimeout(resolve, 1000));
     // Append the prompt to promptInput
     quizInput = message + quizPrompt;
     console.log('quizInput:', quizInput);
     await callAPI(modelQuiz, promptInput, 'quiz');
-    setIsQuiz(false);
   };
 
   // Add the handler function for multiple choice quiz
@@ -219,14 +215,12 @@ function App({ user }) {  // Add user prop
     }
     setTemperature(0.3);
     setTop_p(0.5);
-    setIsQuizMultipleChoice(true);
     await fetchTexts();
     // Append the prompt to promptInput
     await new Promise(resolve => setTimeout(resolve, 1000));
     quizMultipleChoicesInput = message + quizMultipleChoicesPrompt;
     console.log('quizMultipleChoicesInput:', quizMultipleChoicesInput);
     await callAPI(modelQuizChoices, promptInput, 'quiz_with_choices');
-    setIsQuizMultipleChoice(false);
   };
   const callAPI = async (modelName, promptText, invocationType = 'GenAI') => {
     console.log(' modelName ' + modelName + '   ****** Calling API with URL: ' + process.env.REACT_APP_GENAI_API_URL, ' invocationType: ', invocationType, '  promptText:', promptText);
@@ -342,60 +336,71 @@ function App({ user }) {  // Add user prop
       );
     }
     return (
-
       <div className="subject-content">
-        <button className="subject-button"
-          onClick={() => {
-            setSelectedGrade(null);  // Add this line to clear selected grade
-            setSelectedSubject(null);
-            setGeneratedContent('');
-            setSelectedTopic(null);
-            setTopicExplanation('');
-          }}
+      <button className="subject-button"
+      onClick={() => {
+      setSelectedGrade(null);
+      setSelectedSubject(null);
+      setGeneratedContent('');
+      setSelectedTopic(null);
+      setTopicExplanation('');
+      }}
+      >
+      Back to Grade - Subjects
+      </button>
+      &nbsp; 
+      <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
+      Enter your own Topic
+      </button>
+      <h2>{grade} - {subject}</h2>
+      <div className="topics-container">
+      {gradesData[grade][subject].map((topic, index) => (
+      <div key={index} className="topic-item">
+        <span>{topic}</span>
+         &nbsp;&nbsp;
+        <button
+        onClick={async () => {
+        setIshomeWork(prev => ({ ...prev, [index]: true }));
+        await handlehomeWork(topic, 'homeWork');
+        setIshomeWork(prev => ({ ...prev, [index]: false }));
+        }}
+        className="button"
+        style={{ backgroundColor: 'darkBlue', fontSize: '12px',color: 'white', marginLeft: '10px' }}
         >
-          Back to Grade - Subjects
+        {ishomeWork[index]
+        ? (<FaSpinner className="spinning" />)
+        : 'Practice Questions'}
         </button>
-        &nbsp; 
-        <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
-            Enter your own Topic
+        <button
+        onClick={async () => {
+        setIsQuiz(prev => ({ ...prev, [index]: true }));
+        await handleQuiz(topic, 'quiz');
+        setIsQuiz(prev => ({ ...prev, [index]: false }));
+        }}
+        className="button"
+        style={{ backgroundColor: 'lightblue', fontSize: '12px', color: 'black', marginLeft: '10px' }}
+        >
+        {isQuiz[index]
+        ? (<FaSpinner className="spinning" />)
+        : 'Trivia/Quiz'}
         </button>
-        <h2>{grade} - {subject}</h2>
-        <div className="topics-container">
-          {gradesData[grade][subject].map((topic, index) => (
-            <div key={index} className="topic-item">
-              <span >{topic}</span>
-               &nbsp;&nbsp;
-              <button
-                onClick={() => handlehomeWork(topic, 'homeWork')}
-                className="button"
-                style={{ backgroundColor: 'darkBlue', fontSize: '12px',color: 'white', marginLeft: '10px' }}
-              >
-                {ishomeWork
-                  ? (<FaSpinner className="spinning" />)
-                  : 'Practice Questions'}
-              </button>
-              <button
-                onClick={() => handleQuiz(topic, 'quiz')}
-                className="button"
-                style={{ backgroundColor: 'lightblue', fontSize: '12px', color: 'black', marginLeft: '10px' }}
-              >
-                {isQuiz
-                  ? (<FaSpinner className="spinning" />)
-                  : 'Trivia/Quiz'}
-              </button>
-              <button
-                onClick={() => handleMultipleChoiceQuiz(topic, 'quiz_with_choices')}
-                className="button"
-                style={{ backgroundColor: 'lightgreen', fontSize: '12px', color: 'black', marginLeft: '10px' }}
-              >
-                {isQuizMultipleChoice
-                  ? (<FaSpinner className="spinning" />)
-                  : 'Quiz-Choices'}
-              </button>
-              < br />
-            </div>
-          ))}
-        </div>
+        <button
+          onClick={async () => {
+                  setIsQuizMultipleChoice(prev => ({ ...prev, [index]: true }));
+                  await handleMultipleChoiceQuiz(topic, 'quiz_with_choices');
+                  setIsQuizMultipleChoice(prev => ({ ...prev, [index]: false }));
+                  }}
+        className="button"
+        style={{ backgroundColor: 'lightgreen', fontSize: '12px', color: 'black', marginLeft: '10px' }}
+        >
+        {isQuizMultipleChoice[index]
+        ? (<FaSpinner className="spinning" />)
+        : 'Quiz-Choices'}
+        </button>
+        <br />
+      </div>
+      ))}
+      </div>
       </div>
     );
   };
