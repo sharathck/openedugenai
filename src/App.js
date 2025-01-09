@@ -52,6 +52,7 @@ let modelQuiz = 'gemini-search';
 let modelQuizChoices = 'gpt-4o';
 let modelHomeWork = 'gemini';
 let modelExplain = 'gpt-4o';
+let advanced_features = 'Enter your own topic';
 
 function App({ user, grade, subject }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(grade);
@@ -140,6 +141,12 @@ function App({ user, grade, subject }) {  // Add user prop
             break;
           case 'modelHomeWork':
             modelHomeWork = data.fullText;
+            break;
+          case 'modelExplain':
+            modelExplain = data.fullText;
+            break;
+          case 'advanced_features':
+            advanced_features = data.fullText;
             break;
           default:
             break;
