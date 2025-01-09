@@ -66,12 +66,24 @@ function App({ user }) {  // Add user prop
   const temperatureRef = useRef(temperature);
   const [top_p, setTop_p] = useState(0.8);
   const top_pRef = useRef(top_p);
+  const [modelAnthropic, setModelAnthropic] = useState('claude');
   const [modelGemini, setModelGemini] = useState('gemini');
   const [modelOpenAI, setModelOpenAI] = useState('gpt-4o');
   const [modelGpto1Mini, setModelGpto1Mini] = useState('o1-mini');
   const [modelo1, setModelo1] = useState('o1');
   const [modelLlama, setModelLlama] = useState('llama');
   const [modelMistral, setModelMistral] = useState('mistral');
+  const [modelGpt4oMini, setModelGpt4oMini] = useState('gpt-4o-mini');
+  const [modelGeminiSearch, setModelGeminiSearch] = useState('gemini-search');
+  const [modelGeminiFlash, setModelGeminiFlash] = useState('gemini-flash');
+  const [modelGpt4Turbo, setModelGpt4Turbo] = useState('gpt-4-turbo');
+  const [modelImageDallE3, setModelImageDallE3] = useState('dall-e-3');
+  const [modelPerplexityFast, setModelPerplexityFast] = useState('perplexity-fast');
+  const [modelPerplexity, setModelPerplexity] = useState('perplexity');
+  const [modelCodestralApi, setModelCodestralApi] = useState('mistral-codestral-api'); // New state
+  const [modelClaudeHaiku, setModelClaudeHaiku] = useState('claude-haiku');
+  const [modelGeminiImage, setModelGeminiImage] = useState('gemini-image');
+  const [modelCerebras, setModelCerebras] = useState('llama-c');
   const [ishomeWork, setIshomeWork] = useState(false);
   const [isQuiz, setIsQuiz] = useState(false);
   const [currentDocId, setCurrentDocId] = useState(null);
@@ -259,7 +271,7 @@ useEffect(() => {
         },
         body: JSON.stringify({
           prompt: promptText,
-          model: modelGemini,
+          model: modelCerebras,
           uid: uid,
           temperature: temperatureRef.current.valueOf(),
           top_p: top_pRef.current.valueOf(),
