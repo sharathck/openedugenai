@@ -382,20 +382,7 @@ function App({ user }) {  // Add user prop
               >
                 {isQuiz[index]
                   ? (<FaSpinner className="spinning" />)
-                  : 'Trivia/Quiz'}
-              </button>
-              <button
-                onClick={async () => {
-                  setIsQuizMultipleChoice(prev => ({ ...prev, [index]: true }));
-                  await handleMultipleChoiceQuiz(grade + ' : ' + subject + ' : ' + topic, 'quiz_with_choices');
-                  setIsQuizMultipleChoice(prev => ({ ...prev, [index]: false }));
-                }}
-                className="button"
-                style={{ backgroundColor: 'lightgreen', fontSize: '12px', color: 'black', marginLeft: '10px' }}
-              >
-                {isQuizMultipleChoice[index]
-                  ? (<FaSpinner className="spinning" />)
-                  : 'Quiz-Choices'}
+                  : 'Quiz'}
               </button>
               <br />
             </div>
