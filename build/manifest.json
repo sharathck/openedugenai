@@ -1,0 +1,13 @@
+{
+    "short_name": "PracticeQ",
+    "name": "Practice Questions",
+    "icons": [
+      {
+        "src": "ai.avif"
+      }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+  }
