@@ -1,0 +1,36 @@
+[debug] [2025-01-09T06:30:18.121Z] ----------------------------------------------------------------------
+[debug] [2025-01-09T06:30:18.123Z] Command:       /opt/homebrew/Cellar/node/23.4.0/bin/node /opt/homebrew/bin/firebase deploy
+[debug] [2025-01-09T06:30:18.123Z] CLI Version:   13.29.1
+[debug] [2025-01-09T06:30:18.123Z] Platform:      darwin
+[debug] [2025-01-09T06:30:18.124Z] Node Version:  v23.4.0
+[debug] [2025-01-09T06:30:18.124Z] Time:          Thu Jan 09 2025 00:30:18 GMT-0600 (Central Standard Time)
+[debug] [2025-01-09T06:30:18.124Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-01-09T06:30:18.160Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-01-09T06:30:18.160Z] > authorizing via signed-in user (sharathck3@gmail.com)
+[debug] [2025-01-09T06:30:18.160Z] [iam] checking project reviewtext-ad5c6 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2025-01-09T06:30:18.161Z] Checked if tokens are valid: true, expires at: 1736405269119
+[debug] [2025-01-09T06:30:18.161Z] Checked if tokens are valid: true, expires at: 1736405269119
+[debug] [2025-01-09T06:30:18.161Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/reviewtext-ad5c6:testIamPermissions [none]
+[debug] [2025-01-09T06:30:18.161Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/reviewtext-ad5c6:testIamPermissions x-goog-quota-user=projects/reviewtext-ad5c6
+[debug] [2025-01-09T06:30:18.161Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/reviewtext-ad5c6:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-01-09T06:30:18.342Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/reviewtext-ad5c6:testIamPermissions 200
+[debug] [2025-01-09T06:30:18.342Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/reviewtext-ad5c6:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-01-09T06:30:18.342Z] Checked if tokens are valid: true, expires at: 1736405269119
+[debug] [2025-01-09T06:30:18.342Z] Checked if tokens are valid: true, expires at: 1736405269119
+[debug] [2025-01-09T06:30:18.342Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/reviewtext-ad5c6 [none]
+[debug] [2025-01-09T06:30:18.560Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/reviewtext-ad5c6 200
+[debug] [2025-01-09T06:30:18.560Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/reviewtext-ad5c6 {"projectId":"reviewtext-ad5c6","projectNumber":"892085575649","displayName":"ReviewText","name":"projects/reviewtext-ad5c6","resources":{"hostingSite":"reviewtext-ad5c6","realtimeDatabaseInstance":"reviewtext-ad5c6","storageBucket":"reviewtext-ad5c6.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_6682c937-2a60-4a6f-87e7-13a70f98e46a"}
+[info] 
+[info] === Deploying to 'reviewtext-ad5c6'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2025-01-09T06:30:18.566Z] Checked if tokens are valid: true, expires at: 1736405269119
+[debug] [2025-01-09T06:30:18.566Z] Checked if tokens are valid: true, expires at: 1736405269119
+[debug] [2025-01-09T06:30:18.566Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/reviewtext-ad5c6/versions [none]
+[debug] [2025-01-09T06:30:18.566Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/reviewtext-ad5c6/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2025-01-09T06:30:19.191Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/reviewtext-ad5c6/versions 200
+[debug] [2025-01-09T06:30:19.191Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/reviewtext-ad5c6/versions {"name":"projects/892085575649/sites/reviewtext-ad5c6/versions/30c48c6592908e95","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[reviewtext-ad5c6]: beginning deploy... 
+[info] i  hosting[reviewtext-ad5c6]: found 11 files in build 
+[debug] [2025-01-09T06:30:19.212Z] [hosting] uploading with 200 concurrency
