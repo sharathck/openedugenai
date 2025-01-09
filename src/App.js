@@ -355,7 +355,7 @@ function App({ user, grade, subject }) {  // Add user prop
             setTopicExplanation('');
           }}
         >
-          Back to Previous Page
+          Previous Page
         </button>
         &nbsp;
         <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>

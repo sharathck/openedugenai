@@ -2120,7 +2120,7 @@ const GenAIApp = ({user, grade, subject}) => {
     return (
         <div>
             <button className="subject-button" onClick={() => setGoBack(true)}>
-                Back to Previous Page
+                Previous Page
             </button>
             <div className={`main-content ${showEditPopup ? 'dimmed' : ''}`}>
                 <div>

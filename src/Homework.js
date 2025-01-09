@@ -313,14 +313,14 @@ const Homework = ({ user, sourceDocumentID, invocationType, grade, subject }) =>
             <div className="homework-header">
                 {showMainAppButton && (invocationType !== 'explain') && (
                     <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
-                        Back to Previous Page
+                        Previous Page
                     </button>
                 )}
                 {(invocationType === 'explain') ? (
                     <div>
                         {showMainAppButton && (
                             <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
-                                Back to Previous Page
+                                Previous Page
                             </button>
                         )}
                         <MdEditor
