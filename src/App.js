@@ -337,70 +337,70 @@ function App({ user }) {  // Add user prop
     }
     return (
       <div className="subject-content">
-      <button className="subject-button"
-      onClick={() => {
-      setSelectedGrade(null);
-      setSelectedSubject(null);
-      setGeneratedContent('');
-      setSelectedTopic(null);
-      setTopicExplanation('');
-      }}
-      >
-      Back to Grade - Subjects
-      </button>
-      &nbsp; 
-      <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
-      Enter your own Topic
-      </button>
-      <h2>{grade} - {subject}</h2>
-      <div className="topics-container">
-      {gradesData[grade][subject].map((topic, index) => (
-      <div key={index} className="topic-item">
-        <span>{topic}</span>
-         &nbsp;&nbsp;
-        <button
-        onClick={async () => {
-        setIshomeWork(prev => ({ ...prev, [index]: true }));
-        await handlehomeWork(topic, 'homeWork');
-        setIshomeWork(prev => ({ ...prev, [index]: false }));
-        }}
-        className="button"
-        style={{ backgroundColor: 'darkBlue', fontSize: '12px',color: 'white', marginLeft: '10px' }}
+        <button className="subject-button"
+          onClick={() => {
+            setSelectedGrade(null);
+            setSelectedSubject(null);
+            setGeneratedContent('');
+            setSelectedTopic(null);
+            setTopicExplanation('');
+          }}
         >
-        {ishomeWork[index]
-        ? (<FaSpinner className="spinning" />)
-        : 'Practice Questions'}
+          Back to Grade - Subjects
         </button>
-        <button
-        onClick={async () => {
-        setIsQuiz(prev => ({ ...prev, [index]: true }));
-        await handleQuiz(topic, 'quiz');
-        setIsQuiz(prev => ({ ...prev, [index]: false }));
-        }}
-        className="button"
-        style={{ backgroundColor: 'lightblue', fontSize: '12px', color: 'black', marginLeft: '10px' }}
-        >
-        {isQuiz[index]
-        ? (<FaSpinner className="spinning" />)
-        : 'Trivia/Quiz'}
+        &nbsp;
+        <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
+          Enter your own Topic
         </button>
-        <button
-          onClick={async () => {
+        <h2>{grade} - {subject}</h2>
+        <div className="topics-container">
+          {gradesData[grade][subject].map((topic, index) => (
+            <div key={index} className="topic-item">
+              <span>{topic}</span>
+              &nbsp;&nbsp;
+              <button
+                onClick={async () => {
+                  setIshomeWork(prev => ({ ...prev, [index]: true }));
+                  await handlehomeWork(grade + ' : ' + subject + ' : ' + topic, 'homeWork');
+                  setIshomeWork(prev => ({ ...prev, [index]: false }));
+                }}
+                className="button"
+                style={{ backgroundColor: 'darkBlue', fontSize: '12px', color: 'white', marginLeft: '10px' }}
+              >
+                {ishomeWork[index]
+                  ? (<FaSpinner className="spinning" />)
+                  : 'Practice Questions'}
+              </button>
+              <button
+                onClick={async () => {
+                  setIsQuiz(prev => ({ ...prev, [index]: true }));
+                  await handleQuiz(grade + ' : ' + subject + ' : ' + topic, 'quiz');
+                  setIsQuiz(prev => ({ ...prev, [index]: false }));
+                }}
+                className="button"
+                style={{ backgroundColor: 'lightblue', fontSize: '12px', color: 'black', marginLeft: '10px' }}
+              >
+                {isQuiz[index]
+                  ? (<FaSpinner className="spinning" />)
+                  : 'Trivia/Quiz'}
+              </button>
+              <button
+                onClick={async () => {
                   setIsQuizMultipleChoice(prev => ({ ...prev, [index]: true }));
-                  await handleMultipleChoiceQuiz(topic, 'quiz_with_choices');
+                  await handleMultipleChoiceQuiz(grade + ' : ' + subject + ' : ' + topic, 'quiz_with_choices');
                   setIsQuizMultipleChoice(prev => ({ ...prev, [index]: false }));
-                  }}
-        className="button"
-        style={{ backgroundColor: 'lightgreen', fontSize: '12px', color: 'black', marginLeft: '10px' }}
-        >
-        {isQuizMultipleChoice[index]
-        ? (<FaSpinner className="spinning" />)
-        : 'Quiz-Choices'}
-        </button>
-        <br />
-      </div>
-      ))}
-      </div>
+                }}
+                className="button"
+                style={{ backgroundColor: 'lightgreen', fontSize: '12px', color: 'black', marginLeft: '10px' }}
+              >
+                {isQuizMultipleChoice[index]
+                  ? (<FaSpinner className="spinning" />)
+                  : 'Quiz-Choices'}
+              </button>
+              <br />
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
