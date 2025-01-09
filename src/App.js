@@ -459,6 +459,45 @@ function App({ user, grade, subject }) {  // Add user prop
               <GradeBox key={grade} grade={grade} />
             ))}
           </div>
+          <select 
+            className="data-source-select"
+            onChange={(e) => {
+              const source = e.target.value;
+              switch(source) {
+                case 'schoolGradesData':
+                  setGradesData(schoolGradesData);
+                  break;
+                case 'collegeData':
+                  setGradesData(collegeData); 
+                  break;
+                case 'automationTestingData':
+                  setGradesData(automationTestingData);
+                  break;
+                case 'mastersData':
+                  setGradesData(mastersData);
+                  break;
+                case 'awsCertificationData':
+                  setGradesData(awsCertificationData);
+                  break;
+                case 'azureCertificationData':
+                  setGradesData(azureCertificationData);
+                  break;
+                case 'gcpCertificationData':
+                  setGradesData(gcpCertificationData);
+                  break;
+                default:
+                  setGradesData(schoolGradesData);
+              }
+            }}
+          >
+            <option value="schoolGradesData">School Grades</option>
+            <option value="collegeData">Bachelors</option>
+            <option value="mastersData">Masters</option>
+            <option value="automationTestingData">Automation Testing</option>
+            <option value="awsCertificationData">AWS Certifications</option>
+            <option value="azureCertificationData">Azure Certifications</option>
+            <option value="gcpCertificationData">GCP Certifications</option>
+          </select>
         </div>
       )}
     </div>

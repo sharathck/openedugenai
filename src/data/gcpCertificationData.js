@@ -190,5 +190,75 @@ export const gcpCertificationData = {
            "Presentation Skills: Presenting findings to technical and non-technical audiences; using visualizations and storytelling."
       ]
   },
-  
+  'GCP-MachineLearningEngineer': {
+    'Machine Learning Concepts and Principles': [
+      'Understanding of core ML concepts: supervised, unsupervised, and reinforcement learning',
+      'Model evaluation metrics: accuracy, precision, recall, F1-score, AUC-ROC',
+       'Bias and fairness in ML: identifying and mitigating bias in data and models',
+      'Overfitting and underfitting: techniques to address these issues',
+      'Feature engineering: feature selection, transformation, and creation',
+      'Regularization techniques: L1, L2 regularization',
+      'Hyperparameter tuning: grid search, random search, Bayesian optimization'
+    ],
+      'Data Engineering for Machine Learning': [
+      'Data ingestion: methods for importing data from various sources',
+      'Data cleaning and preprocessing: handling missing values, outliers, and inconsistencies',
+      'Data transformation: scaling, normalization, and feature encoding',
+      'Data storage: options for storing data for ML tasks on GCP (Cloud Storage, BigQuery)',
+       'Data versioning: tracking changes to data',
+        'Data validation: ensuring data quality and consistency',
+      'Feature Store: managing and sharing features across ML projects',
+      'Data pipelines: building and managing data workflows (Dataflow, Dataproc)'
+    ],
+    'Model Development and Training': [
+      'Choosing the right ML algorithm for the problem',
+      'Building and training ML models using TensorFlow and/or PyTorch on GCP',
+       'Model architecture design: choosing appropriate layers and connections',
+      'Distributed training: scaling model training using multiple machines (Vertex AI, Cloud TPUs)',
+      'Custom model training: writing custom training loops and optimizers',
+        'Transfer learning: leveraging pre-trained models',
+        'Model debugging: identifying and resolving issues in model training',
+        'Model Explainability: understanding how models make predictions',
+      'Model evaluation and validation: assessing model performance on held-out data'
+    ],
+    'Model Deployment and Production': [
+        'Model deployment options: deploying models as REST APIs, batch predictions, and edge deployments',
+      'Model serving: managing and scaling model endpoints (Vertex AI Prediction, AI Platform)',
+        'Model monitoring: tracking model performance in production',
+      'Model versioning: managing different versions of a model',
+        'A/B testing: comparing different model versions',
+      'Model retraining: updating models with new data',
+      'CI/CD for ML: automating the ML lifecycle',
+        'Containerization for ML: using Docker and Kubernetes for model deployment',
+    ],
+    'ML Solutions on Google Cloud': [
+        'Vertex AI: unified platform for ML development and deployment',
+        'BigQuery ML: using SQL to build and train ML models',
+      'Cloud Vision API: image analysis and recognition',
+      'Cloud Natural Language API: text analysis and understanding',
+        'Cloud Speech-to-Text and Text-to-Speech APIs: converting speech to text and vice versa',
+        'AutoML: building and training custom ML models with minimal coding',
+        'TensorFlow Extended (TFX): building production-ready ML pipelines',
+      'Kubeflow: open-source ML platform on Kubernetes',
+        'Dialogflow: building conversational interfaces',
+        'Recommendations AI: building personalized recommendations',
+    ],
+    'MLOps and Automation': [
+      'Automated ML workflows: building and managing automated ML pipelines',
+        'ML Metadata Management: tracking artifacts of ML workflows',
+        'Reproducible ML: ensuring that ML experiments can be repeated',
+      'Infrastructure automation: automating the provisioning and management of ML infrastructure',
+        'Monitoring and alerting: setting up monitoring and alerting for ML systems',
+        'Version control for ML models and code',
+        'ML Security best practices',
+    ],
+    'Business Understanding and Problem Framing': [
+        'Identifying business problems that can be solved with ML',
+        'Defining success metrics for ML projects',
+      'Understanding business constraints and requirements',
+        'Communicating ML results to business stakeholders',
+        'Aligning ML solutions with business goals'
+    ]
+  }
+
 }
