@@ -75,7 +75,7 @@ let lyricsPrompt = '';
 
 
 
-const GenAIApp = ({user, grade, subject}) => {
+const GenAIApp = ({user, source, grade, subject}) => {
     // **State Variables**
     const [isGeneratingImages, setIsGeneratingImages] = useState(false);
     const [isGeneratingYouTubeMusic, setIsGeneratingYouTubeMusic] = useState(false);
@@ -1811,7 +1811,7 @@ const GenAIApp = ({user, grade, subject}) => {
     if (showMainApp) {
         console.log('showMainApp grade ', grade, ' subject ', subject);
         return (
-            <App user={user} grade={grade} subject={subject} />
+            <App user={user} source={source} grade={grade} subject={subject} />
         );
     }
 
@@ -2113,8 +2113,8 @@ const GenAIApp = ({user, grade, subject}) => {
     };
 
     if (goBack) {
-        console.log(' grade ', grade, ' subject ', subject);
-        return <App user={user} grade={grade} subject={subject}/>;
+        console.log('  source ', source, ' grade ', grade, ' subject ', subject);
+        return <App user={user} source={source} grade={grade} subject={subject}/>;
     }
 
     return (

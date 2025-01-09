@@ -4,10 +4,10 @@ import { auth, db } from './Firebase';
 import { collection, doc, where, addDoc, getDocs, getDoc, query, orderBy, startAfter, limit, updateDoc } from 'firebase/firestore';
 import { schoolGradesData } from './data/schoolGradesData';  // Add this import
 import { collegeData } from './data/collegeData';  // Add this import 
-import { automationTestingData} from './data/automationTestingData';
+import { automationTestingData } from './data/automationTestingData';
 import { mastersData } from './data/mastersData';
 import { awsCertificationData } from './data/awsCertificationData';
-import { azureCertificationData } from "./data/azureCertificationsData";  
+import { azureCertificationData } from "./data/azureCertificationsData";
 import { gcpCertificationData } from "./data/gcpCertificationData";
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
@@ -59,8 +59,10 @@ let modelQuizChoices = 'gpt-4o';
 let modelHomeWork = 'gemini';
 let modelExplain = 'gpt-4o';
 let advanced_features = 'Enter your own topic';
+let sourceData = '';
 
-function App({ user, grade, subject }) {  // Add user prop
+
+function App({ user, source, grade, subject }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(grade);
   const [invocationType, setInvocationType] = useState('');
   const [selectedSubject, setSelectedSubject] = useState(subject);
@@ -89,23 +91,35 @@ function App({ user, grade, subject }) {  // Add user prop
   useEffect(() => {
     const initializeApp = async () => {
       const params = new URLSearchParams(window.location.search);
-      console.log('Params:', params.get('source'));
-      if (params.get('source') === 'collegeData') {
+      sourceData = 'schoolGradesData';
+      if (source) {
+        sourceData = source;
+        console.log('Source from app parameter:', source);
+      }
+      if (params.get('source')) {
+        sourceData = params.get('source');
+        console.log('Source from URL parameter:', sourceData);
+      }
+      if (sourceData === 'schoolGradesData') {
+        console.log('Params:', params.get('source'));
+        setGradesData(schoolGradesData);
+      }
+      if (sourceData === 'collegeData') {
         setGradesData(collegeData);
       }
-      if (params.get('source') === 'automationTestingData') {
+      if (sourceData === 'automationTestingData') {
         setGradesData(automationTestingData);
       }
-      if (params.get('source') === 'mastersData') {
+      if (sourceData === 'mastersData') {
         setGradesData(mastersData);
       }
-      if (params.get('source') === 'awsCertificationData') {
+      if (sourceData === 'awsCertificationData') {
         setGradesData(awsCertificationData);
       }
-      if (params.get('source') === 'azureCertificationData') {
+      if (sourceData === 'azureCertificationData') {
         setGradesData(azureCertificationData);
       }
-      if (params.get('source') === 'gcpCertificationData') {
+      if (sourceData === 'gcpCertificationData') {
         setGradesData(gcpCertificationData);
       }
       await fetchTexts();
@@ -346,9 +360,11 @@ function App({ user, grade, subject }) {  // Add user prop
   );
 
   if (showGenAIApp) {
-    console.log('showGenAIApp:', showGenAIApp, ' grade ', selectedGrade, 'subject ', selectedSubject);
+    console.log('calling GenAI App showGenAIApp:', showGenAIApp, ' grade ', selectedGrade, 'subject ', selectedSubject);
+    console.log('  source ', sourceData);
     return <GenAIApp
       user={user}
+      source={sourceData}
       grade={selectedGrade}
       subject={selectedSubject}
     />;
@@ -366,6 +382,7 @@ function App({ user, grade, subject }) {  // Add user prop
           onBack={() => setShowhomeWorkApp(false)}
           sourceDocumentID={currentDocId}
           invocationType={invocationType}
+          source={sourceData}
           grade={selectedGrade}
           subject={selectedSubject}
         />
@@ -380,22 +397,22 @@ function App({ user, grade, subject }) {  // Add user prop
             setGeneratedContent('');
             setSelectedTopic(null);
             setTopicExplanation('');
-            }}
-          >
-            Previous Page
-          </button>
-          &nbsp;
-          <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
-            Enter your own Topic
-          </button>
-          <h2> <span style={{color: 'darkBlue'}}>{grade}</span> - <span style={{color: 'darkGreen'}}>{subject}</span></h2>
-          <div className="topics-container">
-            {gradesData[grade][subject].map((topic, index) => (
+          }}
+        >
+          Previous Page
+        </button>
+        &nbsp;
+        <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
+          Enter your own Topic
+        </button>
+        <h2> <span style={{ color: 'darkBlue' }}>{grade}</span> - <span style={{ color: 'darkGreen' }}>{subject}</span></h2>
+        <div className="topics-container">
+          {gradesData[grade][subject].map((topic, index) => (
             <div key={index} className="topic-item">
               <span>{topic}</span>
               &nbsp;&nbsp;
               <button
-              onClick={async () => {
+                onClick={async () => {
                   setIsExplain(prev => ({ ...prev, [index]: true }));
                   await handleExplain(grade + ' : ' + subject + ' : ' + topic);
                   setIsExplain(prev => ({ ...prev, [index]: false }));
@@ -459,34 +476,42 @@ function App({ user, grade, subject }) {  // Add user prop
               <GradeBox key={grade} grade={grade} />
             ))}
           </div>
-          <select 
+          <select
             className="data-source-select"
             onChange={(e) => {
               const source = e.target.value;
-              switch(source) {
+              switch (source) {
                 case 'schoolGradesData':
                   setGradesData(schoolGradesData);
+                  sourceData = 'schoolGradesData';
                   break;
                 case 'collegeData':
-                  setGradesData(collegeData); 
+                  setGradesData(collegeData);
+                  sourceData = 'collegeData';
                   break;
                 case 'automationTestingData':
                   setGradesData(automationTestingData);
+                  sourceData = 'automationTestingData';
                   break;
                 case 'mastersData':
                   setGradesData(mastersData);
+                  sourceData = 'mastersData';
                   break;
                 case 'awsCertificationData':
                   setGradesData(awsCertificationData);
+                  sourceData = 'awsCertificationData';
                   break;
                 case 'azureCertificationData':
                   setGradesData(azureCertificationData);
+                  sourceData = 'azureCertificationData';
                   break;
                 case 'gcpCertificationData':
                   setGradesData(gcpCertificationData);
+                  sourceData = 'gcpCertificationData';
                   break;
                 default:
                   setGradesData(schoolGradesData);
+                  sourceData = 'schoolGradesData';
               }
             }}
           >

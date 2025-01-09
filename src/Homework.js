@@ -11,7 +11,7 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import ReactMarkdown from "react-markdown";
 
-const Homework = ({ user, sourceDocumentID, invocationType, grade, subject }) => {
+const Homework = ({ user, sourceDocumentID, invocationType, source, grade, subject }) => {
     // Add new state variables for labels
     const [copyUrlButtonLabel, setCopyUrlButtonLabel] = useState('Copy URL to Share');
     const [printGridButtonLabel, setPrintGridButtonLabel] = useState('Print');
@@ -305,7 +305,7 @@ const Homework = ({ user, sourceDocumentID, invocationType, grade, subject }) =>
     };
 
     if (showMainApp) {
-        return <App user={user} grade={grade} subject={subject} />;
+        return <App user={user} source={source} grade={grade} subject={subject} />;
     }
 
     return (
