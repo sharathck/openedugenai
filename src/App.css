@@ -599,28 +599,30 @@ button:hover {
 .subject-button {
   padding: 10px;
   background-color: #007bff;
+  box-shadow: #010a11;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+  font-size: 16px; /* make the button text extremely small */
   transition: background-color 0.3s;
 }
 
 .subject-button:hover {
-  background-color: #0056b3;
+  background-color: #628bb6;
 }
 
 .subject-content {
-  max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 5px;
 }
 
 .generated-content {
   background-color: #f0f0f0;
-  padding: 20px;
+  padding: 5px;
   border-radius: 8px;
-  margin: 20px 0;
+  margin: 5px 0;
   white-space: pre-wrap;
   text-align: left;
 }
@@ -630,18 +632,20 @@ button:hover {
 .topics-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-  border: 2px dotted #333;
-  margin: 15px;
+  gap: 5px;
+  margin: 5px;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+  font:100%/2 Arial, sans-serif;
+  font-size: 16px;
 }
 
 .topic-box {
   border: 2px solid #666;
-  padding: 20px;
+  padding: 5px;
   border-radius: 8px;
   background-color: #f8f8f8;
+  font:100%/2 Arial, sans-serif;
+  font-size: 18px;
 }
 
 .topic-title {
@@ -653,6 +657,8 @@ button:hover {
 .topic-content {
   font-size: 16px;
   line-height: 1.5;
+  font:100%/2 Arial, sans-serif;
+  font-size: 18px;
 }
 
 /* ...existing styles... */
@@ -672,12 +678,6 @@ button:hover {
 
 .user-info {
   display: flex;
-  align-items: center;
-  gap: 15px;
-  position: fixed;
-  top: 0;
-  right: 20px;
-  z-index: 100;
 }
 
 .user-info span {

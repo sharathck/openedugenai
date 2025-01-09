@@ -5,6 +5,7 @@ import { collection, doc, where, addDoc, getDocs, getDoc, query, orderBy, startA
 import { gradesData } from './data/gradesData';  // Add this import
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
+import GenAIApp from './GenAIApp';
 
 let searchQuery = '';
 let invocationType = '';
@@ -69,24 +70,6 @@ function App({ user }) {  // Add user prop
   const temperatureRef = useRef(temperature);
   const [top_p, setTop_p] = useState(0.8);
   const top_pRef = useRef(top_p);
-  const [modelAnthropic, setModelAnthropic] = useState('claude');
-  const [modelGemini, setModelGemini] = useState('gemini');
-  const [modelOpenAI, setModelOpenAI] = useState('gpt-4o');
-  const [modelGpto1Mini, setModelGpto1Mini] = useState('o1-mini');
-  const [modelo1, setModelo1] = useState('o1');
-  const [modelLlama, setModelLlama] = useState('llama');
-  const [modelMistral, setModelMistral] = useState('mistral');
-  const [modelGpt4oMini, setModelGpt4oMini] = useState('gpt-4o-mini');
-  const [modelGeminiSearch, setModelGeminiSearch] = useState('gemini-search');
-  const [modelGeminiFlash, setModelGeminiFlash] = useState('gemini-flash');
-  const [modelGpt4Turbo, setModelGpt4Turbo] = useState('gpt-4-turbo');
-  const [modelImageDallE3, setModelImageDallE3] = useState('dall-e-3');
-  const [modelPerplexityFast, setModelPerplexityFast] = useState('perplexity-fast');
-  const [modelPerplexity, setModelPerplexity] = useState('perplexity');
-  const [modelCodestralApi, setModelCodestralApi] = useState('mistral-codestral-api'); // New state
-  const [modelClaudeHaiku, setModelClaudeHaiku] = useState('claude-haiku');
-  const [modelGeminiImage, setModelGeminiImage] = useState('gemini-image');
-  const [modelCerebras, setModelCerebras] = useState('llama-c');
   const [ishomeWork, setIshomeWork] = useState(false);
   const [isQuiz, setIsQuiz] = useState(false);
   const [currentDocId, setCurrentDocId] = useState(null);
@@ -97,7 +80,7 @@ function App({ user }) {  // Add user prop
   /* Add new state variables for fetched texts */
   const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
   const [quizButtonLabel, setQuizButtonLabel] = useState('');
-
+  const [showGenAIApp, setShowGenAIApp] = useState(false);
   useEffect(() => {
     const initializeApp = async () => {
       await fetchTexts();
@@ -272,7 +255,6 @@ function App({ user }) {  // Add user prop
       console.log('temp:', temperatureRef.current.valueOf(), 'top_p:', top_pRef.current.valueOf());
       console.log('promptText:', promptText);
       console.log('invocationType:', invocationType);
-      console.log('modelGemini:', modelGemini);
       console.log('uid:', uid);
       // Single API call with the determined promptText
       response = await fetch(process.env.REACT_APP_GENAI_API_URL, {
@@ -322,6 +304,7 @@ function App({ user }) {  // Add user prop
   };
   const GradeBox = ({ grade }) => (
     <div className="grade-box">
+
       <h3>{grade}</h3>
       <div className="subjects-container">
         {Object.keys(gradesData[grade]).map(subject => (
@@ -340,19 +323,15 @@ function App({ user }) {  // Add user prop
     </div>
   );
 
+  if (showGenAIApp) {
+    return <GenAIApp />;
+  }
+
   const SubjectContent = ({ grade, subject }) => {
     // Add defensive check
     if (!grade || !subject || !gradesData[grade] || !gradesData[grade][subject]) {
       return <div>Loading...</div>;
     }
-
-
-    if (showMainApp) {
-      return (
-        <App user={user} />
-      );
-    }
-
     if (showhomeWorkApp) {  // Add this block
       return (
         <Homework
@@ -365,8 +344,7 @@ function App({ user }) {  // Add user prop
     return (
 
       <div className="subject-content">
-        <button
-          className="back-button"
+        <button className="subject-button"
           onClick={() => {
             setSelectedGrade(null);  // Add this line to clear selected grade
             setSelectedSubject(null);
@@ -375,13 +353,17 @@ function App({ user }) {  // Add user prop
             setTopicExplanation('');
           }}
         >
-          Back to Subjects
+          Back to Grade - Subjects
+        </button>
+        &nbsp; 
+        <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
+            Enter your own Topic
         </button>
         <h2>{grade} - {subject}</h2>
         <div className="topics-container">
           {gradesData[grade][subject].map((topic, index) => (
             <div key={index} className="topic-item">
-              <span>{topic}</span>
+              <span >{topic}</span>
               <br />
               <button
                 onClick={() => handlehomeWork(topic, 'homeWork')}
@@ -426,16 +408,19 @@ function App({ user }) {  // Add user prop
       {selectedSubject ? (
         <SubjectContent grade={selectedGrade} subject={selectedSubject} />
       ) : (
-        <div className="grades-container">
-          <div className="user-info">
-            <span>Welcome, {user.email}</span>
-            <button className="signoutbutton" onClick={handleSignOut}>
-              Sign Out
-            </button>
+        <div>
+          <span>Welcome, {user.email}</span>
+          <button className="signoutbutton" onClick={handleSignOut}>
+            Sign Out
+          </button>
+          <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
+            Enter your own Topic
+          </button>
+          <div className="grades-container">
+            {Object.keys(gradesData).map(grade => (
+              <GradeBox key={grade} grade={grade} />
+            ))}
           </div>
-          {Object.keys(gradesData).map(grade => (
-            <GradeBox key={grade} grade={grade} />
-          ))}
         </div>
       )}
     </div>
