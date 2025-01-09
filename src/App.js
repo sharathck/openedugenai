@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import './App.css';
 import { auth, db } from './Firebase';
 import { collection, doc, where, addDoc, getDocs, getDoc, query, orderBy, startAfter, limit, updateDoc } from 'firebase/firestore';
-import { gradesData } from './data/gradesData';  // Add this import
+import { schoolGradesData } from './data/schoolGradesData';  // Add this import
+import { collegeData } from './data/collegeData';  // Add this import 
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
 import GenAIApp from './GenAIApp';
@@ -79,8 +80,14 @@ function App({ user, grade, subject }) {  // Add user prop
   const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
   const [quizButtonLabel, setQuizButtonLabel] = useState('');
   const [showGenAIApp, setShowGenAIApp] = useState(false);
+  const [gradesData, setGradesData] = useState(schoolGradesData);
   useEffect(() => {
     const initializeApp = async () => {
+      const params = new URLSearchParams(window.location.search);
+      console.log('Params:', params.get('source'));
+      if (params.get('source') === 'collegeData') {
+        setGradesData(collegeData);
+      }
       await fetchTexts();
     };
     initializeApp();
