@@ -48,6 +48,9 @@ let explainInput = '';
 let explainPrompt = '';
 let lyricsInput = '';
 let lyricsPrompt = '';
+let modelQuiz = 'llama-c';
+let modelQuizChoices = 'gpt-4o';
+let modelHomeWork = 'gemini-flash-fast';
 
 function App({ user }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(null);
@@ -58,7 +61,7 @@ function App({ user }) {  // Add user prop
   const [isGeneratingImages, setIsGeneratingImages] = useState(false);
   const [isGeneratingYouTubeMusic, setIsGeneratingYouTubeMusic] = useState(false);
   const [isExplain, setIsExplain] = useState(false);
- 
+
   const [uid, setUid] = useState(user.uid);
   const [isGeneratingGeminiSearch, setIsGeneratingGeminiSearch] = useState(false);
 
@@ -92,15 +95,15 @@ function App({ user }) {  // Add user prop
   const [showMainApp, setShowMainApp] = useState(false);
   const [showhomeWorkApp, setShowhomeWorkApp] = useState(false);
   /* Add new state variables for fetched texts */
-const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
- const [quizButtonLabel, setQuizButtonLabel] = useState('');
- 
-useEffect(() => {
-  const initializeApp = async () => {
-    await fetchTexts();
-  };
-  initializeApp();
-}, []);
+  const [practiceButtonLabel, setPracticeButtonLabel] = useState('');
+  const [quizButtonLabel, setQuizButtonLabel] = useState('');
+
+  useEffect(() => {
+    const initializeApp = async () => {
+      await fetchTexts();
+    };
+    initializeApp();
+  }, []);
 
   const handleSignOut = async () => {
     try {
@@ -116,47 +119,56 @@ useEffect(() => {
     try {
       console.log('Fetching Texts from user collection');
       q = query(collection(db, 'genai', 'bTGBBpeYPmPJonItYpUOCYhdIlr1', 'prompts'), where('tag', '>', ''),
-          where('fullText', '>', ''), orderBy('modifiedDateTime', 'asc'));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            console.log('fetchTexts Data:', data.tag, '    ', data.fullText);
-            switch (data.tag) {
-                case 'practice-button-label':
-                    setPracticeButtonLabel(data.fullText);
-                    break;
-                case 'quiz-button-label':
-                    setQuizButtonLabel(data.fullText);
-                    break;
-                case 'autoPromptSeparator':
-                    autoPromptSeparator = data.fullText;
-                    break;
-                case 'quiz_with_choices':
-                    quizMultipleChoicesPrompt = data.fullText;
-                    break;
-                case 'quiz_Multiple_Choices_Label':
-                    quiz_Multiple_Choices_Label = data.fullText;
-                    break;
-                case 'bedtime_stories':
-                    story_teller_prompt = data.fullText;
-                    break;
-                case 'quiz':
-                    quizPrompt = data.fullText;
-                    break;
-                case 'practice_questions':
-                    intelligentQuestionsPrompt = data.fullText;
-                    break;
-                case 'explain':
-                    explainPrompt = data.fullText;
-                    break;
-                default:
-                    break;
-            }
-        });
+        where('fullText', '>', ''), orderBy('modifiedDateTime', 'asc'));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        //        console.log('fetchTexts Data:', data.tag, '    ', data.fullText);
+        switch (data.tag) {
+          case 'practice-button-label':
+            setPracticeButtonLabel(data.fullText);
+            break;
+          case 'quiz-button-label':
+            setQuizButtonLabel(data.fullText);
+            break;
+          case 'autoPromptSeparator':
+            autoPromptSeparator = data.fullText;
+            break;
+          case 'quiz_with_choices':
+            quizMultipleChoicesPrompt = data.fullText;
+            break;
+          case 'quiz_Multiple_Choices_Label':
+            quiz_Multiple_Choices_Label = data.fullText;
+            break;
+          case 'bedtime_stories':
+            story_teller_prompt = data.fullText;
+            break;
+          case 'quiz':
+            quizPrompt = data.fullText;
+            break;
+          case 'practice_questions':
+            intelligentQuestionsPrompt = data.fullText;
+            break;
+          case 'explain':
+            explainPrompt = data.fullText;
+            break;
+          case 'modelQuiz':
+            modelQuiz = data.fullText;
+            break;
+          case 'modelQuizChoices':
+            modelQuizChoices = data.fullText;
+            break;
+          case 'modelHomeWork':
+            modelHomeWork = data.fullText;
+            break;
+          default:
+            break;
+        }
+      });
     } catch (error) {
-        console.error("Error fetching texts: ", error);
+      console.error("Error fetching texts: ", error);
     }
-};
+  };
 
   const handlehomeWork = async (message) => {
     if (!message.trim()) {
@@ -171,7 +183,7 @@ useEffect(() => {
     // Append the prompt to promptInput
     homeWorkInput = message + intelligentQuestionsPrompt;
     console.log('homeWorkInput: ', homeWorkInput);
-    await callAPI(promptInput, 'homeWork');
+    await callAPI(modelHomeWork, promptInput, 'homeWork');
     setIshomeWork(false);
   };
 
@@ -211,7 +223,7 @@ useEffect(() => {
     // Append the prompt to promptInput
     quizInput = message + quizPrompt;
     console.log('quizInput:', quizInput);
-    await callAPI(promptInput, 'quiz');
+    await callAPI(modelQuiz, promptInput, 'quiz');
     setIsQuiz(false);
   };
 
@@ -230,11 +242,11 @@ useEffect(() => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     quizMultipleChoicesInput = message + quizMultipleChoicesPrompt;
     console.log('quizMultipleChoicesInput:', quizMultipleChoicesInput);
-    await callAPI(promptInput, 'quiz_with_choices');
+    await callAPI(modelQuizChoices, promptInput, 'quiz_with_choices');
     setIsQuizMultipleChoice(false);
   };
-  const callAPI = async (promptText, invocationType = 'GenAI') => {
-    console.log('Calling API with URL: ' + process.env.REACT_APP_GENAI_API_URL, ' invocationType: ', invocationType, '  promptText:', promptText);
+  const callAPI = async (modelName, promptText, invocationType = 'GenAI') => {
+    console.log(' modelName ' + modelName + '   ****** Calling API with URL: ' + process.env.REACT_APP_GENAI_API_URL, ' invocationType: ', invocationType, '  promptText:', promptText);
     try {
       let response;
       // Determine promptText based on invocation type
@@ -262,7 +274,6 @@ useEffect(() => {
       console.log('invocationType:', invocationType);
       console.log('modelGemini:', modelGemini);
       console.log('uid:', uid);
-
       // Single API call with the determined promptText
       response = await fetch(process.env.REACT_APP_GENAI_API_URL, {
         method: 'POST',
@@ -271,7 +282,7 @@ useEffect(() => {
         },
         body: JSON.stringify({
           prompt: promptText,
-          model: modelCerebras,
+          model: modelName,
           uid: uid,
           temperature: temperatureRef.current.valueOf(),
           top_p: top_pRef.current.valueOf(),
@@ -338,19 +349,19 @@ useEffect(() => {
 
     if (showMainApp) {
       return (
-          <App user={user} />
+        <App user={user} />
       );
-  }
+    }
 
-  if (showhomeWorkApp) {  // Add this block
+    if (showhomeWorkApp) {  // Add this block
       return (
-          <Homework
-              user={user}
-              onBack={() => setShowhomeWorkApp(false)}
-              sourceDocumentID={currentDocId}
-          />
+        <Homework
+          user={user}
+          onBack={() => setShowhomeWorkApp(false)}
+          sourceDocumentID={currentDocId}
+        />
       );
-  }
+    }
     return (
 
       <div className="subject-content">
@@ -373,7 +384,7 @@ useEffect(() => {
               <span>{topic}</span>
               <br />
               <button
-                onClick={() => handlehomeWork(topic,'homeWork')}
+                onClick={() => handlehomeWork(topic, 'homeWork')}
                 className="practiceButton"
                 style={{ backgroundColor: 'darkBlue', color: 'white', marginLeft: '10px' }}
               >
@@ -382,7 +393,7 @@ useEffect(() => {
                   : 'Practice Questions'}
               </button>
               <button
-                onClick={() => handleQuiz(topic,'quiz')}
+                onClick={() => handleQuiz(topic, 'quiz')}
                 className="practiceButton"
                 style={{ backgroundColor: 'lightblue', color: 'black', marginLeft: '10px' }}
               >
@@ -391,7 +402,7 @@ useEffect(() => {
                   : 'Trivia/Quiz'}
               </button>
               <button
-                onClick={() => handleMultipleChoiceQuiz(topic,'quiz_with_choices')}
+                onClick={() => handleMultipleChoiceQuiz(topic, 'quiz_with_choices')}
                 className="practiceButton"
                 style={{ backgroundColor: 'lightgreen', color: 'black', marginLeft: '10px' }}
               >
@@ -412,24 +423,16 @@ useEffect(() => {
 
   return (
     <div className="App">
-      <div className="header">
-        <h1>School Curriculum by Grade</h1>
-        <div className="user-controls">
-          {user && (
-            <div className="user-info">
-              <span>Welcome, {user.email}</span>
-              <button className="signoutbutton" onClick={handleSignOut}>
-                Sign Out
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
       {selectedSubject ? (
         <SubjectContent grade={selectedGrade} subject={selectedSubject} />
       ) : (
         <div className="grades-container">
+          <div className="user-info">
+            <span>Welcome, {user.email}</span>
+            <button className="signoutbutton" onClick={handleSignOut}>
+              Sign Out
+            </button>
+          </div>
           {Object.keys(gradesData).map(grade => (
             <GradeBox key={grade} grade={grade} />
           ))}
