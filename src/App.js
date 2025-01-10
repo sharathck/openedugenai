@@ -9,6 +9,7 @@ import { mastersData } from './data/mastersData';
 import { awsCertificationData } from './data/awsCertificationData';
 import { azureCertificationData } from "./data/azureCertificationsData";
 import { gcpCertificationData } from "./data/gcpCertificationData";
+import {programmingData} from "./data/programmingData";
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
 import GenAIApp from './GenAIApp';
@@ -121,6 +122,9 @@ function App({ user, source, grade, subject }) {  // Add user prop
       }
       if (sourceData === 'gcpCertificationData') {
         setGradesData(gcpCertificationData);
+      }
+      if (sourceData === 'programmingData') {
+        setGradesData(programmingData); 
       }
       await fetchTexts();
     };
@@ -497,6 +501,10 @@ function App({ user, source, grade, subject }) {  // Add user prop
                   setGradesData(gcpCertificationData);
                   sourceData = 'gcpCertificationData';
                   break;
+                case 'programmingData':
+                  setGradesData(programmingData);
+                  sourceData = 'programmingData';
+                  break;
                 default:
                   setGradesData(schoolGradesData);
                   sourceData = 'schoolGradesData';
@@ -507,6 +515,7 @@ function App({ user, source, grade, subject }) {  // Add user prop
             <option value="schoolGradesData">School Grades</option>
             <option value="collegeData">Bachelors</option>
             <option value="mastersData">Masters</option>
+            <option value="programmingData">Programming</option>
             <option value="awsCertificationData">AWS Certifications</option>
             <option value="azureCertificationData">Azure Certifications</option>
             <option value="gcpCertificationData">GCP Certifications</option>
