@@ -58,7 +58,7 @@ let modelQuiz = 'gemini-search';
 let modelQuizChoices = 'gpt-4o';
 let modelHomeWork = 'gemini';
 let modelExplain = 'gpt-4o';
-let advanced_features = 'Enter your own topic';
+let advanced_features = 'More options';
 let sourceData = '';
 
 
@@ -464,19 +464,7 @@ function App({ user, source, grade, subject }) {  // Add user prop
         <SubjectContent grade={selectedGrade} subject={selectedSubject} />
       ) : (
         <div>
-          <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
-            Enter your own Topic
-          </button>
-          &nbsp;&nbsp;&nbsp;
-          <button className="signoutbutton" onClick={handleSignOut}>
-            {user.email} <FaSignOutAlt />
-          </button>
-          <div className="grades-container">
-            {Object.keys(gradesData).map(grade => (
-              <GradeBox key={grade} grade={grade} />
-            ))}
-          </div>
-          <select
+                    <select
             className="data-source-select"
             onChange={(e) => {
               const source = e.target.value;
@@ -524,6 +512,18 @@ function App({ user, source, grade, subject }) {  // Add user prop
             <option value="gcpCertificationData">GCP Certifications</option>
             <option value="automationTestingData">Automation Testing</option>
           </select>
+          <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
+          More options
+          </button>
+          &nbsp;&nbsp;&nbsp;
+          <button className="signoutbutton" onClick={handleSignOut}>
+            {user.email} <FaSignOutAlt />
+          </button>
+          <div className="grades-container">
+            {Object.keys(gradesData).map(grade => (
+              <GradeBox key={grade} grade={grade} />
+            ))}
+          </div>
         </div>
       )}
     </div>
