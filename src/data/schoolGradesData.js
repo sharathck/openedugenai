@@ -1,6 +1,6 @@
 export const schoolGradesData = {
   'Grade 1': {
-    'Maths - Number and operations': [
+    'MatHigh School - Number and operations': [
       '2A Counting review - up to 10',
       '2A Count to fill a ten frame',
       '2B Counting tens and ones - up to 20',
@@ -162,7 +162,7 @@ export const schoolGradesData = {
       '3F Match word problems to addition and subtraction sentences - up to 10',
       '3F Match word problems to addition and subtraction sentences - up to 20'
     ],
-    'Maths - Algebraic reasoning': [
+    'MatHigh School - Algebraic reasoning': [
       '4A Names and values of common coins',
       '4A Names and values of all coins',
       '4A Equivalent groups of coins',
@@ -214,7 +214,7 @@ export const schoolGradesData = {
       '5G Add three numbers - make ten',
       '5G Add three numbers - word problems'
     ],
-    'Maths - Geometry and measurement': [
+    'MatHigh School - Geometry and measurement': [
       '6A Select two-dimensional shapes',
       '6B Compare shapes using attributes',
       '6B Select two-dimensional shapes',
@@ -263,7 +263,7 @@ export const schoolGradesData = {
       '7E Match analog and digital clocks: to the half hour',
       '7E Read clocks and write times'
     ],
-    'Maths - Data analysis': [
+    'MatHigh School - Data analysis': [
       '8A Which picture graph is correct?',
       '8A Which tally chart is correct?',
       '8A Which table is correct?',
@@ -275,7 +275,7 @@ export const schoolGradesData = {
       '8C Interpret bar graphs I',
       '8C Interpret bar graphs II'
     ],
-    'Maths - Miscellaneous': [
+    'MatHigh School - Miscellaneous': [
       'Counting to 120',
       'Understanding place value (ones and tens)',
       'Addition and subtraction within 20',
@@ -299,7 +299,7 @@ export const schoolGradesData = {
     ]
   },
   "Grade 2": {
-    'Maths - Number and operations': [
+    'MatHigh School - Number and operations': [
       '2A Place value models - tens and ones',
       '2A Place value models - up to hundreds',
       '2A Convert to/from a number - tens and ones',
@@ -447,7 +447,7 @@ export const schoolGradesData = {
       '6B Divide by counting equal groups',
       '6B Write division sentences for groups'
     ],
-    'Maths - Algebraic reasoning': [
+    'MatHigh School - Algebraic reasoning': [
       '7A Even or odd number of shapes - up to 20',
       '7A Identify even and odd numbers - up to 20',
       '7B Add 10 or 100',
@@ -474,7 +474,7 @@ export const schoolGradesData = {
       '7C Subtraction word problems - up to three digits',
       '7C Write the subtraction sentence - up to three digits'
     ],
-    'Maths - Geometry and measurement': [
+    'MatHigh School - Geometry and measurement': [
       '8A Draw polygons',
       '8B Three-dimensional shapes in the real world I',
       '8B Three-dimensional shapes in the real world II',
@@ -514,7 +514,7 @@ export const schoolGradesData = {
       '9G Compare clocks to the minute',
       '9G Time patterns to the minute'
     ],
-    'Maths - Data analysis': [
+    'MatHigh School - Data analysis': [
       '10A Interpret picture graphs',
       '10A Interpret bar graphs I',
       '10B Create picture graphs',
@@ -528,7 +528,7 @@ export const schoolGradesData = {
       '10D Which bar graph is correct?',
       '10D Interpret picture graphs II'
     ],
-    "Maths - Miscellaneous": [
+    "MatHigh School - Miscellaneous": [
       "Counting to 1,000: Learn to count sequentially up to 1,000 through number charts and counting exercises.",
       "Skip counting by 2s, 5s, and 10s: Practice skip counting using songs, number lines, and skip counting worksheets.",
       "Place value (hundreds, tens, and ones): Understand the value of each digit in a three-digit number with place value blocks and charts.",
@@ -605,7 +605,7 @@ export const schoolGradesData = {
     ]
   },
   'Grade 3': {
-    'Maths - Number and operations': [
+    'MatHigh School - Number and operations': [
       '2A Place value models up to thousands',
       '2A Value of a digit up to ten thousands',
       '2A Convert to/from a number',
@@ -768,7 +768,7 @@ export const schoolGradesData = {
       '4K Multiplication and division word problems',
       '4K Two-step multiplication and division word problems'
     ],
-    'Maths - Algebraic reasoning': [
+    'MatHigh School - Algebraic reasoning': [
       '5A Add two numbers up to three digits: word problems',
       '5A Subtract numbers up to three digits: word problems',
       '5A Addition and subtraction word problems',
@@ -792,7 +792,7 @@ export const schoolGradesData = {
       '5E Division input/output tables',
       '5E Division input/output tables: find the rule'
     ],
-    'Maths - Geometry and measurement': [
+    'MatHigh School - Geometry and measurement': [
       '6A Three-dimensional shapes in the real world I',
       '6A Three-dimensional shapes in the real world II',
       '6A Attributes of polygons',
@@ -834,7 +834,7 @@ export const schoolGradesData = {
       '7D Which metric unit of volume is appropriate?',
       '7D Choose the appropriate measuring tool'
     ],
-    'Maths - Data analysis': [
+    'MatHigh School - Data analysis': [
       '8A Create scaled bar graphs',
       '8A Create scaled picture graphs',
       '8A Create line plots',
@@ -845,7 +845,7 @@ export const schoolGradesData = {
       '8B Interpret line plots',
       '8B Read a table'
     ],
-    'Maths - Miscellaneous': [
+    'MatHigh School - Miscellaneous': [
       'Single Digit to Single Digit Multiplications',
       'Multiplication facts (0-10)',
       'Division concepts',
@@ -891,7 +891,7 @@ export const schoolGradesData = {
     ]
   },
   'Grade 4': {
-    'Maths - Number and operations': [
+    'MatHigh School - Number and operations': [
       '2A Convert between place values',
       '2A Place value review',
       '2A Place values in decimal numbers',
@@ -1091,7 +1091,7 @@ export const schoolGradesData = {
       '4H Multi-step word problems: identify reasonable answers',
       '4H One-step word problems involving remainders'
     ],
-    'Maths - Algebraic reasoning': [
+    'MatHigh School - Algebraic reasoning': [
       '5A Write equations to represent word problems',
       '5A Use equations to solve multi-step addition and subtraction word problems',
       '5A Multi-step word problems with strip diagrams',
@@ -1122,7 +1122,7 @@ export const schoolGradesData = {
       '5D Use area and perimeter to determine cost',
       '5D Understanding area and perimeter of rectangles'
     ],
-    'Maths - Geometry and measurement': [
+    'MatHigh School - Geometry and measurement': [
       '6A Points, lines, line segments, rays, and angles',
       '6A Parallel, perpendicular, and intersecting lines',
       '6A Identify parallel, perpendicular, and intersecting lines',
@@ -1156,7 +1156,7 @@ export const schoolGradesData = {
       '7E Adjacent angles',
       '7E Angle measures: word problems'
     ],
-    'Maths - Data analysis': [
+    'MatHigh School - Data analysis': [
       '9A Create line plots with fractions',
       '9A Create stem-and-leaf plots',
       '9A Create frequency charts with numerical data',
@@ -1167,14 +1167,14 @@ export const schoolGradesData = {
       '9B Interpret stem-and-leaf plots',
       '9B Interpret frequency charts with numerical data'
     ],
-    'Maths - Personal financial literacy': [
+    'MatHigh School - Personal financial literacy': [
       '10A Identify fixed and variable expenses',
       '10B Calculate profit: word problems',
       '10C Compare savings options',
       '10D Budget a weekly allowance: word problems',
       '10E Financial institution vocabulary'
     ],
-    'Maths - Miscellaneous': [
+    'MatHigh School - Miscellaneous': [
       'Place value to millions',
       'Multi-digit multiplication',
       'Division strategies',
@@ -1220,7 +1220,7 @@ export const schoolGradesData = {
     ]
   },
   'Grade 5': {
-    'Maths - Number and operations': [
+    'MatHigh School - Number and operations': [
       '2A Understanding decimals expressed in words',
       '2A Place values in decimal numbers',
       '2A Relationship between decimal place values',
@@ -1353,7 +1353,7 @@ export const schoolGradesData = {
       '3L Divide whole numbers and unit fractions',
       '3L Divide unit fractions and whole numbers: word problems'
     ],
-    'Maths - Algebraic reasoning': [
+    'MatHigh School - Algebraic reasoning': [
       '4A Prime and composite numbers',
       '4B Multi-step word problems',
       '4B Multi-step word problems involving remainders',
@@ -1390,7 +1390,7 @@ export const schoolGradesData = {
       '4H Volume of rectangular prisms',
       '4H Volume of cubes'
     ],
-    'Maths - Geometry and measurement': [
+    'MatHigh School - Geometry and measurement': [
       '5 Acute, obtuse, and right triangles',
       '5 Scalene, isosceles, and equilateral triangles',
       '5 Classify triangles',
@@ -1441,7 +1441,7 @@ export const schoolGradesData = {
       '8 Find pattern rules from graphs',
       '8 Find the rule from a table: word problems'
     ],
-    'Maths - Data analysis': [
+    'MatHigh School - Data analysis': [
       '9 Create line plots with fractions',
       '9 Create bar graphs',
       '9 Create frequency charts',
@@ -1457,7 +1457,7 @@ export const schoolGradesData = {
       '9 Interpret scatter plots',
       '9 Predictions and trends in scatter plots'
     ],
-    'Maths - Personal financial literacy': [
+    'MatHigh School - Personal financial literacy': [
       '10 Income and payroll taxes: word problems',
       '10 Sales and property taxes: word problems',
       '10 Identify types of taxes',
@@ -1470,7 +1470,7 @@ export const schoolGradesData = {
       '10 Adjust a budget',
       '10 Balance a budget'
     ],
-    'Maths - Miscellaneous': [
+    'MatHigh School - Miscellaneous': [
       'Decimal operations (addition, subtraction, multiplication, division)',
       'Advanced fraction operations (addition, subtraction, multiplication, division)',
       'Converting decimals and fractions',
@@ -1516,7 +1516,7 @@ export const schoolGradesData = {
     ]
   },
   'Grade 6': {
-    'Maths - Number and operations': [
+    'MatHigh School - Number and operations': [
       '2A Classify rational numbers using a diagram',
       '2A Classify numbers',
       '2B Understanding opposite integers',
@@ -1597,7 +1597,7 @@ export const schoolGradesData = {
       '3E Divide decimals',
       '3E Divide fractions: word problems'
     ],
-    'Maths - Proportionality': [
+    'MatHigh School - Proportionality': [
       '4A Solve one-step equations: word problems',
       '4A Write an equation from a graph using a table',
       '4A Write a two-variable equation',
@@ -1658,7 +1658,7 @@ export const schoolGradesData = {
       '5B Solve percent word problems',
       '5C Represent percents with grid models, decimals, and fractions'
     ],
-    'Maths - Expressions, equations, and relationships': [
+    'MatHigh School - Expressions, equations, and relationships': [
       '6A Identify independent and dependent variables in tables and graphs',
       '6A Identify independent and dependent variables: word problems',
       '6B Write a two-variable equation from a table',
@@ -1741,7 +1741,7 @@ export const schoolGradesData = {
       '10B Which x satisfies an equation?',
       '10B Solutions to inequalities'
     ],
-    'Maths - Measurement and data': [
+    'MatHigh School - Measurement and data': [
       '11 Graph points on a coordinate plane',
       '11 Graph points on a coordinate plane',
       '11 Quadrants',
@@ -1773,7 +1773,7 @@ export const schoolGradesData = {
       '13A Box plots',
       '13B Identify statistical questions'
     ],
-    'Maths - Personal financial literacy': [
+    'MatHigh School - Personal financial literacy': [
       '14A Compare checking accounts',
       '14B Debit cards and credit cards',
       '14C Check registers',
@@ -1783,7 +1783,7 @@ export const schoolGradesData = {
       '14G Paying for college',
       '14H Occupations, education, and income'
     ],
-    'Maths - Miscellaneous': [
+    'MatHigh School - Miscellaneous': [
       'Ratios and rates',
       'Unit rates and percentages',
       'Dividing fractions by fractions',
@@ -1833,7 +1833,7 @@ export const schoolGradesData = {
     ]
   },
   'Grade 7': {
-    'Maths - Number and operations': [
+    'MatHigh School - Number and operations': [
       'Add, subtract, multiply, and divide rational numbers fluently',
       'Add integers using counters',
       'Integer addition rules',
@@ -1892,7 +1892,7 @@ export const schoolGradesData = {
       'Price lists',
       'Unit prices: find the total price'
     ],
-    'Maths - Proportionality': [
+    'MatHigh School - Proportionality': [
       'Write equations for proportional relationships from tables',
       'Identify proportional relationships by graphing',
       'Write equations for proportional relationships from graphs',
@@ -1927,7 +1927,7 @@ export const schoolGradesData = {
       'Estimate tips',
       'Convert between customary and metric systems'
     ],
-    'Maths - Expressions, equations, and relationships': [
+    'MatHigh School - Expressions, equations, and relationships': [
       'Identify independent and dependent variables',
       'Find a value using two-variable equations',
       'Evaluate two-variable equations: word problems',
@@ -1945,7 +1945,7 @@ export const schoolGradesData = {
       'Solve equations using geometric concepts',
       'Algebraic reasoning with angles and sides of geometric figures'
     ],
-    'Maths - Measurement and data': [
+    'MatHigh School - Measurement and data': [
       'Volume of rectangular prisms and pyramids',
       'Surface area of rectangular prisms and pyramids',
       'Relationship between volume of prisms and pyramids',
@@ -1971,7 +1971,7 @@ export const schoolGradesData = {
       'Surface area of pyramids',
       'Lateral area of prisms and pyramids'
     ],
-    'Maths - Personal financial literacy': [
+    'MatHigh School - Personal financial literacy': [
       'Calculate sales tax for a given purchase',
       'Calculate income tax for earned wages',
       'Identify components of a personal budget',
@@ -1989,7 +1989,7 @@ export const schoolGradesData = {
       'Sale prices: find the original price',
       'Multi-step problems with percents'
     ],
-    'Maths - Probability and statistics': [
+    'MatHigh School - Probability and statistics': [
       'Represent sample spaces for simple events using lists and tree diagrams',
       'Represent sample spaces for compound events using lists and tree diagrams',
       'Find the number of outcomes for compound events',
@@ -2119,7 +2119,7 @@ export const schoolGradesData = {
     ],
   },
   'Grade 8': {
-    'Maths - Number and operations': [
+    'MatHigh School - Number and operations': [
       'Number and operations - extend previous knowledge of sets and subsets using a visual representation to describe relationships between sets of real numbers',
       'Number and operations - Classify numbers',
       'Number and operations - approximate the value of an irrational number, including π and square roots of numbers less than 225, and locate that rational number approximation on a number line',
@@ -2135,7 +2135,7 @@ export const schoolGradesData = {
       'Number and operations - Checkpoint: Approximate irrational numbers',
       'Number and operations - Checkpoint: Scientific notation'
     ],
-    'Maths - Proportionality': [
+    'MatHigh School - Proportionality': [
       'Proportionality - generalize that the ratio of corresponding sides of similar shapes are proportional, including a shape and its dilation',
       'Proportionality - Similar and congruent figures',
       'Proportionality - Identify similar triangles',
@@ -2217,7 +2217,7 @@ export const schoolGradesData = {
       'Proportionality - Checkpoint: Understand functions',
       'Proportionality - Checkpoint: Construct and interpret linear functions'
     ],
-    'Maths - Expressions, equations, and relationships': [
+    'MatHigh School - Expressions, equations, and relationships': [
       'Expressions, equations, and relationships - describe the volume formula V = Bh of a cylinder in terms of its base area and its height',
       'Expressions, equations, and relationships - model the relationship between the volume of a cylinder and a cone having both congruent bases and heights and connect that relationship to the formulas',
       'Expressions, equations, and relationships - use models and diagrams to explain the Pythagorean theorem',
@@ -2274,7 +2274,7 @@ export const schoolGradesData = {
       'Expressions, equations, and relationships - Solve a system of equations by graphing',
       'Expressions, equations, and relationships - Checkpoint: Systems of equations'
     ],
-    'Maths - Two-dimensional shapes': [
+    'MatHigh School - Two-dimensional shapes': [
       'Two-dimensional shapes - generalize the properties of orientation and congruence of rotations, reflections, translations, and dilations of two-dimensional shapes on a coordinate plane',
       'Two-dimensional shapes - Determine if two figures are congruent: justify your answer',
       'Two-dimensional shapes - Dilations: find the scale factor',
@@ -2296,7 +2296,7 @@ export const schoolGradesData = {
       'Two-dimensional shapes - Checkpoint: Translations, reflections, and rotations on the coordinate plane',
       'Two-dimensional shapes - Checkpoint: Properties of transformations'
     ],
-    'Maths - Measurement and data': [
+    'MatHigh School - Measurement and data': [
       'Measurement and data - construct a scatterplot and describe the observed data to address questions of association such as linear, non-linear, and no association between bivariate data',
       'Measurement and data - Create scatter plots',
       'Measurement and data - Identify trends with scatter plots',
@@ -2310,7 +2310,7 @@ export const schoolGradesData = {
       'Measurement and data - Checkpoint: Scatter plots',
       'Measurement and data - Checkpoint: Mean absolute deviation'
     ],
-    'Maths - Personal financial literacy': [
+    'MatHigh School - Personal financial literacy': [
       'Personal financial literacy - solve real-world problems comparing how interest rate and loan length affect the cost of credit',
       'Personal financial literacy - calculate the total cost of repaying a loan, including credit cards and easy access loans, under various rates of interest and over different periods using an online calculator',
       'Personal financial literacy - explain how small amounts of money invested regularly, including money saved for college and retirement, grow over time',
@@ -3295,7 +3295,7 @@ export const schoolGradesData = {
       'Positive Definite Matrices'
     ]
   },
-  'HS - Algebra I': {
+  'High School - Algebra I': {
     'Mathematics - Linear functions, equations, and inequalities': [
       'Domain and range: Domain and range of relations',
       'Domain and range: Domain and range of linear functions: graphs',
@@ -3412,7 +3412,7 @@ export const schoolGradesData = {
       'Literal equations: Linear equations: solve for y'
     ]
   },
-  'HS - Algebra II': {
+  'High School - Algebra II': {
     'Mathematics - Attributes of functions and their inverses': [
       'Graph the functions f(x)=√x, f(x)=1/x, f(x)=x³, f(x)=³√x, f(x)=b to the x power, f(x)=|x|, and f(x)=logb (x) where b is 2, 10, and e, and, when applicable, analyze the key attributes such as domain, range, intercepts, symmetries, asymptotic behavior, and maximum and minimum given an interval;',
       'Domain and range of absolute value functions: graphs',
@@ -3570,7 +3570,7 @@ export const schoolGradesData = {
       'Analyze a regression line of a data set'
     ]
   },
-  'HS - Geometry': {
+  'High School - Geometry': {
     'Geometry - Coordinate and transformational geometry': [
       'Midpoints - determine the coordinates of a point that is a given fractional distance less than one from one end of a line segment to the other in one- and two-dimensional coordinate systems, including finding the midpoint;',
       'Midpoints - Midpoint formula: find the midpoint',
@@ -3805,7 +3805,7 @@ export const schoolGradesData = {
       'Independence - Checkpoint: Probability'
     ]
   },
-  'HS - Precalculus': {
+  'High School - Precalculus': {
     'Mathematics - Functions': [
       'A: use the composition of two functions to model and solve real-world problems',
       'A: Composition of functions',
