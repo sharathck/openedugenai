@@ -38,57 +38,38 @@ let youtubeDescriptionPromptInput = '';
 let googleSearchPromptInput = '';
 let youtubeSelected = false;
 let imageGenerationPromptInput = '';
-let stories_image_generation_prompt = '';
-let imagesSearchPrompt = 'For the following content, I would like to search for images for my reserach project. Please divide following content in 5-10 logical and relevant image descriptions that I can use to search in google images.::: For each image description, include clickable url to search google images ::::: below is the full content ::::: ';
 let fullPromptInput = '';
 let autoPromptSeparator = '### all the text from below is strictly for reference and prompt purpose to answer the question asked above this line. ######### '
 let questionTrimLength = 200;
-let appendPrompt = ' ';
 let imagePromptInput = '';
-let imageSelected = false;
 let homeWorkInput = '';
 let quizInput = '';
 let quizMultipleChoicesInput = '';
 let chunk_size = 4000;
 let silence_break = 900;
-let YouTubePrompt = '';
 let intelligentQuestionsPrompt = '';
 let quizPrompt = '';
-let practicePrompt = '';
 let quizMultipleChoicesPrompt = '';
 let adminUser = false;
 let quiz_Multiple_Choices_Label = '';
-let genai_stories_label = '';
-let genai_image_label = '';
-let genai_youtube_label = '';
-let genai_tasks_label = '';
-let genai_search_label = '';
-let genai_audio_label = '';
-let genai_autoprompt_label = '';
 let bedtime_stories_content_input = '';
-let story_teller_prompt = '';
 let explainInput = '';
 let explainPrompt = '';
 let lyricsInput = '';
-let lyricsPrompt = '';
+let modelQuiz = 'gemini-search';
+let modelQuizChoices = 'gpt-4o';
+let modelHomeWork = 'gemini';
+let modelExplain = 'gpt-4o';
 
-
-
-
-const GenAIApp = ({user, source, grade, subject}) => {
+const GenAIApp = ({ user, source, grade, subject }) => {
     // **State Variables**
-    const [isGeneratingImages, setIsGeneratingImages] = useState(false);
-    const [isGeneratingYouTubeMusic, setIsGeneratingYouTubeMusic] = useState(false);
+    const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
     const [isExplain, setIsExplain] = useState(false);
     const [isLyrics, setIsLyrics] = useState(false);
     const [fetchFromPublic, setFetchFromPublic] = useState(false);
-    const [generateGeminiImage, setGenerateGeminiImage] = useState(false);
-    const [generateDalleImage, setGenerateDalleImage] = useState(false);
-    const [isGeneratingYouTubeBedtimeStory, setIsGeneratingYouTubeBedtimeStory] = useState(false);
     const [showDedicatedDownloadButton, setShowDedicatedDownloadButton] = useState(false);
     const [showBigQueryModelSearch, setShowBigQueryModelSearch] = useState(false);
     const [showDownloadTextButton, setShowDownloadTextButton] = useState(false);
-    const [showOnlyAudioTitleDescriptionButton, setShowOnlyAudioTitleDescriptionButton] = useState(false);
     const [genOpenAIImage, setGenOpenAIImage] = useState(true);
     const [genaiData, setGenaiData] = useState([]);
     const [isDownloading, setIsDownloading] = useState();
@@ -96,7 +77,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
     const [lastVisible, setLastVisible] = useState(null); // State for the last visible document
     const [language, setLanguage] = useState("en");
     const [isLiveAudioPlayingPrompt, setIsLiveAudioPlayingPrompt] = useState(false);
-    const [isGeneratingYouTubeAudioTitlePrompt, setIsGeneratingYouTubeAudioTitlePrompt] = useState(false);
     const [goBack, setGoBack] = useState(false);
 
     // Authentication state
@@ -104,36 +84,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
     const [password, setPassword] = useState('');
     const [uid, setUid] = useState(null);
     const [promptInput, setPromptInput] = useState('');
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [isGeneratingGemini, setIsGeneratingGemini] = useState(false);
-    const [isGeneratingAnthropic, setIsGeneratingAnthropic] = useState(false);
-    const [isGeneratingo1Mini, setIsGeneratingo1Mini] = useState(false);
-    const [isGeneratingImage_Dall_e_3, setIsGeneratingImage_Dall_e_3] = useState(false);
-    const [isGpt4oMini, setIsGpt4oMini] = useState(false);
-    const [isGeneratingGpt4oMini, setIsGeneratingGpt4oMini] = useState(false);
-    const [isOpenAI, setIsOpenAI] = useState(false);
-    const [isAnthropic, setIsAnthropic] = useState(true);
-    const [isGemini, setIsGemini] = useState(true);
-    const [isGpto1Mini, setIsGpto1Mini] = useState(true);
-    const [isLlama, setIsLlama] = useState(false);
-    const [isMistral, setIsMistral] = useState(false);
-    const [isGpt4Turbo, setIsGpt4Turbo] = useState(false);
-    const [isGeminiSearch, setIsGeminiSearch] = useState(true);
-    const [isGeminiFlash, setIsGeminiFlash] = useState(false);
-    const [isPerplexityFast, setIsPerplexityFast] = useState(false);
-    const [isPerplexity, setIsPerplexity] = useState(false);
-    const [isCodestral, setIsCodestral] = useState(false);
-    const [isGeneratingGeminiSearch, setIsGeneratingGeminiSearch] = useState(false);
-    const [isGeneratingGeminiFlash, setIsGeneratingGeminiFlash] = useState(false);
-    const [isGeneratingPerplexityFast, setIsGeneratingPerplexityFast] = useState(false);
-    const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
-    const [iso1, setIso1] = useState(false); // New state for o1
-    const [isGeneratingo1, setIsGeneratingo1] = useState(false);
-    const [isGeneratingLlama, setIsGeneratingLlama] = useState(false);
-    const [isGeneratingGpt4Turbo, setIsGeneratingGpt4Turbo] = useState(false);
-    const [isGeneratingPerplexity, setIsGeneratingPerplexity] = useState(false);
-    const [isGeneratingCodeStral, setIsGeneratingCodeStral] = useState(false);
-    const [isGeneratingMistral, setIsGeneratingMistral] = useState(false);
     const [voiceName, setVoiceName] = useState('en-US-EvelynMultilingualNeural');
     const [genaiPrompts, setGenaiPrompts] = useState([]);
     const [showEditPopup, setShowEditPopup] = useState(false);
@@ -149,96 +99,8 @@ const GenAIApp = ({user, source, grade, subject}) => {
     const [top_p, setTop_p] = useState(0.8);
     const top_pRef = useRef(top_p);
     const [autoPromptLimit, setAutoPromptLimit] = useState(1);
-    const [showTemp, setShowTemp] = useState(false);
-    const [showTop_p, setShowTop_p] = useState(false);
-    const [showGpt4Turbo, setShowGpt4Turbo] = useState(false);
-    const [showMistral, setShowMistral] = useState(false);
-    const [showLlama, setShowLlama] = useState(false);
-    const [showGpt4oMini, setShowGpt4oMini] = useState(false);
-    const [showGeminiSearch, setShowGeminiSearch] = useState(false);
-    const [showGeminiFlash, setShowGeminiFlash] = useState(false);
-    const [showPerplexityFast, setShowPerplexityFast] = useState(false);
-    const [showPerplexity, setShowPerplexity] = useState(false);
-    const [showCodeStral, setShowCodeStral] = useState(false);
-    const [showGemini, setShowGemini] = useState(false);
-    const [showAnthropic, setShowAnthropic] = useState(false);
-    const [showOpenAI, setShowOpenAI] = useState(false);
-    const [showo1, setShowo1] = useState(false);
-    const [showImageDallE3, setShowImageDallE3] = useState(false);
-    const [showTTS, setShowTTS] = useState(false);
-    const [showo1Mini, setShowo1Mini] = useState(false);
-    const [showAutoPrompt, setShowAutoPrompt] = useState(false);
-    const [modelAnthropic, setModelAnthropic] = useState('claude');
-    const [modelGemini, setModelGemini] = useState('gemini');
-    const [modelOpenAI, setModelOpenAI] = useState('gpt-4o');
-    const [modelGpto1Mini, setModelGpto1Mini] = useState('o1-mini');
-    const [modelo1, setModelo1] = useState('o1');
-    const [modelLlama, setModelLlama] = useState('llama');
-    const [modelMistral, setModelMistral] = useState('mistral');
-    const [modelGpt4oMini, setModelGpt4oMini] = useState('gpt-4o-mini');
-    const [modelGeminiSearch, setModelGeminiSearch] = useState('gemini-search');
-    const [modelGeminiFlash, setModelGeminiFlash] = useState('gemini-flash');
-    const [modelGpt4Turbo, setModelGpt4Turbo] = useState('gpt-4-turbo');
-    const [modelImageDallE3, setModelImageDallE3] = useState('dall-e-3');
-    const [modelPerplexityFast, setModelPerplexityFast] = useState('perplexity-fast');
-    const [modelPerplexity, setModelPerplexity] = useState('perplexity');
-    const [modelCodestralApi, setModelCodestralApi] = useState('mistral-codestral-api'); // New state
-    const [modelClaudeHaiku, setModelClaudeHaiku] = useState('claude-haiku');
-    const [modelGeminiImage, setModelGeminiImage] = useState('gemini-image');
     const [autoPrompt, setAutoPrompt] = useState(false);
-    const [showSaveButton, setShowSaveButton] = useState(true);
-    const [showSourceDocument, setShowSourceDocument] = useState(false);
-    const [showYouTubeButton, setShowYouTubeButton] = useState(false);
     const mdParser = new MarkdownIt(/* Markdown-it options */);
-
-    // Add new state variables for Claude-Haiku
-    const [isClaudeHaiku, setIsClaudeHaiku] = useState(false);
-    const [isGeneratingClaudeHaiku, setIsGeneratingClaudeHaiku] = useState(false);
-
-    // Add showClaudeHaiku state variable
-    const [showClaudeHaiku, setShowClaudeHaiku] = useState(false); // Set to true or false as needed
-
-    // Add new state variables for Sambanova
-    const [isSambanova, setIsSambanova] = useState(false);
-    const [isGeneratingSambanova, setIsGeneratingSambanova] = useState(false);
-    const [showSambanova, setShowSambanova] = useState(false);
-    const [modelSambanova, setModelSambanova] = useState('sambanova');
-
-    // Add new state variables near other model state variables
-    const [isGroq, setIsGroq] = useState(false);
-    const [isGeneratingGroq, setIsGeneratingGroq] = useState(false);
-    const [showGroq, setShowGroq] = useState(false);
-    const [modelGroq, setModelGroq] = useState('groq');
-    const [labelGroq, setLabelGroq] = useState('Llama');
-
-    // Add new state variables for nova after other model state variables
-    const [isNova, setIsNova] = useState(false);
-    const [isGeneratingNova, setIsGeneratingNova] = useState(false);
-    const [showNova, setShowNova] = useState(false);
-    const [modelNova, setModelNova] = useState('nova');
-
-    // Add these state variables after other model state variables
-    const [labelOpenAI, setLabelOpenAI] = useState('ChatGPT');
-    const [labelAnthropic, setLabelAnthropic] = useState('Claude');
-    const [labelGemini, setLabelGemini] = useState('Gemini');
-    const [labelGpto1Mini, setLabelGpto1Mini] = useState('o1-mini');
-    const [labelMistral, setLabelMistral] = useState('Mistral');
-    const [labelLlama, setLabelLlama] = useState('Llama(405B)');
-    const [labelGpt4Turbo, setLabelGpt4Turbo] = useState('Gpt4Turbo');
-    const [labelGeminiSearch, setLabelGeminiSearch] = useState('SearchGenAI');
-    const [labelGeminiFlash, setLabelGeminiFlash] = useState('Gemini Flash');
-    const [labelGpt4oMini, setLabelGpt4oMini] = useState('Gpt4oMini');
-    const [labelo1, setLabelo1] = useState('o1');
-    const [labelPerplexityFast, setLabelPerplexityFast] = useState('Perplexity-Fast');
-    const [labelPerplexity, setLabelPerplexity] = useState('Plxty');
-    const [labelCodestral, setLabelCodestral] = useState('CodeStral');
-    const [labelClaudeHaiku, setLabelClaudeHaiku] = useState('Claude-Haiku');
-    const [labelSambanova, setLabelSambanova] = useState('Llama(S)');
-    const [labelNova, setLabelNova] = useState('Nova');
-    const [isYouTubeTitle, setIsYouTubeTitle] = useState(false);
-    const [isImagesSearch, setIsImagesSearch] = useState(false);
-    const [showImagesSearchWordsButton, setShowImagesSearchWordsButton] = useState(false);
-    const [showYouTubeTitleDescriptionButton, setShowYouTubeTitleDescriptionButton] = useState(false);
     const [ishomeWork, setIshomeWork] = useState(false);
     const [isQuiz, setIsQuiz] = useState(false);
     const [showhomeWorkButton, setShowhomeWorkButton] = useState(true);
@@ -250,7 +112,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
     const [isLiveAudioPlaying, setIsLiveAudioPlaying] = useState({});
     const [isGeneratingDownloadableAudio, setIsGeneratingDownloadableAudio] = useState({});
     // Add new state variable for YouTube audio title button
-    const [isGeneratingYouTubeAudioTitle, setIsGeneratingYouTubeAudioTitle] = useState({});
     const [showhomeWorkApp, setShowhomeWorkApp] = useState(false);
     const [currentDocId, setCurrentDocId] = useState(null);
     const currentDocIdRef = useRef(currentDocId);
@@ -304,24 +165,12 @@ const GenAIApp = ({user, source, grade, subject}) => {
 
     // Add new show state variables
     const [showPrint, setShowPrint] = useState(false);
-
-    // Add new state variables after other model state variables
-    const [isCerebras, setIsCerebras] = useState(false);
-    const [isGeneratingCerebras, setIsGeneratingCerebras] = useState(false);
-    const [showCerebras, setShowCerebras] = useState(false);
     const [modelCerebras, setModelCerebras] = useState('llama-c');
-    const [labelCerebras, setLabelCerebras] = useState('Llama-C');
-    const [youtubeTitlePrompt, setYoutubeTitlePrompt] = useState(`### Give me the best YouTube Title for the above content`);
-    const [youtubeDescriptionPrompt, setYoutubeDescriptionPrompt] = useState(`#### Give me the best YouTube description for the above content, I need exactly one response and don't include any other text or URLs in the response. ----- Text from below is only prompt purpose --- YouTube description should be engaging, detailed, informative, and YouTube search engine optimized and SEO friendly, it can contain special characters, emojis, and numbers to make it more appealing and expressive. Please use the emojis, icons to make it more visually appealing.   Use relevant tags to improve the visibility and reach of your video in Youtube video Description.   Use bullet points, numbered points, lists, and paragraphs to organize Youtube video description.  Bold, italicize, underline, and highlight important information in Youtube video description.   Also, please request users to subscribe and click on bell icon for latest content at the end. `);
-    const youtubeDescriptionPromptRef = useRef(youtubeDescriptionPrompt);
-    const youtubeTitlePromptRef = useRef(youtubeTitlePrompt);
 
     useEffect(() => {
         temperatureRef.current = temperature;
         top_pRef.current = top_p;
-        youtubeDescriptionPromptRef.current = youtubeDescriptionPrompt;
-        youtubeTitlePromptRef.current = youtubeTitlePrompt;
-    }, [temperature, top_p, youtubeTitlePrompt, youtubeDescriptionPrompt]);
+    }, [temperature, top_p,]);
 
     const embedPrompt = async (docId) => {
         try {
@@ -343,75 +192,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
         } catch (error) {
             console.error('Error embedding prompt:', error);
             alert(`Error: ${error.message}`);
-        }
-    };
-    // Helper function to save prompt
-    const handleSavePrompt = async () => {
-        if (!editPromptTag.trim() || !editPromptFullText.trim()) {
-            alert('Please enter a prompt.');
-            return;
-        }
-        try {
-            const user = auth.currentUser;
-            let docId = '';
-            const currentDateTime = new Date();
-            const promptSize = editPromptFullText.length; // Calculate the size of the prompt
-
-            if (!user) {
-                console.error("No user is signed in");
-                return;
-            }
-            const genaiCollection = collection(db, 'genai', user.uid, 'prompts');
-            if (selectedPrompt === 'NA' || selectedPrompt == null) {
-                console.log('Adding new prompt');
-                const newDocRef = await addDoc(genaiCollection, {
-                    tag: editPromptTag,
-                    fullText: editPromptFullText,
-                    createdDateTime: currentDateTime,
-                    modifiedDateTime: currentDateTime,
-                    size: promptSize
-                });
-                docId = newDocRef.id;
-            } else {
-                console.log('Updating prompt');
-                const q = query(genaiCollection, where('tag', '==', selectedPrompt), limit(1));
-                const genaiSnapshot = await getDocs(q);
-
-                if (genaiSnapshot.empty) {
-                    console.log('No existing prompt found, adding new one');
-                    const newDocRef = await addDoc(genaiCollection, {
-                        tag: editPromptTag,
-                        fullText: editPromptFullText,
-                        createdDateTime: currentDateTime,
-                        modifiedDateTime: currentDateTime,
-                        size: promptSize
-                    });
-                    docId = newDocRef.id;
-                } else {
-                    const docToUpdate = genaiSnapshot.docs[0];
-                    const docRef = doc(db, 'genai', user.uid, 'prompts', docToUpdate.id);
-                    await updateDoc(docRef, {
-                        tag: editPromptTag,
-                        fullText: editPromptFullText,
-                        modifiedDateTime: currentDateTime,
-                        size: promptSize
-                    });
-                    docId = docToUpdate.id;
-                }
-            }
-
-            if (docId) {
-                await embedPrompt(docId);
-            }
-
-            setEditPromptTag('');
-            setEditPromptFullText('');
-            setShowEditPopup(false);
-            await fetchPrompts(user.uid);
-
-        } catch (error) {
-            console.error("Error saving prompt: ", error);
-            alert('Error saving prompt: ' + error.message);
         }
     };
 
@@ -463,7 +243,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
                 setUid(currentUser.uid);
                 setEmail(currentUser.email);
                 console.log('User is signed in:', currentUser.uid);
-                console.log('isGeneratingGeminiSearch:', isGeneratingGeminiSearch);
 
                 // Fetch data for the authenticated user
                 fetchData(currentUser.uid);
@@ -542,181 +321,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
                 if (data.dataLimit !== undefined) {
                     dataLimit = data.dataLimit;
                 }
-                if (data.isGroq !== undefined) {
-                    setIsGroq(data.isGroq);
-                }
-                if (data.isAnthropic !== undefined) {
-                    setIsAnthropic(data.isAnthropic);
-                }
-                if (data.isGemini !== undefined) {
-                    setIsGemini(data.isGemini);
-                }
-                if (data.isOpenAI !== undefined) {
-                    setIsOpenAI(data.isOpenAI);
-                }
-                if (data.isGpto1Mini !== undefined) {
-                    setIsGpto1Mini(data.isGpto1Mini);
-                }
-                if (data.iso1 !== undefined) {
-                    setIso1(data.iso1);
-                }
-                if (data.showImageDallE3 !== undefined) {
-                    setShowImageDallE3(data.showImageDallE3);
-                }
-                if (data.showTTS !== undefined) {
-                    setShowTTS(data.showTTS);
-                }
-                if (data.isLlama !== undefined) {
-                    setIsLlama(data.isLlama);
-                }
-                if (data.isMistral !== undefined) {
-                    setIsMistral(data.isMistral);
-                }
-                if (data.isGpt4Turbo !== undefined) {
-                    setIsGpt4Turbo(data.isGpt4Turbo);
-                }
-                if (data.isGpt4oMini !== undefined) {
-                    setIsGpt4oMini(data.isGpt4oMini);
-                }
-                if (data.isGeminiSearch !== undefined) {
-                    setIsGeminiSearch(data.isGeminiSearch);
-                }
-                if (data.isGeminiFlash !== undefined) {
-                    setIsGeminiFlash(data.isGeminiFlash);
-                }
-                if (data.isPerplexityFast !== undefined) {
-                    setIsPerplexityFast(data.isPerplexityFast);
-                }
-                if (data.isPerplexity !== undefined) {
-                    setIsPerplexity(data.isPerplexity);
-                }
-                if (data.isCodestral !== undefined) {
-                    setIsCodestral(data.isCodestral);
-                }
-                if (data.isClaudeHaiku !== undefined) {
-                    setIsClaudeHaiku(data.isClaudeHaiku);
-                }
-                if (data.isSambanova !== undefined) {
-                    setIsSambanova(data.isSambanova);
-                }
-                if (data.showAnthropic !== undefined) {
-                    setShowAnthropic(data.showAnthropic);
-                }
-                if (data.showGemini !== undefined) {
-                    setShowGemini(data.showGemini);
-                }
-                if (data.showOpenAI !== undefined) {
-                    setShowOpenAI(data.showOpenAI);
-                }
-                if (data.showGpt4Turbo !== undefined) {
-                    setShowGpt4Turbo(data.showGpt4Turbo);
-                }
-                if (data.showMistral !== undefined) {
-                    setShowMistral(data.showMistral);
-                }
-                if (data.showPerplexityFast !== undefined) {
-                    setShowPerplexityFast(data.showPerplexityFast);
-                }
-                if (data.showPerplexity !== undefined) {
-                    setShowPerplexity(data.showPerplexity);
-                }
-                if (data.showGpt4oMini !== undefined) {
-                    setShowGpt4oMini(data.showGpt4oMini);
-                }
-                if (data.showGeminiSearch !== undefined) {
-                    console.log('Setting showGeminiSearch:', data.showGeminiSearch);
-                    setShowGeminiSearch(data.showGeminiSearch);
-                }
-                if (data.showGeminiFlash !== undefined) {
-                    setShowGeminiFlash(data.showGeminiFlash);
-                }
-                if (data.showCodeStral !== undefined) {
-                    setShowCodeStral(data.showCodeStral);
-                }
-                if (data.showLlama !== undefined) {
-                    setShowLlama(data.showLlama);
-                }
-                if (data.showo1 !== undefined) {
-                    setShowo1(data.showo1);
-                }
-                if (data.showo1Mini !== undefined) {
-                    setShowo1Mini(data.showo1Mini);
-                }
-                if (data.showClaudeHaiku !== undefined) {
-                    setShowClaudeHaiku(data.showClaudeHaiku);
-                }
-                if (data.showSambanova !== undefined) {
-                    setShowSambanova(data.showSambanova);
-                }
-                if (data.showGroq !== undefined) {
-                    setShowGroq(data.showGroq);
-                }
-                if (data.showNova !== undefined) {
-                    setShowNova(data.showNova);
-                }
-                if (data.labelGroq !== undefined) {
-                    setLabelGroq(data.labelGroq);
-                }
-                if (data.labelOpenAI !== undefined) {
-                    setLabelOpenAI(data.labelOpenAI);
-                }
-                if (data.labelAnthropic !== undefined) {
-                    setLabelAnthropic(data.labelAnthropic);
-                }
-                if (data.labelGemini !== undefined) {
-                    setLabelGemini(data.labelGemini);
-                }
-                if (data.labelGpto1Mini !== undefined) {
-                    setLabelGpto1Mini(data.labelGpto1Mini);
-                }
-                if (data.labelMistral !== undefined) {
-                    setLabelMistral(data.labelMistral);
-                }
-                if (data.labelLlama !== undefined) {
-                    setLabelLlama(data.labelLlama);
-                }
-                if (data.labelGpt4Turbo !== undefined) {
-                    setLabelGpt4Turbo(data.labelGpt4Turbo);
-                }
-                if (data.labelGeminiSearch !== undefined) {
-                    setLabelGeminiSearch(data.labelGeminiSearch);
-                }
-                if (data.labelGeminiFlash !== undefined) {
-                    setLabelGeminiFlash(data.labelGeminiFlash);
-                }
-                if (data.labelGpt4oMini !== undefined) {
-                    setLabelGpt4oMini(data.labelGpt4oMini);
-                }
-                if (data.labelo1 !== undefined) {
-                    setLabelo1(data.labelo1);
-                }
-                if (data.labelPerplexityFast !== undefined) {
-                    setLabelPerplexityFast(data.labelPerplexityFast);
-                }
-                if (data.labelPerplexity !== undefined) {
-                    setLabelPerplexity(data.labelPerplexity);
-                }
-                if (data.labelCodestral !== undefined) {
-                    setLabelCodestral(data.labelCodestral);
-                }
-                if (data.labelClaudeHaiku !== undefined) {
-                    setLabelClaudeHaiku(data.labelClaudeHaiku);
-                }
-                if (data.labelSambanova !== undefined) {
-                    setLabelSambanova(data.labelSambanova);
-                }
-                if (data.labelNova !== undefined) {
-                    setLabelNova(data.labelNova);
-                }
-                if (data.showYouTubeButton !== undefined) {
-                    setShowYouTubeButton(data.showYouTubeButton);
-                }
-                if (data.showImagesSearchWordsButton !== undefined) {
-                    setShowImagesSearchWordsButton(data.showImagesSearchWordsButton);
-                }
-                if (data.showYouTubeTitleDescriptionButton !== undefined) {
-                    setShowYouTubeTitleDescriptionButton(data.showYouTubeTitleDescriptionButton);
-                }
                 if (data.showhomeWorkButton !== undefined) {
                     setShowhomeWorkButton(data.showhomeWorkButton);
                 }
@@ -747,40 +351,13 @@ const GenAIApp = ({user, source, grade, subject}) => {
                 if (data.showPromptsDropDownAfterSearch !== undefined) {
                     setShowPromptsDropDownAfterSearch(data.showPromptsDropDownAfterSearch);
                 }
-                if (data.showSaveButton !== undefined) {
-                    setShowSaveButton(data.showSaveButton);
-                }
-                if (data.showSourceDocument !== undefined) {
-                    setShowSourceDocument(data.showSourceDocument);
-                }
                 if (data.showBackToAppButton !== undefined) {
                     setShowBackToAppButton(data.showBackToAppButton);
-                }
-                if (data.showAutoPrompt !== undefined) {
-                    setShowAutoPrompt(data.showAutoPrompt);
-                }
-                if (data.showTemp !== undefined) {
-                    setShowTemp(data.showTemp);
-                }
-                if (data.showTop_p !== undefined) {
-                    setShowTop_p(data.showTop_p);
-                }
+               }
                 if (data.showPrint !== undefined) {
                     setShowPrint(data.showPrint);
                 }
-                if (data.isCerebras !== undefined) {
-                    setIsCerebras(data.isCerebras);
-                }
-                if (data.showCerebras !== undefined) {
-                    setShowCerebras(data.showCerebras);
-                }
-                if (data.labelCerebras !== undefined) {
-                    setLabelCerebras(data.labelCerebras);
-                }
-                if (data.showOnlyAudioTitleDescriptionButton !== undefined) {
-                    setShowOnlyAudioTitleDescriptionButton(data.showOnlyAudioTitleDescriptionButton);
-                }
-                if (data.showDedicatedDownloadButton !== undefined) {
+             if (data.showDedicatedDownloadButton !== undefined) {
                     setShowDedicatedDownloadButton(data.showDedicatedDownloadButton);
                 }
                 if (data.genOpenAIImage !== undefined) {
@@ -812,12 +389,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
                 }
                 if (data.fetchFromPublic !== undefined) {
                     setFetchFromPublic(data.fetchFromPublic);
-                }
-                if (data.generateGeminiImage !== undefined) {
-                    setGenerateGeminiImage(data.generateGeminiImage);
-                }
-                if (data.generateDalleImage !== undefined) {
-                    setGenerateDalleImage(data.generateDalleImage);
                 }
             });
         } catch (error) {
@@ -1002,327 +573,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
         }
     };
 
-    const generateAndDownloadYouTubeUploadInformation = async (message) => {
-        const firestoreResponseData = message;
-        console.log('First fetched data from Firestore:', firestoreResponseData);
-        console.log('firestoreResponseData:', firestoreResponseData);
-        if (firestoreResponseData === undefined || firestoreResponseData.length < 100) {
-            alert('ERROR: Prompt response is not generated.');
-            return;
-        }
-
-        setIsYouTubeTitle(true);
-        setIsGemini(true);
-        setIsGeneratingGemini(true);
-        youtubePromptInput = firestoreResponseData + youtubeTitlePrompt;
-        youtubeSelected = true;
-        await callAPI(modelo1, 'youtubeTitle');
-        console.log('youtube Title Gen and Upload generatedDocID:', generatedDocID);
-        const youtubeTitledocRef = doc(db, 'genai', user.uid, 'MyGenAI', generatedDocID);
-        const youtubeTitledocSnap = await getDoc(youtubeTitledocRef);
-        if (youtubeTitledocSnap.exists()) {
-            console.log('Youtube title fetched data from Firestore:', youtubeTitledocSnap.data().answer);
-            const plainText = (youtubeTitledocSnap.data().answer || '')
-                .replace(/[#*~`>-]/g, '')
-                .replace(/\r?\n/g, '\r\n');
-            const blob = new Blob([plainText], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'title.txt';
-            link.click();
-        }
-        youtubeDescriptionPromptInput = firestoreResponseData + youtubeDescriptionPrompt;
-        await callAPI(modelo1, 'youtubeDescription');
-        console.log('youtube Description Gen and Upload generatedDocID:', generatedDocID);
-        const youtubeDescrdocRef = doc(db, 'genai', user.uid, 'MyGenAI', generatedDocID);
-        const youtubeDescrdocSnap = await getDoc(youtubeDescrdocRef);
-        if (youtubeDescrdocSnap.exists()) {
-            console.log('Youtube title fetched data from Firestore:', youtubeDescrdocSnap.data().answer);
-            const plainText = (youtubeDescrdocSnap.data().answer || '')
-                .replace(/[#*~`>-]/g, '')
-                .replace(/\r?\n/g, '\r\n');
-            const blob = new Blob([plainText], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'description.txt';
-            link.click();
-        }
-        await callTTSAPI(firestoreResponseData, process.env.REACT_APP_TTS_SSML_API_URL);
-        console.log('TTS generatedDocID:', ttsGeneratedDocID);
-        const ttsdocRef = doc(db, 'genai', user.uid, 'MyGenAI', ttsGeneratedDocID);
-        const ttsdocSnap = await getDoc(ttsdocRef);
-        if (ttsdocSnap.exists()) {
-            console.log('TTS fetched data from Firestore:', ttsdocSnap.data().answer);
-            const audioURL = ttsdocSnap.data().answer;
-            console.log('TTS audioURL:', audioURL);
-            await handleDownload(audioURL, 'azure-tts');
-        }
-
-    };
-
-    const generateYouTubeUploadInformation = async (message, invocation_source = 'youtube') => {
-        const firestoreResponseData = message;
-        console.log('First fetched data from Firestore:', firestoreResponseData);
-        console.log('firestoreResponseData:', firestoreResponseData);
-        if (firestoreResponseData === undefined || firestoreResponseData.length < 100) {
-            alert('ERROR: Prompt response is not generated.');
-            return;
-        }
-        // Execute YouTube Title/Description/Audio
-        youtubeSelected = true;
-        setIsYouTubeTitle(true);
-        setIsGeneratingTTS(true);
-        setIsGemini(true);
-        setIsGeneratingGemini(true);
-        await generateAndDownloadYouTubeUploadInformation(firestoreResponseData);
-        if (invocation_source !== 'stories' && invocation_source !== 'youtube_own_content') {
-            // Execute Image Search
-            imagePromptInput = firestoreResponseData + imagesSearchPrompt;
-            imageSelected = true;
-            setIsGeneratingGemini(true);
-            setIsGemini(true);
-            setIsImagesSearch(true);
-            await callAPI(modelGemini, 'imagesSearchWords');
-            console.log('Image Search generatedDocID', generatedDocID);
-            const imageSearchdocRef = doc(db, 'genai', user.uid, 'MyGenAI', generatedDocID);
-            const imageSearchdocSnap = await getDoc(imageSearchdocRef);
-            if (imageSearchdocSnap.exists()) {
-                const ifirestoreResponseData = imageSearchdocSnap.data().answer;
-                console.log('Gen AI Images Search - Second fetched data from Firestore:', ifirestoreResponseData);
-                if (ifirestoreResponseData) {
-                    const parts = ifirestoreResponseData.match(/\[.*?\]/g)?.map(match => match.slice(1, -1)) || [];
-                    for (const part of parts) {
-                        console.log('image prompt part:', part);
-                        imageGenerationPromptInput = part;
-                        const encodedPrompt = encodeURIComponent(imageGenerationPromptInput);
-                        window.open(`https://www.google.com/search?tbm=isch&q=${encodedPrompt}`, '_blank');
-                    }
-                } else {
-                    console.error('imageSearchfirestoreResponseData is null or undefined');
-                }
-            }
-        }
-        imagePromptsGenerationInput = firestoreResponseData + imageGenerationPrompt;
-        if (invocation_source === 'stories' || invocation_source === 'youtube_own_content') {
-            console.log('Invoking stories image generation', stories_image_generation_prompt);
-            imagePromptsGenerationInput = firestoreResponseData + stories_image_generation_prompt;
-        }
-        await callAPI(modelGemini, 'imageGeneration');
-        console.log('Image Generation generatedDocID', generatedDocID);
-        const idocRef = doc(db, 'genai', user.uid, 'MyGenAI', generatedDocID);
-        const idocSnap = await getDoc(idocRef);
-        if (idocSnap.exists()) {
-            const ifirestoreResponseData = idocSnap.data().answer;
-            console.log('Gen AI Image Generation - Second fetched data from Firestore:', ifirestoreResponseData);
-            if (ifirestoreResponseData) {
-                const parts = ifirestoreResponseData.match(/\[.*?\]/g)?.map(match => match.slice(1, -1)) || [];
-                for (const part of parts) {
-                    console.log('image prompt part:', part);
-                    imageGenerationPromptInput = part;
-                    setIsGeneratingImage_Dall_e_3(true);
-                    if (generateGeminiImage === true) {
-                        await callAPI(modelGeminiImage, 'image_ai_agent');
-                        if (1 === 2) {
-                            console.log('Image generatedDocID:', generatedDocID);
-                            const ttsdocRef = doc(db, 'genai', user.uid, 'MyGenAI', generatedDocID);
-                            const ttsdocSnap = await getDoc(ttsdocRef);
-                            if (ttsdocSnap.exists()) {
-                                console.log('Image fetched data from Firestore:', ttsdocSnap.data().answer);
-                                const audioURL = ttsdocSnap.data().answer;
-                                console.log('Image URL:', audioURL);
-                                await handleDownload(audioURL, 'image');
-                            }
-                        }
-                    }
-                    if (generateDalleImage === true) {
-                        await callAPI(modelImageDallE3, 'image_ai_agent');
-                        console.log('Image generatedDocID:', generatedDocID);
-                        if (1 === 2) {
-                            const ttsdocRef = doc(db, 'genai', user.uid, 'MyGenAI', generatedDocID);
-                            const ttsdocSnap = await getDoc(ttsdocRef);
-                            if (ttsdocSnap.exists()) {
-                                console.log('Image fetched data from Firestore:', ttsdocSnap.data().answer);
-                                const audioURL = ttsdocSnap.data().answer;
-                                console.log('Image URL:', audioURL);
-                                await handleDownload(audioURL, 'image');
-                            }
-                        }
-                    }
-                }
-                setIsGeneratingImage_Dall_e_3(false);
-            } else {
-                console.error('ifirestoreResponseData is null or undefined');
-            }
-        }
-        setIsGeneratingYouTubeAudioTitlePrompt(false);
-        setIsGeneratingYouTubeBedtimeStory(false);
-    };
-    const handlePromptChange = async (promptValue) => {
-        /* const genaiCollection = collection(db, 'genai', uid, 'prompts');
-         const q = query(genaiCollection, where('tag', '==', promptValue), limit(1));
-         const genaiSnapshot = await getDocs(q);
-         const genaiList = genaiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); */
-        fullPromptInput = promptValue;
-    };
-
-    // Sign Out
-    const handleSignOut = () => {
-        signOut(auth).catch((error) => {
-            console.error('Error signing out:', error);
-            alert('Error signing out: ' + error.message);
-        });
-    };
-
-    const searchPrompts = async () => {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_GENAI_API_URL}search`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ q: promptInput, uid: user.uid, collection: 'prompts', limit: autoPromptLimit })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Failed to search prompts.');
-            }
-
-            const data = await response.json();
-            const docIds = data.document_ids;
-
-            const genaiCollection = collection(db, 'genai', uid, 'prompts');
-            const docsQuery = query(genaiCollection, where('__name__', 'in', docIds));
-            const docsSnapshot = await getDocs(docsQuery);
-            const fullTexts = docsSnapshot.docs.map(doc => doc.data().fullText);
-            setEditPromptFullText(fullTexts.join("\n"));
-            const promptTag = docsSnapshot.docs.map(doc => doc.data().tag);
-            setEditPromptTag(promptTag);
-            console.log('Edit Prompt:', editPromptTag);
-            console.log('Select Prompt Tag:', fullTexts);
-            setSelectedPrompt(promptTag);
-            setShowSourceDocument(true);
-            autoPromptInput = promptInput;
-            autoPromptInput = autoPromptInput + "\n" + autoPromptSeparator + "\n" + fullTexts.join("\n");
-        } catch (error) {
-            console.error('Error searching prompts:', error);
-            alert(`Error: ${error.message}`);
-        }
-    };
-
-    // **New Event Handlers for Generate and Refresh**
-
-    // Handler for Generate Button Click
-    // **Handler for Generate Button Click**
-    const handleGenerate = async () => {
-        setShowSourceDocument(false);
-        if (!promptInput.trim()) {
-            alert('Please enter a prompt.');
-            return;
-        }
-
-        // Check if at least one model is selected
-        if (!isOpenAI && !isAnthropic && !isGemini && !isGpto1Mini && !iso1 && !isLlama && !isMistral && !isGpt4Turbo && !isGpt4oMini && !isGeminiSearch && !isGeminiFlash && !isPerplexityFast && !isPerplexity && !isCodestral && !isClaudeHaiku && !isSambanova && !isGroq && !isNova && !isCerebras) {
-            alert('Please select at least one model.');
-            return;
-        }
-
-        if (isGroq && showGroq) {
-            setIsGeneratingGroq(true); // Set generating state to true
-            callAPI(modelGroq);
-        }
-
-        if (isSambanova && showSambanova) {
-            setIsGeneratingSambanova(true); // Set generating state to true
-            callAPI(modelSambanova);
-        }
-
-        if (isClaudeHaiku && showClaudeHaiku) {
-            setIsGeneratingClaudeHaiku(true); // Set generating state to true
-            callAPI(modelClaudeHaiku);
-        }
-
-        // Generate API calls for each selected model
-        if (isAnthropic && showAnthropic) {
-            setIsGeneratingAnthropic(true); // Set generating state to true
-            callAPI(modelAnthropic);
-        }
-
-        if (isGemini && showGemini) {
-            setIsGeneratingGemini(true); // Set generating state to true
-            callAPI(modelGemini);
-        }
-        if (isOpenAI && showOpenAI) {
-            setIsGenerating(true); // Set generating state to true
-            callAPI(modelOpenAI);
-        }
-
-        if (isGpto1Mini && showo1Mini) {
-            setIsGeneratingo1Mini(true); // Set generating state to true
-            callAPI(modelGpto1Mini);
-        }
-
-        if (iso1 && showo1) {
-            setIsGeneratingo1(true); // Set generating state to true
-            callAPI(modelo1);
-        }
-
-        if (isLlama && showLlama) {
-            setIsGeneratingLlama(true); // Set generating state to true
-            callAPI(modelLlama);
-        }
-
-        if (isMistral && showMistral) {
-            setIsGeneratingMistral(true); // Set generating state to true
-            callAPI(modelMistral);
-        }
-
-        if (isGpt4oMini && showGpt4oMini) {
-            setIsGeneratingGpt4oMini(true); // Set generating state to true
-            callAPI(modelGpt4oMini);
-        }
-
-        if (isGeminiSearch && showGeminiSearch) {
-            setIsGeneratingGeminiSearch(true); // Set generating state to true
-            callAPI(modelGeminiSearch);
-        }
-
-        if (isGeminiFlash && showGeminiFlash) {
-            setIsGeneratingGeminiFlash(true); // Set generating state to true
-            callAPI(modelGeminiFlash);
-        }
-
-        if (isGpt4Turbo && showGpt4Turbo) {
-            setIsGeneratingGpt4Turbo(true); // Set generating state to true
-            callAPI(modelGpt4Turbo);
-        }
-
-        if (isPerplexityFast && showPerplexityFast) {
-            setIsGeneratingPerplexityFast(true); // Set generating state to true
-            callAPI(modelPerplexityFast);
-        }
-
-        if (isPerplexity && showPerplexity) {
-            setIsGeneratingPerplexity(true); // Set generating state to true
-            callAPI(modelPerplexity);
-        }
-
-        if (isCodestral && showCodeStral) {
-            setIsGeneratingCodeStral(true); // Set generating state to true
-            callAPI(modelCodestralApi);
-        }
-
-        if (isNova && showNova) {
-            setIsGeneratingNova(true); // Set generating state to true
-            callAPI(modelNova);
-        }
-        if (isCerebras && showCerebras) {
-            setIsGeneratingCerebras(true); // Set generating state to true
-            callAPI(modelCerebras);
-        }
-        updateConfiguration();
-    };
-
     const updateConfiguration = async () => {
 
         try {
@@ -1334,23 +584,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
                 // addDoc
                 await addDoc(configurationCollection, {
                     setup: 'genai',
-                    isOpenAI,
-                    isAnthropic,
-                    isGemini,
-                    isGpto1Mini,
-                    isLlama,
-                    isMistral,
-                    isGpt4Turbo,
-                    isGeminiSearch,
-                    isGeminiFlash,
-                    isPerplexityFast,
-                    isPerplexity,
-                    isCodestral,
-                    isClaudeHaiku,
-                    iso1,
-                    isSambanova, // Add this line
-                    isGroq,
-                    isNova,
                     temperature,
                     top_p,
                     dataLimit,
@@ -1360,51 +593,12 @@ const GenAIApp = ({user, source, grade, subject}) => {
                     voiceName,
                     chunk_size,
                     silence_break,
-                    isGpt4oMini,
-                    labelGroq,
-                    labelOpenAI,
-                    labelAnthropic,
-                    labelGemini,
-                    labelGpto1Mini,
-                    labelLlama,
-                    labelMistral,
-                    labelGpt4Turbo,
-                    labelGeminiSearch,
-                    labelGeminiFlash,
-                    labelGpt4oMini,
-                    labelo1,
-                    labelPerplexityFast,
-                    labelPerplexity,
-                    labelCodestral,
-                    labelClaudeHaiku,
-                    labelSambanova,
-                    labelNova,
-                    isCerebras,
-                    labelCerebras
                 });
                 return;
             }
             else {
                 configSnapshot.forEach(async (doc) => {
                     await updateDoc(doc.ref, {
-                        // Model states
-                        isOpenAI,
-                        isAnthropic,
-                        isGemini,
-                        isGpto1Mini,
-                        isLlama,
-                        isMistral,
-                        isGpt4Turbo,
-                        isGeminiSearch,
-                        isGeminiFlash,
-                        isPerplexityFast,
-                        isPerplexity,
-                        isCodestral,
-                        isClaudeHaiku,
-                        iso1,
-                        isSambanova, // Add this line
-                        isGroq,
-                        isNova,
                         temperature,
                         top_p,
                         dataLimit,
@@ -1414,27 +608,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
                         voiceName,
                         chunk_size,
                         silence_break,
-                        isGpt4oMini,
-                        labelGroq,
-                        labelOpenAI,
-                        labelAnthropic,
-                        labelGemini,
-                        labelGpto1Mini,
-                        labelLlama,
-                        labelMistral,
-                        labelGpt4Turbo,
-                        labelGeminiSearch,
-                        labelGeminiFlash,
-                        labelGpt4oMini,
-                        labelo1,
-                        labelPerplexityFast,
-                        labelPerplexity,
-                        labelCodestral,
-                        labelClaudeHaiku,
-                        labelSambanova,
-                        labelNova,
-                        isCerebras,
-                        labelCerebras
                     }, { merge: true });
                 });
             }
@@ -1498,12 +671,7 @@ const GenAIApp = ({user, source, grade, subject}) => {
                     promptText = lyricsInput;
                     break;
                 default:
-                    if (autoPrompt) {
-                        await searchPrompts();
-                        promptText = autoPromptInput;
-                    } else if (fullPromptInput.length > 2) {
-                        promptText = promptInput + autoPromptSeparator + fullPromptInput;
-                    }
+                    promptText = promptInput + autoPromptSeparator + fullPromptInput;
             }
             console.log('temp:', temperatureRef.current.valueOf(), 'top_p:', top_pRef.current.valueOf());
 
@@ -1547,75 +715,9 @@ const GenAIApp = ({user, source, grade, subject}) => {
             searchQuery = '';
             invocationType = '';
             searchModel = 'All';
-            youtubeSelected = false;
-            imageSelected = false;
-            setIsYouTubeTitle(false);
-            setIsImagesSearch(false);
-            setIsGeneratingGeminiSearch(false);
             setIsAISearch(false);
             console.log('Fetching data after generating content');
             fetchData(userID);
-            if (selectedModel === modelOpenAI) {
-                setIsGenerating(false);
-            }
-            if (selectedModel === modelAnthropic) {
-                setIsGeneratingAnthropic(false);
-            }
-            if (selectedModel === modelGemini) {
-                setIsGeneratingGemini(false);
-            }
-            if (selectedModel === modelGpto1Mini) {
-                setIsGeneratingo1Mini(false);
-            }
-            if (selectedModel === modelo1) {
-                setIsGeneratingo1(false);
-            }
-            if (selectedModel === modelImageDallE3) {
-                setIsGeneratingImage_Dall_e_3(false);
-            }
-            if (selectedModel === modelMistral) {
-                setIsGeneratingMistral(false);
-            }
-            if (selectedModel === modelLlama) {
-                setIsGeneratingLlama(false);
-            }
-            if (selectedModel === modelGpt4Turbo) {
-                setIsGeneratingGpt4Turbo(false);
-            }
-            if (selectedModel === modelGpt4oMini) {
-                setIsGeneratingGpt4oMini(false);
-            }
-            if (selectedModel === modelGeminiSearch) {
-                setIsGeneratingGeminiSearch(false);
-            }
-            if (selectedModel === modelGeminiFlash) {
-                setIsGeneratingGeminiFlash(false);
-            }
-            if (selectedModel === modelPerplexityFast) {
-                setIsGeneratingPerplexityFast(false);
-            }
-            if (selectedModel === modelPerplexity) {
-                setIsGeneratingPerplexity(false);
-            }
-            if (selectedModel === modelCodestralApi) {
-                setIsGeneratingCodeStral(false);
-            }
-            if (selectedModel === modelClaudeHaiku) {
-                setIsGeneratingClaudeHaiku(false);
-            }
-            if (selectedModel === modelSambanova) {
-                setIsGeneratingSambanova(false);
-            }
-            if (selectedModel === modelGroq) {
-                setIsGeneratingGroq(false);
-            }
-            if (selectedModel === modelNova) {
-                setIsGeneratingNova(false);
-            }
-            if (selectedModel === modelCerebras) {
-                setIsGeneratingCerebras(false);
-            }
-            console.log('isGeneratingGeminiSearch:', isGeneratingGeminiSearch);
         }
     };
 
@@ -1683,67 +785,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
             updateConfiguration();
         }
     };
-    // Handler for DALL·E 3 Checkbox Change
-    const handleDall_e_3Change = async (checked) => {
-        setIsGeneratingImage_Dall_e_3(true); // Set generating state to true
-        await callAPI(modelGeminiImage, 'image');
-        if (genOpenAIImage) {
-            await callAPI(modelImageDallE3, 'image');
-        }
-        setIsGeneratingImage_Dall_e_3(false);
-    };
-
-    // Handler for TTS Checkbox Change
-    const handleTTSChange = async () => {
-        setIsGeneratingTTS(true);
-        await callTTSAPI(promptInput, process.env.REACT_APP_TTS_SSML_API_URL);
-        setIsGeneratingTTS(false);
-    };
-
-    // Add this helper function to manage text model visibility
-    const setVisibilityOfTextModels = (status) => {
-        // Set all "is" states to false/true
-        setIsOpenAI(status);
-        setIsAnthropic(status);
-        setIsGemini(status);
-        setIsGpto1Mini(status);
-        setIso1(status);
-        setIsLlama(status);
-        setIsMistral(status);
-        setIsGpt4Turbo(status);
-        setIsGpt4oMini(status);
-        setIsGeminiSearch(status);
-        setIsGeminiFlash(status);
-        setIsPerplexityFast(status);
-        setIsPerplexity(status);
-        setIsCodestral(status);
-        setIsClaudeHaiku(status);
-        setIsSambanova(status);
-        setIsGroq(status);
-        setIsNova(status);
-        setIsCerebras(status);
-    };
-
-    // Add this helper function to handle LLM model selection
-    const handleLLMChange = (setter, value) => {
-        setter(value);
-    };
-
-    const handleEditPrompt = () => {
-        setShowEditPopup(true);
-        setShowSaveButton(true);
-        if (selectedPrompt) {
-            setEditPromptTag(selectedPrompt);
-            setEditPromptFullText(selectedPromptFullText);
-        }
-    };
-
-    const handleEditSource = async () => {
-        if (selectedPrompt) {
-            setShowSaveButton(true);
-            setShowEditPopup(true);
-        }
-    };
 
     const handleModelChange = (modelValue) => {
         searchModel = modelValue;
@@ -1808,12 +849,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
                 setIsLoading(false);
             });
     }
-    if (showMainApp) {
-        console.log('showMainApp grade ', grade, ' subject ', subject);
-        return (
-            <App user={user} source={source} grade={grade} subject={subject} />
-        );
-    }
 
     if (showhomeWorkApp) {  // Add this block
         return (
@@ -1873,13 +908,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
         }
     };
 
-    const handleIconClick = (event) => {
-        event.target.classList.add('icon-animation');
-        setTimeout(() => {
-            event.target.classList.remove('icon-animation');
-        }, 1000);
-    };
-
     const handlehomeWork = async (message) => {
         if (!message.trim()) {
             alert('Please enter a prompt.');
@@ -1892,7 +920,7 @@ const GenAIApp = ({user, source, grade, subject}) => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         // Append the prompt to promptInput
         homeWorkInput = message + intelligentQuestionsPrompt;
-        await callAPI(modelGemini, 'homeWork');
+        await callAPI(modelHomeWork, 'homeWork');
         updateConfiguration();
         setIshomeWork(false);
     };
@@ -1910,7 +938,7 @@ const GenAIApp = ({user, source, grade, subject}) => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         // Append the prompt to promptInput
         quizInput = message + quizPrompt;
-        await callAPI(modelGemini, 'quiz');
+        await callAPI(modelQuiz, 'quiz');
         updateConfiguration();
         setIsQuiz(false);
     };
@@ -1928,55 +956,17 @@ const GenAIApp = ({user, source, grade, subject}) => {
         // Append the prompt to promptInput
         await new Promise(resolve => setTimeout(resolve, 1000));
         quizMultipleChoicesInput = message + quizMultipleChoicesPrompt;
-        setIsGeneratingGemini(true);
-        await callAPI(modelGemini, 'quiz_with_choices');
+        await callAPI(modelQuizChoices, 'quiz_with_choices');
         updateConfiguration();
         setIsQuizMultipleChoice(false);
-    };
-
-
-    // Add handler for AI Search
-    const handleAISearch = async () => {
-        if (!promptInput.trim()) {
-            alert('Please enter a prompt.');
-            return;
-        }
-        setIsAISearch(true);
-        // Ensure genaiPrompts is populated
-        if (genaiPrompts.length === 0) {
-            await fetchPrompts(uid); // Fetch prompts if not already loaded
-        }
-
-        // Correct the tag name and add null check
-        const prompt = genaiPrompts.find(prompt => prompt.tag === 'Search-GenAI');
-        let googleSearchPrompt = prompt ? prompt.fullText : '';
-
-        if (googleSearchPrompt === '') {
-            googleSearchPrompt = '  ####  prompt starts from here #####  search for current, up-to-date and latest news and information about above topic(s) from google search. --Provide response with maximum details possible in response. Use all max tokens available to the max in response.';
-        }
-        // Append the search prompt to promptInput
-        googleSearchPromptInput = promptInput + googleSearchPrompt;
-        setIsGeneratingGeminiSearch(true);
-        // Call the API with gemini-search model
-        await callAPI(modelGeminiSearch, 'google-search');
-        updateConfiguration();
     };
 
     const fetchTexts = async () => {
         let q;
         try {
-            if (fetchFromPublic) {
-                console.log('Fetching Texts from public collection');
-                q = query(
-                    collection(db, 'public'),
-                    where('tag', '>', ''),
-                    where('fullText', '>', '')
-                );
-            } else {
-                console.log('Fetching Texts from user collection');
-                q = query(collection(db, 'genai', 'bTGBBpeYPmPJonItYpUOCYhdIlr1', 'prompts'), where('tag', '>', ''),
-                    where('fullText', '>', ''), orderBy('modifiedDateTime', 'asc'));
-            }
+            console.log('Fetching Texts from user collection');
+            q = query(collection(db, 'genai', 'bTGBBpeYPmPJonItYpUOCYhdIlr1', 'prompts'), where('tag', '>', ''),
+                where('fullText', '>', ''), orderBy('modifiedDateTime', 'asc'));
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 const data = doc.data();
@@ -2003,56 +993,14 @@ const GenAIApp = ({user, source, grade, subject}) => {
                     case 'quiz-button-label':
                         setQuizButtonLabel(data.fullText);
                         break;
-                    case 'YouTube_title':
-                        setYoutubeTitlePrompt(data.fullText);
-                        break;
-                    case 'YouTube_description':
-                        setYoutubeDescriptionPrompt(data.fullText);
-                        break;
-                    case 'imagesSearchPrompt':
-                        imagesSearchPrompt = data.fullText;
-                        break;
                     case 'autoPromptSeparator':
                         autoPromptSeparator = data.fullText;
-                        break;
-                    case 'YouTube':
-                        YouTubePrompt = data.fullText;
-                        break;
-                    case 'imageGenerationPrompt':
-                        imageGenerationPrompt = data.fullText;
-                        break;
-                    case 'stories_image_generation_prompt':
-                        stories_image_generation_prompt = data.fullText;
                         break;
                     case 'quiz_with_choices':
                         quizMultipleChoicesPrompt = data.fullText;
                         break;
                     case 'quiz_Multiple_Choices_Label':
                         quiz_Multiple_Choices_Label = data.fullText;
-                        break;
-                    case 'genai_stories_label':
-                        genai_stories_label = data.fullText;
-                        break;
-                    case 'genai_image_label':
-                        genai_image_label = data.fullText;
-                        break;
-                    case 'genai_youtube_label':
-                        genai_youtube_label = data.fullText;
-                        break;
-                    case 'genai_tasks_label':
-                        genai_tasks_label = data.fullText;
-                        break;
-                    case 'genai_search_label':
-                        genai_search_label = data.fullText;
-                        break;
-                    case 'genai_audio_label':
-                        genai_audio_label = data.fullText;
-                        break;
-                    case 'genai_autoprompt_label':
-                        genai_autoprompt_label = data.fullText;
-                        break;
-                    case 'bedtime_stories':
-                        story_teller_prompt = data.fullText;
                         break;
                     case 'quiz':
                         quizPrompt = data.fullText;
@@ -2063,8 +1011,17 @@ const GenAIApp = ({user, source, grade, subject}) => {
                     case 'explain':
                         explainPrompt = data.fullText;
                         break;
-                    case 'lyrics':
-                        lyricsPrompt = data.fullText;
+                    case 'modelQuiz':
+                        modelQuiz = data.fullText;
+                        break;
+                    case 'modelQuizChoices':
+                        modelQuizChoices = data.fullText;
+                        break;
+                    case 'modelHomeWork':
+                        modelHomeWork = data.fullText;
+                        break;
+                    case 'modelExplain':
+                        modelExplain = data.fullText;
                         break;
                     default:
                         break;
@@ -2088,34 +1045,14 @@ const GenAIApp = ({user, source, grade, subject}) => {
         await new Promise(resolve => setTimeout(resolve, 500));
         // Append the prompt to promptInput
         explainInput = message + explainPrompt;
-        await callAPI(modelGemini, 'explain');
+        await callAPI(modelExplain, 'explain');
         updateConfiguration();
         setIsExplain(false);
     };
 
-    // Add handler function after handlehomeWork
-    const handleLyrics = async (message) => {
-        if (!message.trim()) {
-            alert('Please enter content to lyrics.');
-            return;
-        }
-        setIsLyrics(true);
-        setTemperature(1);
-        setTop_p(1);
-        // Need to wait for state updates to be applied
-        await new Promise(resolve => setTimeout(resolve, 500));
-        // Append the prompt to promptInput
-        lyricsInput = message + lyricsPrompt;
-        await callAPI(modelGemini, 'lyrics');
-        await callAPI(modelo1, 'lyrics');
-        await callAPI(modelGpto1Mini, 'lyrics');
-        updateConfiguration();
-        setIsLyrics(false);
-    };
-
     if (goBack) {
         console.log('  source ', source, ' grade ', grade, ' subject ', subject);
-        return <App user={user} source={source} grade={grade} subject={subject}/>;
+        return <App user={user} source={source} grade={grade} subject={subject} />;
     }
 
     return (
@@ -2219,66 +1156,6 @@ const GenAIApp = ({user, source, grade, subject}) => {
                     <option value="quiz_with_choices">Multiple Choice Quiz</option>
                     <option value="explain">Explain</option>
                 </select>
-                {showPromptsDropDownAfterSearch && showBigQueryModelSearch && (<select
-                    className="modelInput"
-                    value={searchModel}
-                    onChange={(e) => handleModelChange(e.target.value)}
-                    style={{ marginLeft: '2px', padding: '2px', fontSize: '16px' }}
-                >
-                    <option value="All">All</option>
-                    <option value="chatgpt-4o-latest">ChatGPT</option>
-                    <option value="gemini-1.5-pro-002">Gemini</option>
-                    <option value="claude-3-5-sonnet-latest">Claude</option>
-                    <option value="o1-mini">o1-mini</option>
-                    <option value="o1-preview">o1</option>
-                    <option value="azure-tts">Audio</option>
-                    <option value="dall-e-3">Image</option>
-                    <option value="Mistral-large-2407">Mistral</option>
-                    <option value="meta-llama-3.1-405b-instruct">Llama</option>
-                    <option value="gpt-4-turbo">Gpt4Turbo</option>
-                    <option value="gpt-4o-mini">Gpt4oMini</option>
-                    <option value="gemini-search">GeminiSearch</option>
-                    <option value="gemini-flash">Gemini Flash</option>
-                    <option value="perplexity-fast">PerplexityFast</option>
-                    <option value="perplexity">Perplexity</option>
-                    <option value="codestral">CodeStral</option>
-                    <option value="Claude-Haiku">Claude-Haiku</option>
-                    <option value="sambanova-1">Sambanova</option>
-                    <option value="groq-mixtral">Groq</option>
-                    <option value="nova">Nova</option>
-                    <option value="cerebras">Cerebras</option>
-                </select>
-                )}
-                {showEditPopup && (
-                    <div className="modal-overlay">
-                        <div className="modal-content">
-                            <br />
-                            <h3>Add/Edit Prompt</h3>
-                            <label>Tag:</label>
-                            <input
-                                type="text"
-                                value={editPromptTag}
-                                onChange={(e) => setEditPromptTag(e.target.value)}
-                                className="promptTag"
-                            />
-                            <br />
-                            <MdEditor
-                                style={{ height: '500px', fontSize: '2rem' }}
-                                value={editPromptFullText}
-                                renderHTML={editPromptFullText => mdParser.render(editPromptFullText)}
-                                onChange={({ text }) => setEditPromptFullText(text)}
-                                config={{ view: { menu: true, md: true, html: true } }}
-                            />
-                            <div>
-                                {showSaveButton && (<button onClick={handleSavePrompt} className="signinbutton">Save</button>)}
-                                <button onClick={() => setShowEditPopup(false)} className="signoutbutton">Cancel</button>
-                            </div>
-                            <br />
-                            <br />
-                        </div>
-                    </div>
-                )}
-
                 <div>
                     {isLoading && <p> Loading Data...</p>}
                     {!isLoading && <div>
@@ -2313,7 +1190,7 @@ const GenAIApp = ({user, source, grade, subject}) => {
                                 </div>
                                 <div style={{ border: "1px solid black" }}>
                                     <div style={{ color: "green", fontWeight: "bold" }}>
-                                        {item.model !== modelImageDallE3 && item.model !== modelGeminiImage && item.model !== 'azure-tts' && (
+                                        {item.model !== 'azure-tts' && (
                                             <>
                                                 {(!isiPhone && showPrint && (item.invocationType === 'explain') &&
                                                     <button
@@ -2431,7 +1308,7 @@ const GenAIApp = ({user, source, grade, subject}) => {
                                     {(showPrint || item.invocationType === 'explain') && (
                                         <div style={{ fontSize: '16px' }}>
                                             {isiPhone &&
-                                                (item.model === modelImageDallE3 || item.model === modelGeminiImage || item.model === 'azure-tts') && (
+                                                (item.model === 'azure-tts') && (
                                                     <button
                                                         className="button"
                                                         onClick={() => handleDownload(item.answer, item.model)}
@@ -2472,7 +1349,7 @@ const GenAIApp = ({user, source, grade, subject}) => {
                                                 <span style={{ color: "black", fontSize: "16px" }}> invocationType : <strong>{item.invocationType}</strong></span>
                                             )}
                                             &nbsp; &nbsp;
-                                            {(item.model !== modelImageDallE3 && item.model !== modelGeminiImage && item.model !== 'azure-tts') && (!['homeWork', 'quiz_with_choices', 'quiz'].includes(item.invocationType)) && showDownloadTextButton && (<button
+                                            {(item.model !== 'azure-tts') && (!['homeWork', 'quiz_with_choices', 'quiz'].includes(item.invocationType)) && showDownloadTextButton && (<button
                                                 onClick={() => {
                                                     const plainText = (item.answer || '')
                                                         .replace(/[#*~`>-]/g, '')
