@@ -3,6 +3,7 @@ import './Signin.css';
 import React, { useEffect, useState } from 'react';
 import { auth } from './Firebase';
 import SignUp from './SignUp';
+import Practice from './Practice';
 
 import {
     signInWithEmailAndPassword,
@@ -28,7 +29,8 @@ function SigninApp() {
         });
         return () => unsubscribe();
     }, []);
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const homeworkParam = urlParams.get('h');
     const handleSignInWithEmail = async () => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -64,7 +66,11 @@ function SigninApp() {
             alert('Error signing in with Google: ' + error.message);
         });
     };
-
+    if (homeworkParam && homeworkParam.length > 5) {
+        return (
+            <Practice sourceDocumentID={homeworkParam} />
+        );
+    }
     if (user) {
         return (
             <App user={user} />
