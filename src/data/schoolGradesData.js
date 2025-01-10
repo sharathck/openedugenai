@@ -1607,7 +1607,72 @@ export const schoolGradesData = {
     ]
   },
   'AP - Precalculus': {
-  
+    'Polynomial and Rational Functions': [
+      'Change in Tandem',
+      'Rates of Change',
+      'Rates of Change in Linear and Quadratic Functions',
+      'Polynomial Functions and Rates of Change',
+      'Polynomial Functions and Complex Zeros',
+      'Polynomial Functions and End Behavior',
+      'Rational Functions and End Behavior',
+      'Rational Functions and Zeros',
+      'Rational Functions and Vertical Asymptotes',
+      'Rational Functions and Holes',
+      'Equivalent Representations of Polynomial and Rational Expressions',
+      'Transformations of Functions',
+      'Function Model Selection and Assumption Articulation',
+      'Function Model Construction and Application'
+    ],
+    'Exponential and Logarithmic Functions': [
+      'Change in Arithmetic and Geometric Sequences',
+      'Change in Linear and Exponential Functions',
+      'Exponential Functions',
+      'Exponential Function Manipulation',
+      'Exponential Function Context and Data Modeling',
+      'Competing Function Model Validation',
+      'Composition of Functions',
+      'Inverse Functions',
+      'Logarithmic Expressions',
+      'Inverses of Exponential Functions',
+      'Logarithmic Functions',
+      'Logarithmic Function Manipulation',
+      'Exponential and Logarithmic Equations and Inequalities',
+      'Logarithmic Function Context and Data Modeling',
+      'Semi-log Plots'
+    ],
+    'Trigonometric and Polar Functions': [
+      'Periodic Phenomena',
+      'Sine, Cosine, and Tangent',
+      'Sine and Cosine Function Values',
+      'Sine and Cosine Function Graphs',
+      'Sinusoidal Functions',
+      'Sinusoidal Function Transformations',
+      'Sinusoidal Function Context and Data Modeling',
+      'The Tangent Function',
+      'Inverse Trigonometric Functions',
+      'Trigonometric Equations and Inequalities',
+      'The Secant, Cosecant, and Cotangent Functions',
+      'Equivalent Representations of Trigonometric Functions',
+      'Trigonometry and Polar Coordinates',
+      'Polar Function Graphs',
+      'Rates of Change in Polar Functions'
+    ],
+    'Functions Involving Parameters, Vectors, and Matrices': [
+      'Parametric Functions',
+      'Parametric Functions Modeling Planar Motion',
+      'Parametric Functions and Rates of Change',
+      'Parametrically Defined Circles and Lines',
+      'Implicitly Defined Functions',
+      'Parametrization of Implicitly Defined Functions',
+      'Conic Sections',
+      'Vectors',
+      'Vector-Valued Functions',
+      'Matrices',
+      'The Inverse and Determinant of a Matrix',
+      'Linear Transformations and Matrices',
+      'Matrices as Functions',
+      'Matrices Modeling Contexts'
+    ]
   },
   'AP - Statistics': {
   
