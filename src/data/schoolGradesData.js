@@ -2831,19 +2831,497 @@ export const schoolGradesData = {
     ]
   },
   'AP - Statistics': {
-
+    'Exploring One-Variable Data': [
+      '1.1 Introducing Statistics: What Can We Learn from Data?',
+      '1.2 The Language of Variation: Variables',
+      '1.3 Representing a Categorical Variable with Tables',
+      '1.4 Representing a Categorical Variable with Graphs',
+      '1.5 Representing a Quantitative Variable with Graphs',
+      '1.6 Describing the Distribution of a Quantitative Variable',
+      '1.7 Summary Statistics for a Quantitative Variable',
+      '1.8 Graphical Representations of Summary Statistics',
+      '1.9 Comparing Distributions of a Quantitative Variable',
+      '1.10 The Normal Distribution'
+    ],
+    'Exploring Two-Variable Data': [
+      '2.1 Introducing Statistics: Are Variables Related?',
+      '2.2 Representing Two Categorical Variables',
+      '2.3 Statistics for Two Categorical Variables',
+      '2.4 Representing the Relationship Between Two Quantitative Variables',
+      '2.5 Correlation',
+      '2.6 Linear Regression Models',
+      '2.7 Residuals',
+      '2.8 Least Squares Regression',
+      '2.9 Analyzing Departures from Linearity'
+    ],
+    'Collecting Data': [
+      '3.1 Introducing Statistics: Do the Data We Collected Tell the Truth?',
+      '3.2 Introduction to Planning a Study',
+      '3.3 Random Sampling and Data Collection',
+      '3.4 Potential Problems with Sampling',
+      '3.5 Introduction to Experimental Design',
+      '3.6 Selecting an Experimental Design',
+      '3.7 Inference and Experiments'
+    ],
+    'Probability, Random Variables, and Probability Distributions': [
+      '4.1 Introducing Statistics: Random and Non-Random Patterns?',
+      '4.2 Estimating Probabilities Using Simulation',
+      '4.3 Introduction to Probability',
+      '4.4 Mutually Exclusive Events',
+      '4.5 Conditional Probability',
+      '4.6 Independent Events and Unions of Events',
+      '4.7 Introduction to Random Variables and Probability Distributions',
+      '4.8 Mean and Standard Deviation of Random Variables',
+      '4.9 Combining Random Variables',
+      '4.10 Introduction to the Binomial Distribution',
+      '4.11 Parameters for a Binomial Distribution',
+      '4.12 The Geometric Distribution'
+    ],
+    'Sampling Distributions': [
+      '5.1 Introducing Statistics: Why Is My Sample Not Like Yours?',
+      '5.2 The Normal Distribution, Revisited',
+      '5.3 The Central Limit Theorem',
+      '5.4 Biased and Unbiased Point Estimates',
+      '5.5 Sampling Distributions for Sample Proportions',
+      '5.6 Sampling Distributions for Differences in Sample Proportions',
+      '5.7 Sampling Distributions for Sample Means',
+      '5.8 Sampling Distributions for Differences in Sample Means'
+    ],
+    'Inference for Categorical Data: Proportions': [
+      '6.1 Introducing Statistics: Why Be Normal?',
+      '6.2 Constructing a Confidence Interval for a Population Proportion',
+      '6.3 Justifying a Claim Based on a Confidence Interval for a Population Proportion',
+      '6.4 Setting Up a Test for a Population Proportion',
+      '6.5 Interpreting p-Values',
+      '6.6 Concluding a Test for a Population Proportion',
+      '6.7 Potential Errors When Performing Tests',
+      '6.8 Confidence Intervals for the Difference of Two Proportions',
+      '6.9 Justifying a Claim Based on a Confidence Interval for a Difference of Population Proportions',
+      '6.10 Setting Up a Test for the Difference of Two Population Proportions',
+      '6.11 Carrying Out a Test for the Difference of Two Population Proportions'
+    ],
+    'Inference for Quantitative Data: Means': [
+      '7.1 Introducing Statistics: Should I Worry About Error?',
+      '7.2 Constructing a Confidence Interval for a Population Mean',
+      '7.3 Justifying a Claim About a Population Mean Based on a Confidence Interval',
+      '7.4 Setting Up a Test for a Population Mean',
+      '7.5 Carrying Out a Test for a Population Mean',
+      '7.6 Confidence Intervals for the Difference of Two Means',
+      '7.7 Justifying a Claim About the Difference of Two Means Based on a Confidence Interval',
+      '7.8 Setting Up a Test for the Difference of Two Population Means',
+      '7.9 Carrying Out a Test for the Difference of Two Population Means',
+      '7.10 Skills Focus: Selecting, Implementing, and Communicating Inference Procedures'
+    ],
+    'Inference for Categorical Data: Chi-Square': [
+      '8.1 Introducing Statistics: Are My Results Unexpected?',
+      '8.2 Setting Up a Chi-Square Goodness of Fit Test',
+      '8.3 Carrying Out a Chi-Square Test for Goodness of Fit',
+      '8.4 Expected Counts in Two-Way Tables',
+      '8.5 Setting Up a Chi-Square Test for Homogeneity or Independence',
+      '8.6 Carrying Out a Chi-Square Test for Homogeneity or Independence',
+      '8.7 Skills Focus: Selecting an Appropriate Inference Procedure for Categorical Data'
+    ],
+    'Inference for Quantitative Data: Slopes': [
+      '9.1 Introducing Statistics: Do Those Points Align?',
+      '9.2 Confidence Intervals for the Slope of a Regression Model',
+      '9.3 Justifying a Claim About the Slope of a Regression Model Based on a Confidence Interval',
+      '9.4 Setting Up a Test for the Slope of a Regression Model',
+      '9.5 Carrying Out a Test for the Slope of a Regression Model',
+      '9.6 Skills Focus: Selecting an Appropriate Inference Procedure'
+    ]
   },
   'AP - Calculus AB': {
-
+    'Limits and Continuity': [
+      '1.1 Introducing Calculus: Can Change Occur at an Instant?',
+      '1.2 Defining Limits and Using Limit Notation',
+      '1.3 Estimating Limit Values from Graphs',
+      '1.4 Estimating Limit Values from Tables',
+      '1.5 Determining Limits Using Algebraic Properties of Limits',
+      '1.6 Determining Limits Using Algebraic Manipulation',
+      '1.7 Selecting Procedures for Determining Limits',
+      '1.8 Determining Limits Using the Squeeze Theorem',
+      '1.9 Connecting Multiple Representations of Limits',
+      '1.10 Exploring Types of Discontinuities',
+      '1.11 Defining Continuity at a Point',
+      '1.12 Confirming Continuity over an Interval',
+      '1.13 Removing Discontinuities',
+      '1.14 Connecting Infinite Limits and Vertical Asymptotes',
+      '1.15 Connecting Limits at Infinity and Horizontal Asymptotes',
+      '1.16 Working with the Intermediate Value Theorem (IVT)'
+    ],
+    'Differentiation: Definition and Basic Derivative Rules': [
+      '2.1 Defining Average and Instantaneous Rates of Change at a Point',
+      '2.2 Defining the Derivative of a Function and Using Derivative Notation',
+      '2.3 Estimating Derivatives of a Function at a Point',
+      '2.4 Connecting Differentiability and Continuity: Determining When Derivatives Do and Do Not Exist',
+      '2.5 Applying the Power Rule',
+      '2.6 Derivative Rules: Constant, Sum, Difference, and Constant Multiple',
+      '2.7 Derivatives of cos x, sin x, eˣ, and ln x',
+      '2.8 The Product Rule',
+      '2.9 The Quotient Rule',
+      '2.10 Finding the Derivatives of Tangent, Cotangent, Secant, and/or Cosecant Functions'
+    ],
+    'Differentiation: Composite, Implicit, and Inverse Functions': [
+      '3.1 The Chain Rule',
+      '3.2 Implicit Differentiation',
+      '3.3 Differentiating Inverse Functions',
+      '3.4 Differentiating Inverse Trigonometric Functions',
+      '3.5 Selecting Procedures for Calculating Derivatives',
+      '3.6 Calculating Higher-Order Derivatives'
+    ],
+    'Contextual Applications of Differentiation': [
+      '4.1 Interpreting the Meaning of the Derivative in Context',
+      '4.2 Straight-Line Motion: Connecting Position, Velocity, and Acceleration',
+      '4.3 Rates of Change in Applied Contexts Other Than Motion',
+      '4.4 Introduction to Related Rates',
+      '4.5 Solving Related Rates Problems',
+      '4.6 Approximating Values of a Function Using Local Linearity and Linearization',
+      '4.7 Using L’Hospital’s Rule for Determining Limits of Indeterminate Forms'
+    ],
+    'Analytical Applications of Differentiation': [
+      '5.1 Using the Mean Value Theorem',
+      '5.2 Extreme Value Theorem, Global Versus Local Extrema, and Critical Points',
+      '5.3 Determining Intervals on Which a Function Is Increasing or Decreasing',
+      '5.4 Using the First Derivative Test to Determine Relative (Local) Extrema',
+      '5.5 Using the Candidates Test to Determine Absolute (Global) Extrema',
+      '5.6 Determining Concavity of Functions over Their Domains',
+      '5.7 Using the Second Derivative Test to Determine Extrema',
+      '5.8 Sketching Graphs of Functions and Their Derivatives',
+      '5.9 Connecting a Function, Its First Derivative, and Its Second Derivative',
+      '5.10 Introduction to Optimization Problems',
+      '5.11 Solving Optimization Problems',
+      '5.12 Exploring Behaviors of Implicit Relations'
+    ],
+    'Integration and Accumulation of Change': [
+      '6.1 Exploring Accumulations of Change',
+      '6.2 Approximating Areas with Riemann Sums',
+      '6.3 Riemann Sums, Summation Notation, and Definite Integral Notation',
+      '6.4 The Fundamental Theorem of Calculus and Accumulation Functions',
+      '6.5 Interpreting the Behavior of Accumulation Functions Involving Area',
+      '6.6 Applying Properties of Definite Integrals',
+      '6.7 The Fundamental Theorem of Calculus and Definite Integrals',
+      '6.8 Finding Antiderivatives and Indefinite Integrals: Basic Rules and Notation',
+      '6.9 Integrating Using Substitution',
+      '6.10 Integrating Functions Using Long Division and Completing the Square',
+      '6.11 Integrating Using Integration by Parts',
+      '6.12 Using Linear Partial Fractions',
+      '6.13 Evaluating Improper Integrals',
+      '6.14 Selecting Techniques for Antidifferentiation'
+    ],
+    'Differential Equations': [
+      '7.1 Modeling Situations with Differential Equations',
+      '7.2 Verifying Solutions for Differential Equations',
+      '7.3 Sketching Slope Fields',
+      '7.4 Reasoning Using Slope Fields',
+      '7.5 Approximating Solutions Using Euler’s Method',
+      '7.6 Finding General Solutions Using Separation of Variables',
+      '7.7 Finding Particular Solutions Using Initial Conditions and Separation of Variables',
+      '7.8 Exponential Models with Differential Equations',
+      '7.9 Logistic Models with Differential Equations'
+    ],
+    'Applications of Integration': [
+      '8.1 Finding the Average Value of a Function on an Interval',
+      '8.2 Connecting Position, Velocity, and Acceleration of Functions Using Integrals',
+      '8.3 Using Accumulation Functions and Definite Integrals in Applied Contexts',
+      '8.4 Finding the Area Between Curves Expressed as Functions of x',
+      '8.5 Finding the Area Between Curves Expressed as Functions of y',
+      '8.6 Finding the Area Between Curves That Intersect at More Than Two Points',
+      '8.7 Volumes with Cross Sections: Squares and Rectangles',
+      '8.8 Volumes with Cross Sections: Triangles and Semicircles',
+      '8.9 Volume with Disc Method: Revolving Around the x- or y-Axis',
+      '8.10 Volume with Disc Method: Revolving Around Other Axes',
+      '8.11 Volume with Washer Method: Revolving Around the x- or y-Axis',
+      '8.12 Volume with Washer Method: Revolving Around Other Axes',
+      '8.13 The Arc Length of a Smooth, Planar Curve and Distance Traveled'
+    ],
+    'Parametric Equations, Polar Coordinates, and Vector-Valued Functions': [
+      '9.1 Defining and Differentiating Parametric Equations',
+      '9.2 Second Derivatives of Parametric Equations',
+      '9.3 Finding Arc Lengths of Curves Given by Parametric Equations',
+      '9.4 Defining and Differentiating Vector-Valued Functions',
+      '9.5 Integrating Vector-Valued Functions',
+      '9.6 Solving Motion Problems Using Parametric and Vector-Valued Functions',
+      '9.7 Defining Polar Coordinates and Differentiating in Polar Form',
+      '9.8 Finding the Area of a Polar Region or the Area Bounded by a Single Polar Curve',
+      '9.9 Finding the Area of the Region Bounded by Two Polar Curves'
+    ],
+    'Infinite Sequences and Series': [
+      '10.1 Defining Convergent and Divergent Infinite Series',
+      '10.2 Working with Geometric Series',
+      '10.3 The nth Term Test for Divergence',
+      '10.4 Integral Test for Convergence',
+      '10.5 Harmonic Series and p-Series',
+      '10.6 Comparison Tests for Convergence',
+      '10.7 Alternating Series Test for Convergence',
+      '10.8 Ratio Test for Convergence',
+      '10.9 Determining Absolute or Conditional Convergence',
+      '10.10 Alternating Series Error Bound',
+      '10.11 Finding Taylor Polynomial Approximations of Functions',
+      '10.12 Lagrange Error Bound',
+      '10.13 Radius and Interval of Convergence of Power Series',
+      '10.14 Finding Taylor or Maclaurin Series for a Function',
+      '10.15 Representing Functions as Power Series'
+    ]
   },
   'AP - Calculus BC': {
-
+    'Limits and Continuity': [
+      'Change: Introducing Calculus: Can Change Occur at an Instant?',
+      'Limits: Defining Limits and Using Limit Notation',
+      'Change: Estimating Limit Values from Graphs',
+      'Limits: Estimating Limit Values from Tables',
+      'Limits: Determining Limits Using Algebraic Properties of Limits',
+      'Limits: Determining Limits Using Algebraic Manipulation',
+      'Limits: Selecting Procedures for Determining Limits',
+      'Limits: Determining Limits Using the Squeeze Theorem',
+      'Limits: Connecting Multiple Representations of Limits',
+      'Limits: Exploring Types of Discontinuities',
+      'Analysis of Functions: Defining Continuity at a Point',
+      'Limits: Confirming Continuity over an Interval',
+      'Limits: Removing Discontinuities',
+      'Limits: Connecting Infinite Limits and Vertical Asymptotes',
+      'Limits: Connecting Limits at Infinity and Horizontal Asymptotes',
+      'Limits: Working with the Intermediate Value Theorem (IVT)'
+    ],
+    'Differentiation: Definition and Basic Derivative Rules': [
+      'Change: Defining Average and Instantaneous Rates of Change at a Point',
+      'Analysis of Functions: Defining the Derivative of a Function and Using Derivative Notation',
+      'Change: Estimating Derivatives of a Function at a Point',
+      'Analysis of Functions: Connecting Differentiability and Continuity: Determining When Derivatives Do and Do Not Exist',
+      'Analysis of Functions: Applying the Power Rule',
+      'Analysis of Functions: Derivative Rules: Constant, Sum, Difference, and Constant Multiple',
+      'Analysis of Functions: Derivatives of cos x, sin x, e^x, and ln x',
+      'Analysis of Functions: The Product Rule',
+      'Analysis of Functions: The Quotient Rule',
+      'Analysis of Functions: Finding the Derivatives of Tangent, Cotangent, Secant, and/or Cosecant Functions (BC ONLY)'
+    ],
+    'Differentiation: Composite, Implicit, and Inverse Functions': [
+      'Analysis of Functions: The Chain Rule',
+      'Analysis of Functions: Implicit Differentiation',
+      'Analysis of Functions: Differentiating Inverse Functions',
+      'Analysis of Functions: Differentiating Inverse Trigonometric Functions',
+      'Analysis of Functions: Selecting Procedures for Calculating Derivatives',
+      'Analysis of Functions: Calculating Higher-Order Derivatives'
+    ],
+    'Contextual Applications of Differentiation': [
+      'Change: Interpreting the Meaning of the Derivative in Context',
+      'Change: Straight-Line Motion: Connecting Position, Velocity, and Acceleration',
+      'Change: Rates of Change in Applied Contexts Other Than Motion',
+      'Change: Introduction to Related Rates',
+      'Change: Solving Related Rates Problems',
+      'Change: Approximating Values of a Function Using Local Linearity and Linearization',
+      'Limits: Using L’Hospital’s Rule for Determining Limits of Indeterminate Forms'
+    ],
+    'Analytical Applications of Differentiation': [
+      'Analysis of Functions: Using the Mean Value Theorem',
+      'Analysis of Functions: Extreme Value Theorem, Global Versus Local Extrema, and Critical Points',
+      'Analysis of Functions: Determining Intervals on Which a Function Is Increasing or Decreasing',
+      'Analysis of Functions: Using the First Derivative Test to Determine Relative (Local) Extrema',
+      'Analysis of Functions: Using the Candidates Test to Determine Absolute (Global) Extrema',
+      'Analysis of Functions: Determining Concavity of Functions over Their Domains',
+      'Analysis of Functions: Using the Second Derivative Test to Determine Extrema',
+      'Analysis of Functions: Sketching Graphs of Functions and Their Derivatives',
+      'Analysis of Functions: Connecting a Function, Its First Derivative, and Its Second Derivative',
+      'Analysis of Functions: Introduction to Optimization Problems',
+      'Analysis of Functions: Solving Optimization Problems',
+      'Analysis of Functions: Exploring Behaviors of Implicit Relations'
+    ],
+    'Integration and Accumulation of Change': [
+      'Change: Exploring Accumulations of Change',
+      'Limits: Approximating Areas with Riemann Sums',
+      'Limits: Riemann Sums, Summation Notation, and Definite Integral Notation',
+      'Analysis of Functions: The Fundamental Theorem of Calculus and Accumulation Functions',
+      'Analysis of Functions: Interpreting the Behavior of Accumulation Functions Involving Area',
+      'Analysis of Functions: Applying Properties of Definite Integrals',
+      'Analysis of Functions: The Fundamental Theorem of Calculus and Definite Integrals',
+      'Analysis of Functions: Finding Antiderivatives and Indefinite Integrals: Basic Rules and Notation',
+      'Analysis of Functions: Integrating Using Substitution',
+      'Analysis of Functions: Integrating Functions Using Long Division and Completing the Square',
+      'Analysis of Functions: Integrating Using Integration by Parts (BC ONLY)',
+      'Analysis of Functions: Using Linear Partial Fractions (BC ONLY)',
+      'Limits: Evaluating Improper Integrals (BC ONLY)',
+      'Analysis of Functions: Selecting Techniques for Antidifferentiation'
+    ],
+    'Differential Equations': [
+      'Analysis of Functions: Modeling Situations with Differential Equations',
+      'Analysis of Functions: Verifying Solutions for Differential Equations',
+      'Analysis of Functions: Sketching Slope Fields',
+      'Analysis of Functions: Reasoning Using Slope Fields',
+      'Analysis of Functions: Approximating Solutions Using Euler’s Method (BC ONLY)',
+      'Analysis of Functions: Finding General Solutions Using Separation of Variables',
+      'Analysis of Functions: Finding Particular Solutions Using Initial Conditions and Separation of Variables',
+      'Analysis of Functions: Exponential Models with Differential Equations',
+      'Analysis of Functions: Logistic Models with Differential Equations (BC ONLY)'
+    ],
+    'Applications of Integration': [
+      'Change: Finding the Average Value of a Function on an Interval',
+      'Change: Connecting Position, Velocity, and Acceleration of Functions Using Integrals',
+      'Change: Using Accumulation Functions and Definite Integrals in Applied Contexts',
+      'Change: Finding the Area Between Curves Expressed as Functions of x',
+      'Change: Finding the Area Between Curves Expressed as Functions of y',
+      'Change: Finding the Area Between Curves That Intersect at More Than Two Points',
+      'Change: Volumes with Cross Sections: Squares and Rectangles',
+      'Change: Volumes with Cross Sections: Triangles and Semicircles',
+      'Change: Volume with Disc Method: Revolving Around the x- or y-Axis',
+      'Change: Volume with Disc Method: Revolving Around Other Axes',
+      'Change: Volume with Washer Method: Revolving Around the x- or y-Axis',
+      'Change: Volume with Washer Method: Revolving Around Other Axes',
+      'Change: The Arc Length of a Smooth, Planar Curve and Distance Traveled (BC ONLY)'
+    ],
+    'Parametric Equations, Polar Coordinates, and Vector-Valued Functions': [
+      'Change: Defining and Differentiating Parametric Equations',
+      'Change: Second Derivatives of Parametric Equations',
+      'Change: Finding Arc Lengths of Curves Given by Parametric Equations',
+      'Change: Defining and Differentiating Vector-Valued Functions',
+      'Analysis of Functions: Integrating Vector-Valued Functions',
+      'Analysis of Functions: Solving Motion Problems Using Parametric and Vector-Valued Functions',
+      'Analysis of Functions: Defining Polar Coordinates and Differentiating in Polar Form',
+      'Change: Finding the Area of a Polar Region or the Area Bounded by a Single Polar Curve',
+      'Change: Finding the Area of the Region Bounded by Two Polar Curves'
+    ],
+    'Infinite Sequences and Series': [
+      'Limits: Defining Convergent and Divergent Infinite Series',
+      'Limits: Working with Geometric Series',
+      'Limits: The nth Term Test for Divergence',
+      'Limits: Integral Test for Convergence',
+      'Limits: Harmonic Series and p-Series',
+      'Limits: Comparison Tests for Convergence',
+      'Limits: Alternating Series Test for Convergence',
+      'Limits: Ratio Test for Convergence',
+      'Limits: Determining Absolute or Conditional Convergence',
+      'Limits: Alternating Series Error Bound',
+      'Limits: Finding Taylor Polynomial Approximations of Functions',
+      'Limits: Lagrange Error Bound',
+      'Limits: Radius and Interval of Convergence of Power Series',
+      'Limits: Finding Taylor or Maclaurin Series for a Function',
+      'Limits: Representing Functions as Power Series'
+    ]
   },
   'AP - Computer Science A': {
-
+    'Primitive Types': [
+      '1.1 Why Programming? Why Java?',
+      '1.2 Variables and Data Types',
+      '1.3 Expressions and Assignment Statements',
+      '1.4 Compound Assignment Operators',
+      '1.5 Casting and Ranges of Variables'
+    ],
+    'Using Objects': [
+      '2.1 Objects: Instances of Classes',
+      '2.2 Creating and Storing Objects (Instantiation)',
+      '2.3 Calling a Void Method',
+      '2.4 Calling a Void Method with Parameters',
+      '2.5 Calling a Non-void Method',
+      '2.6 String Objects: Concatenation, Literals, and More',
+      '2.7 String Methods',
+      '2.8 Wrapper Classes: Integer and Double',
+      '2.9 Using the Class Math'
+    ],
+    'Boolean Expressions and if Statements': [
+      '3.1 Boolean Expressions',
+      '3.2 if Statements and Control Flow',
+      '3.3 if-else Statements',
+      '3.4 else if Statements',
+      '3.5 Compound Boolean Expressions',
+      '3.6 Equivalent Boolean Expressions',
+      '3.7 Comparing Objects'
+    ],
+    'Iteration': [
+      '4.1 while Loops',
+      '4.2 for Loops',
+      '4.3 Developing Algorithms Using Strings',
+      '4.4 Nested Iteration',
+      '4.5 Informal Code Analysis'
+    ],
+    'Writing Classes': [
+      '5.1 Anatomy of a Class',
+      '5.2 Constructors',
+      '5.3 Documentation with Comments',
+      '5.4 Accessor Methods',
+      '5.5 Mutator Methods',
+      '5.6 Writing Methods',
+      '5.7 Static Variables and Methods',
+      '5.8 Scope and Access',
+      '5.9 this Keyword',
+      '5.10 Ethical and Social Implications of Computing Systems'
+    ],
+    'Array': [
+      '6.1 Array Creation and Access',
+      '6.2 Traversing Arrays',
+      '6.3 Enhanced for Loop for Arrays',
+      '6.4 Developing Algorithms Using Arrays'
+    ],
+    'ArrayList': [
+      '7.1 Introduction to ArrayList',
+      '7.2 ArrayList Methods',
+      '7.3 Traversing ArrayLists',
+      '7.4 Developing Algorithms Using ArrayLists',
+      '7.5 Searching',
+      '7.6 Sorting',
+      '7.7 Ethical Issues Around Data Collection'
+    ],
+    '2D Array': [
+      '8.1 2D Arrays',
+      '8.2 Traversing 2D Arrays'
+    ],
+    'Inheritance': [
+      '9.1 Creating Superclasses and Subclasses',
+      '9.2 Writing Constructors for Subclasses',
+      '9.3 Overriding Methods',
+      '9.4 Keyword super',
+      '9.5 Creating References Using Inheritance Hierarchies',
+      '9.6 Polymorphism',
+      '9.7 Object Superclass'
+    ],
+    'Recursion': [
+      '10.1 Recursion',
+      '10.2 Recursive Searching and Sorting'
+    ]
   },
   'AP - Computer Science Principles': {
-
+    'Creative Development': [
+      '1.1 Collaboration',
+      '1.2 Program Function and Purpose',
+      '1.3 Program Design and Development',
+      '1.4 Identifying and Correcting Errors'
+    ],
+    'Data': [
+      '2.1 Binary Numbers',
+      '2.2 Data Compression',
+      '2.3 Extracting Information from Data',
+      '2.4 Using Programs with Data'
+    ],
+    'Algorithms and Programming': [
+      '3.1 Variables and Assignments',
+      '3.2 Data Abstraction',
+      '3.3 Mathematical Expressions',
+      'Strings',
+      '3.5 Boolean Expressions',
+      '3.6 Conditionals',
+      '3.7 Nested Conditionals',
+      '3.8 Iteration',
+      '3.9 Developing Algorithms',
+      'Lists',
+      '3.11 Binary Search',
+      'Developing Procedures',
+      'Calling Procedures',
+      'Random Values',
+      '3.18 Undecidable Problems',
+      'Algorithmic Efficiency',
+      'Simulations',
+      'Libraries'
+    ],
+    'Computer Systems and Networks': [
+      '4.1 The Internet',
+      '4.2 Fault Tolerance',
+      '4.3 Parallel and Distributed Computing'
+    ],
+    'Impact of Computing': [
+      '5.1 Beneficial and Harmful Effects',
+      '5.2 Digital Divide',
+      '5.3 Computing Bias',
+      '5.4 Crowdsourcing',
+      '5.5 Legal and Ethical Concerns',
+      '5.6 Safe Computing'
+    ]
   },
   'AP - Physics 1': {
 
@@ -2851,11 +3329,199 @@ export const schoolGradesData = {
   'AP - Physics 2': {
 
   },
-  'AP - Biology': {
-
-  },
   'AP - Chemistry': {
-
+  'Atomic Structure and Properties': [
+    '1.1 Moles and Molar Mass',
+    '1.2 Mass Spectra of Elements',
+    '1.3 Elemental Composition of Pure Substances',
+    '1.4 Composition of Mixtures',
+    '1.5 Atomic Structure and Electron Configuration',
+    '1.6 Photoelectron Spectroscopy',
+    '1.7 Periodic Trends',
+    '1.8 Valence Electrons and Ionic Compounds'
+  ],
+  'Compound Structure and Properties': [
+    '2.1 Types of Chemical Bonds',
+    '2.2 Intramolecular Force and Potential Energy',
+    '2.3 Structure of Ionic Solids',
+    '2.4 Structure of Metals and Alloys',
+    '2.5 Lewis Diagrams',
+    '2.6 Resonance and Formal Charge',
+    '2.7 VSEPR and Hybridization'
+  ],
+  'Properties of Substances and Mixtures': [
+    '3.1 Intermolecular and Interparticle Forces',
+    '3.2 Properties of Solids',
+    '3.3 Solids, Liquids, and Gases',
+    '3.4 Ideal Gas Law',
+    '3.5 Kinetic Molecular Theory',
+    '3.6 Deviation from Ideal Gas Law',
+    '3.7 Solutions and Mixtures',
+    '3.8 Representations of Solutions',
+    '3.9 Separation of Solutions and Mixtures',
+    '3.10 Solubility',
+    '3.11 Spectroscopy and the Electromagnetic Spectrum',
+    '3.12 Properties of Photons',
+    '3.13 Beer-Lambert Law'
+  ],
+  'Chemical Reactions': [
+    '4.1 Introduction for Reactions',
+    '4.2 Net Ionic Equations',
+    '4.3 Representations of Reactions',
+    '4.4 Physical and Chemical Changes',
+    '4.5 Stoichiometry',
+    '4.6 Introduction to Titration',
+    '4.7 Types of Chemical Reactions',
+    '4.8 Introduction to Acid-Base Reactions',
+    '4.9 Oxidation-Reduction (Redox) Reactions'
+  ],
+  'Kinetics': [
+    '5.1 Reaction Rates',
+    '5.2 Introduction to Rate Law',
+    '5.3 Concentration Changes Over Time',
+    '5.4 Elementary Reactions',
+    '5.5 Collision Model',
+    '5.6 Reaction Energy Profile',
+    '5.7 Introduction to Reaction Mechanisms',
+    '5.8 Reaction Mechanism and Rate Law',
+    '5.9 Pre-Equilibrium Approximation',
+    '5.10 Multistep Reaction Energy Profile',
+    '5.11 Catalysis'
+  ],
+  'Thermochemistry': [
+    '6.1 Endothermic and Exothermic Processes',
+    '6.2 Energy Diagrams',
+    '6.3 Heat Transfer and Thermal Equilibrium',
+    '6.4 Heat Capacity and Calorimetry',
+    '6.5 Energy of Phase Changes',
+    '6.6 Introduction to Enthalpy of Reaction',
+    '6.7 Bond Enthalpies',
+    '6.8 Enthalpy of Formation',
+    '6.9 Hess’s Law'
+  ],
+  'Equilibrium': [
+    '7.1 Introduction to Equilibrium',
+    '7.2 Direction of Reversible Reactions',
+    '7.3 Reaction Quotient and Equilibrium Constant',
+    '7.4 Calculating the Equilibrium Constant',
+    '7.5 Magnitude of the Equilibrium Constant',
+    '7.6 Properties of the Equilibrium Constant',
+    '7.7 Calculating Equilibrium Concentrations',
+    '7.8 Representations of Equilibrium',
+    '7.9 Introduction to Le Châtelier’s Principle',
+    '7.10 Reaction Quotient and Le Châtelier’s Principle',
+    '7.11 Introduction to Solubility Equilibria',
+    '7.12 Common-Ion Effect'
+  ],
+  'Acids and Bases': [
+    '8.1 Introduction to Acids and Bases',
+    '8.2 pH and pOH of Strong Acids and Bases',
+    '8.3 Weak Acid and Base Equilibria',
+    '8.4 Acid-Base Reactions and Buffers',
+    '8.5 Acid-Base Titrations',
+    '8.6 Molecular Structure of Acids and Bases',
+    '8.7 pH and pKa',
+    '8.8 Properties of Buffers',
+    '8.9 Henderson-Hasselbalch Equation',
+    '8.10 Buffer Capacity',
+    '8.11 pH and Solubility'
+  ],
+  'Thermodynamics and Electrochemistry': [
+    '9.1 Introduction to Entropy',
+    '9.2 Absolute Entropy and Entropy Change',
+    '9.3 Gibbs Free Energy and Thermodynamic Favorability',
+    '9.4 Thermodynamic and Kinetic Control',
+    '9.5 Free Energy and Equilibrium',
+    '9.6 Free Energy of Dissolution',
+    '9.7 Coupled Reactions',
+    '9.8 Galvanic (Voltaic) and Electrolytic Cells',
+    '9.9 Cell Potential and Free Energy',
+    '9.10 Cell Potential Under Nonstandard Conditions',
+    '9.11 Electrolysis and Faraday’s Law'
+  ]
+  },
+  'AP - Biology': {
+    'Chemistry of Life': [
+      'SYI 1.1 Structure of Water and Hydrogen Bonding',
+      'ENE Elements of Life',
+      'SYI Introduction to Biological Macromolecules',
+      'SYI 1.4 Properties of Biological Macromolecules',
+      'SYI 1.5 Structure and Function of Biological Macromolecules',
+      'IST 1.6 Nucleic Acids'
+    ],
+    'Cell Structure and Function': [
+      'SYI Cell Structure: Subcellular Components',
+      'SYI 2.2 Cell Structure and Function',
+      'ENE 2.3 Cell Size',
+      'ENE 2.4 Plasma Membranes',
+      'ENE 2.5 Membrane Permeability',
+      'ENE 2.6 Membrane Transport',
+      'ENE 2.7 Facilitated Diffusion',
+      'ENE 2.8 Tonicity and Osmoregulation',
+      'ENE 2.9 Mechanisms of Transport',
+      'ENE 2.10 Cell Compartmentalization',
+      'EVO Origins of Cell Compartmentalization'
+    ],
+    'Cellular Energetics': [
+      'ENE Enzyme Structure',
+      'ENE 3.2 Enzyme Catalysis',
+      'ENE 3.3 Environmental Impacts on Enzyme Function',
+      'ENE 3.4 Cellular Energy',
+      'ENE 3.5 Photosynthesis',
+      'ENE 3.6 Cellular Respiration',
+      'SYI 3.7 Fitness'
+    ],
+    'Cell Communication and Cell Cycle': [
+      'IST 4.1 Cell Communication',
+      'IST 4.2 Introduction to Signal Transduction',
+      'IST 4.3 Signal Transduction',
+      'IST Changes in Signal Transduction Pathways',
+      'ENE 4.5 Feedback',
+      'IST 4.6 Cell Cycle',
+      'IST 4.7 Regulation of Cell Cycle'
+    ],
+    'Heredity': [
+      'IST 5.1 Meiosis',
+      'IST 5.2 Meiosis and Genetic Diversity',
+      'EVO 5.3 Mendelian Genetics',
+      'IST 5.4 Non-Mendelian Genetics',
+      'SYI 5.5 Environmental Effects on Phenotype',
+      'SYI 5.6 Chromosomal Inheritance'
+    ],
+    'Gene Expression and Regulation': [
+      'IST 6.1 DNA and RNA Structure',
+      'IST Replication',
+      'IST 6.3 Transcription and RNA Processing',
+      'IST Translation',
+      'IST 6.5 Regulation of Gene Expression',
+      'IST 6.6 Gene Expression and Cell Specialization',
+      'IST 6.7 Mutations',
+      'IST 6.8 Biotechnology'
+    ],
+    'Natural Selection': [
+      'EVO 7.1 Introduction to Natural Selection',
+      'EVO Natural Selection',
+      'EVO 7.3 Artificial Selection',
+      'EVO 7.4 Population Genetics',
+      'EVO Hardy-Weinberg Equilibrium',
+      'EVO 7.6 Evidence of Evolution',
+      'EVO Common Ancestry',
+      'EVO 7.8 Continuing Evolution',
+      'EVO Phylogeny',
+      'EVO Speciation',
+      'EVO Extinction',
+      'SYI 7.12 Variations in Populations',
+      'SYI Origin of Life on Earth'
+    ],
+    'Ecology': [
+      'ENE 8.1 Responses to the Environment',
+      'ENE 8.2 Energy Flow Through Ecosystems',
+      'SYI 8.3 Population Ecology',
+      'SYI 8.4 Effect of Density of Populations',
+      'ENE 8.5 Community Ecology',
+      'SYI 8.6 Biodiversity',
+      'EVO 8.7 Disruptions to Ecosystems'
+    ]
   },
   'AP -  Environmental Science': {
 
