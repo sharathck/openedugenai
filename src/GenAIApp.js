@@ -1819,6 +1819,7 @@ const GenAIApp = ({user, source, grade, subject}) => {
         return (
             <Homework
                 user={user}
+                fromApp={'GenAIApp'}
                 onBack={() => setShowhomeWorkApp(false)}
                 sourceDocumentID={currentDocId}
             />

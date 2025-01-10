@@ -10,8 +10,9 @@ import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import ReactMarkdown from "react-markdown";
+import GenAIApp from "./GenAIApp";
 
-const Homework = ({ user, sourceDocumentID, invocationType, source, grade, subject }) => {
+const Homework = ({ user, sourceDocumentID, invocationType, fromApp, source, grade, subject }) => {
     // Add new state variables for labels
     const [copyUrlButtonLabel, setCopyUrlButtonLabel] = useState('Copy URL to Share');
     const [printGridButtonLabel, setPrintGridButtonLabel] = useState('Print');
@@ -305,7 +306,13 @@ const Homework = ({ user, sourceDocumentID, invocationType, source, grade, subje
     };
 
     if (showMainApp) {
+        if (fromApp === 'GenAIApp') {
+            return <GenAIApp user={user} />;
+        }
+        else
+        {
         return <App user={user} source={source} grade={grade} subject={subject} />;
+    }
     }
 
     return (
