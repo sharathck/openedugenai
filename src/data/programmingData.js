@@ -222,7 +222,7 @@ export const programmingData = {
     '6A useCallback and useMemo: Optimize performance by memoizing functions and values.',
     '6A useLayoutEffect: Understand the difference between useEffect and useLayoutEffect.',
     '6A useImperativeHandle: Customize the instance value that is exposed to parent components.',
-    '6A Hook Rules and Best Practices: Learn the dos and don'ts of using hooks.',
+    '6A Hook Rules and Best Practices: Learn the dos and don\'ts of using hooks.',
     '6A Debugging Hooks: Techniques for solving common issues when using hooks.'
   ],
   'React and TypeScript - Adding Strong Typing': [
