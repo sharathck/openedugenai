@@ -547,7 +547,6 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     const handlePause = () => {
         if (audioSynthesizer) {
             audioSynthesizer.pause();
-            console.log('Audio paused');
             setIsPaused(true);
         }
     };
@@ -555,7 +554,6 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     const handleResume = () => {
         if (audioSynthesizer) {
             audioSynthesizer.resume();
-            console.log('Audio resumed');
             setIsPaused(false);
         }
     };
@@ -1210,7 +1208,7 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                                     <div style={{ color: "green", fontWeight: "bold" }}>
                                         {item.model !== 'azure-tts' && (
                                             <>
-                                                {(!isiPhone && showPrint && (item.invocationType === 'explain') &&
+                                                {(!isiPhone && showPrint && (item.invocationType === 'explain') && (
                                                     <button
                                                         className={isLiveAudioPlaying[item.id] ? 'button_selected' : 'button'}
                                                         onClick={async () => {
@@ -1227,87 +1225,14 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                                                             <FaPlay /> Speak
                                                         </label>
                                                     </button>
-                                                )}
-                                                {isLiveAudioPlaying[item.id] && (
-                                                    <>
-                                                        <button className="button" onClick={handlePause}>
-                                                            Pause
-                                                        </button>
-                                                        <button className="button" onClick={handleResume}>
-                                                            Resume
-                                                        </button>
-                                                    </>
-                                                )}
+                                                ))}
+                                                <button className="button" onClick={handlePause}>
+                                                    Pause
+                                                </button>
+                                                <button className="button" onClick={handleResume}>
+                                                    Resume
+                                                </button>
                                             </>
-                                        )}
-                                        &nbsp; &nbsp; &nbsp;
-                                        {showPrint && (<button className="button" onClick={() => {
-                                            const updatedData = genaiData.map(dataItem => {
-                                                if (dataItem.id === item.id) {
-                                                    return { ...dataItem, showRawAnswer: !dataItem.showRawAnswer };
-                                                }
-                                                return dataItem;
-                                            });
-                                            setGenaiData(updatedData);
-                                        }}>
-                                            {item.showRawAnswer ? <FaMarkdown /> : <FaEnvelopeOpenText />}
-                                        </button>
-                                        )}
-                                        &nbsp; &nbsp;
-                                        {showPrint && (<span style={{ color: "black", fontSize: "12px" }}> #Char(Ans):</span>
-                                        )}
-                                        {showPrint && (<span style={{ color: "darkblue", fontSize: "16px" }}> {item.answer?.length || 0} </span>
-                                        )}
-                                        &nbsp; &nbsp;
-                                        {showPrint && (
-                                            <button
-                                                edge="end"
-                                                aria-label="print answer"
-                                                className="button"
-                                                onClick={() => {
-                                                    const printWindow = window.open('', '', 'height=500,width=800');
-                                                    const htmlContent = mdParser.render(item.answer);
-                                                    printWindow.document.write('<html><head><title>Print</title>');
-                                                    printWindow.document.write('<style>');
-                                                    printWindow.document.write(`
-                                                    body {
-                                                        font-family: Arial, sans-serif;
-                                                        margin: 20px;
-                                                    }
-                                                    table {
-                                                        width: 100%;
-                                                        border-collapse: collapse;
-                                                        margin-bottom: 20px;
-                                                    }
-                                                    table, th, td {
-                                                        border: 1px solid #ccc;
-                                                    }
-                                                    th, td {
-                                                        padding: 8px;
-                                                        text-align: left;
-                                                    }
-                                                    th {
-                                                        background-color: #f2f2f2;
-                                                    }
-                                                    pre {
-                                                        background-color: #f5f5f5;
-                                                        padding: 10px;
-                                                        overflow: auto;
-                                                    }
-                                                    code {
-                                                        background-color: #f5f5f5;
-                                                        padding: 2px 4px;
-                                                    }
-                                                `);
-                                                    printWindow.document.write('</style></head><body>');
-                                                    printWindow.document.write(htmlContent);
-                                                    printWindow.document.write('</body></html>');
-                                                    printWindow.document.close();
-                                                    printWindow.print();
-                                                }}
-                                            >
-                                                Print <FaPrint />
-                                            </button>
                                         )}
                                     </div>
                                     <br />
