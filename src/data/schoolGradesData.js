@@ -3223,10 +3223,127 @@ export const schoolGradesData = {
     ]
   },
   'AP - Physics 1': {
-
+    'Kinematics': [
+      'Scalars and Vectors in One Dimension',
+      'Displacement, Velocity, and Acceleration',
+      'Representing Motion',
+      'Reference Frames and Relative Motion',
+      'Vectors and Motion in Two Dimensions'
+    ],
+    'Force and Translational Dynamics': [
+      'Systems and Center of Mass',
+      'Forces and Free-Body Diagrams',
+      'Newton’s Third Law',
+      'Newton’s First Law',
+      'Newton’s Second Law',
+      'Gravitational Force',
+      'Kinetic and Static Friction',
+      'Spring Forces',
+      'Circular Motion'
+    ],
+    'Work, Energy, and Power': [
+      'Translational Kinetic Energy',
+      'Work',
+      'Potential Energy',
+      'Conservation of Energy',
+      'Power'
+    ],
+    'Linear Momentum': [
+      'Linear Momentum',
+      'Change in Momentum and Impulse',
+      'Conservation of Linear Momentum',
+      'Elastic and Inelastic Collisions'
+    ],
+    'Torque and Rotational Dynamics': [
+      'Rotational Kinematics',
+      'Connecting Linear and Rotational Motion',
+      'Torque',
+      'Rotational Inertia',
+      'Rotational Equilibrium and Newton’s First Law in Rotational Form',
+      'Newton’s Second Law in Rotational Form'
+    ],
+    'Energy and Momentum of Rotating Systems': [
+      'Rotational Kinetic Energy',
+      'Torque and Work',
+      'Angular Momentum and Angular Impulse',
+      'Conservation of Angular Momentum',
+      'Rolling',
+      'Motion of Orbiting Satellites'
+    ],
+    'Oscillations': [
+      'Defining Simple Harmonic Motion (SHM)',
+      'Frequency and Period of SHM',
+      'Representing and Analyzing SHM',
+      'Energy of Simple Harmonic Oscillators'
+    ],
+    'Fluids': [
+      'Internal Structure and Density',
+      'Pressure',
+      'Fluids and Newton’s Laws',
+      'Fluids and Conservation Laws'
+    ]
   },
   'AP - Physics 2': {
-
+    'Thermodynamics': [
+      'Kinetic Theory of Temperature and Pressure',
+      'The Ideal Gas Law',
+      'Thermal Energy Transfer and Equilibrium',
+      'The First Law of Thermodynamics',
+      'Specific Heat and Thermal Conductivity',
+      'Entropy and the Second Law of Thermodynamics'
+    ],
+    'Electric Force, Field, and Potential': [
+      'Electric Charge and Electric Force',
+      'Conservation of Electric Charge and the Process of Charging',
+      'Electric Fields',
+      'Electric Potential Energy',
+      'Electric Potential',
+      'Capacitors',
+      'Conservation of Electric Energy'
+    ],
+    'Electric Circuits': [
+      'Electric Current',
+      'Simple Circuits',
+      'Resistance, Resistivity, and Ohm’s Law',
+      'Electric Power',
+      'Compound Direct Current (DC) Circuits',
+      'Kirchhoff’s Loop Rule',
+      'Kirchhoff’s Junction Rule',
+      'Resistor-Capacitor (RC) Circuits'
+    ],
+    'Magnetism and Electromagnetism': [
+      'Magnetic Fields',
+      'Magnetism and Moving Charges',
+      'Magnetism and Current-Carrying Wires',
+      'Electromagnetic Induction and Faraday’s Law'
+    ],
+    'Geometric Optics': [
+      'Reflection',
+      'Images Formed by Mirrors',
+      'Refraction',
+      'Images Formed by Lenses'
+    ],
+    'Waves, Sound, and Physical Optics': [
+      'Properties of Wave Pulses and Waves',
+      'Periodic Waves',
+      'Boundary Behavior of Waves and Polarization',
+      'Electromagnetic Waves',
+      'The Doppler Effect',
+      'Wave Interference and Standing Waves',
+      'Diffraction',
+      'Double-Slit Interference and Diffraction Gratings',
+      'Thin-Film Interference'
+    ],
+    'Modern Physics': [
+      'Quantum Theory and Wave-Particle Duality',
+      'The Bohr Model of Atomic Structure',
+      'Emission and Absorption Spectra',
+      'Blackbody Radiation',
+      'The Photoelectric Effect',
+      'Compton Scattering',
+      'Fission, Fusion, and Nuclear Decay',
+      'Types of Radioactive Decay'
+    ]
   },
   'AP -  Environmental Science': {
 
