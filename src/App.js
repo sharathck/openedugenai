@@ -403,7 +403,7 @@ function App({ user, source, grade, subject }) {  // Add user prop
         </button>
         &nbsp;
         <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
-          Enter your own Topic
+          More options
         </button>
         <h2> <span style={{ color: 'darkBlue' }}>{grade}</span> - <span style={{ color: 'darkGreen' }}>{subject}</span></h2>
         <div className="topics-container">
