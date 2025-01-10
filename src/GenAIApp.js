@@ -470,6 +470,9 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     };
 
     // Function to synthesize speech
+    const [isPaused, setIsPaused] = useState(false);
+    const [audioSynthesizer, setAudioSynthesizer] = useState(null);
+
     const synthesizeSpeech = async (articles, language) => {
         // Clean the text by removing URLs and special characters
         const cleanedArticles = articles
@@ -504,12 +507,13 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                 }
 
                 const audioConfig = speechsdk.AudioConfig.fromDefaultSpeakerOutput();
-                const speechSynthesizer = new speechsdk.SpeechSynthesizer(speechConfig, audioConfig);
+                const synthesizer = new speechsdk.SpeechSynthesizer(speechConfig, audioConfig);
+                setAudioSynthesizer(synthesizer);
 
                 const chunks = splitMessage(cleanedArticles);
                 for (const chunk of chunks) {
                     await new Promise((resolve, reject) => {
-                        speechSynthesizer.speakTextAsync(chunk, result => {
+                        synthesizer.speakTextAsync(chunk, result => {
                             if (result.reason === speechsdk.ResultReason.SynthesizingAudioCompleted) {
                                 console.log(`Speech synthesized to speaker for text: [${chunk}]`);
                                 resolve();
@@ -517,10 +521,8 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                                 const cancellationDetails = speechsdk.SpeechSynthesisCancellationDetails.fromResult(result);
                                 if (cancellationDetails.reason === speechsdk.CancellationReason.Error) {
                                     console.error(`Error details: ${cancellationDetails.errorDetails}`);
-                                    reject(new Error(cancellationDetails.errorDetails));
-                                } else {
-                                    reject(new Error('Speech synthesis canceled'));
                                 }
+                                reject();
                             }
                         }, error => {
                             console.error(`Error synthesizing speech: ${error}`);
@@ -539,6 +541,22 @@ const GenAIApp = ({ user, source, grade, subject }) => {
         }
         finally {
             setIsLiveAudioPlaying(false);
+        }
+    };
+
+    const handlePause = () => {
+        if (audioSynthesizer) {
+            audioSynthesizer.pause();
+            console.log('Audio paused');
+            setIsPaused(true);
+        }
+    };
+
+    const handleResume = () => {
+        if (audioSynthesizer) {
+            audioSynthesizer.resume();
+            console.log('Audio resumed');
+            setIsPaused(false);
         }
     };
 
@@ -1051,7 +1069,7 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     };
 
     if (goBack) {
-        console.log('  source ', source, ' grade ', grade, ' subject ', subject);
+        console.log('  source ', source, grade, subject);
         return <App user={user} source={source} grade={grade} subject={subject} />;
     }
 
@@ -1209,6 +1227,16 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                                                             <FaPlay /> Speak
                                                         </label>
                                                     </button>
+                                                )}
+                                                {isLiveAudioPlaying[item.id] && (
+                                                    <>
+                                                        <button className="button" onClick={handlePause}>
+                                                            Pause
+                                                        </button>
+                                                        <button className="button" onClick={handleResume}>
+                                                            Resume
+                                                        </button>
+                                                    </>
                                                 )}
                                             </>
                                         )}
