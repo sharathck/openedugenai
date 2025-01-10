@@ -519,10 +519,10 @@ function App({ user, source, grade, subject }) {  // Add user prop
             <option value="schoolGradesData">School Grades</option>
             <option value="collegeData">Bachelors</option>
             <option value="mastersData">Masters</option>
-            <option value="automationTestingData">Automation Testing</option>
             <option value="awsCertificationData">AWS Certifications</option>
             <option value="azureCertificationData">Azure Certifications</option>
             <option value="gcpCertificationData">GCP Certifications</option>
+            <option value="automationTestingData">Automation Testing</option>
           </select>
         </div>
       )}
