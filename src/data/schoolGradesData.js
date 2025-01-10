@@ -3171,12 +3171,6 @@ export const schoolGradesData = {
       '5.6 Safe Computing'
     ]
   },
-  'AP - Physics 1': {
-
-  },
-  'AP - Physics 2': {
-
-  },
   'AP - Chemistry': {
   'Atomic Structure and Properties': [
     '1.1 Moles and Molar Mass',
@@ -3370,6 +3364,12 @@ export const schoolGradesData = {
       'SYI 8.6 Biodiversity',
       'EVO 8.7 Disruptions to Ecosystems'
     ]
+  },
+  'AP - Physics 1': {
+
+  },
+  'AP - Physics 2': {
+
   },
   'AP -  Environmental Science': {
 
