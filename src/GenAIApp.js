@@ -2143,7 +2143,7 @@ const GenAIApp = ({user, source, grade, subject}) => {
                                 >
                                     {isExplain
                                         ? (<FaSpinner className="spinning" />)
-                                        : ('Explain with Examples')}
+                                        : ('Explain')}
                                 </button>
                                 &nbsp;
                                 <button
