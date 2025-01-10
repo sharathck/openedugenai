@@ -517,7 +517,7 @@ function App({ user, source, grade, subject }) {  // Add user prop
           </button>
           &nbsp;&nbsp;&nbsp;
           <button className="signoutbutton" onClick={handleSignOut}>
-            {user.email} <FaSignOutAlt />
+             <FaSignOutAlt />
           </button>
           <div className="grades-container">
             {Object.keys(gradesData).map(grade => (
