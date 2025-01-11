@@ -459,20 +459,43 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     const [showFullQuestion, setShowFullQuestion] = useState({});
 
     // Helper function to split messages into chunks
-    const splitMessage = (msg, chunkSize = 4000) => {
+    const splitMessage = (msg, chunkSize = 100) => {
         const chunks = [];
-        console.log('Before Splitting message:', msg);
-        for (let i = 0; i < msg.length; i += chunkSize) {
-            console.log('Part ', i, '  message:', msg.substring(i, i + chunkSize));
-            chunks.push(msg.substring(i, i + chunkSize));
+        let currentPos = 0;
+        while (currentPos < msg.length) {
+            let chunk = msg.substr(currentPos, chunkSize);
+            let splitPos = chunkSize;
+            
+            // If we're not at the end, look for last period
+            if (currentPos + chunkSize < msg.length) {
+                const lastPeriod = chunk.lastIndexOf('.');
+                if (lastPeriod !== -1) {
+                    splitPos = lastPeriod + 1; // Include the period
+                }
+                else {
+                    const lastComma = chunk.lastIndexOf(',');
+                    if (lastComma !== -1) {
+                        splitPos = lastComma + 1; // Include the comma
+                    } 
+                    else {
+                        const lastSpace = chunk.lastIndexOf(' ');
+                        if (lastSpace !== -1) {
+                            splitPos = lastSpace + 1; // Include the space
+                        }
+                    }
+                }
+            }
+        
+            chunk = chunk.substr(0, splitPos);
+            chunks.push(chunk.trim());
+            currentPos += splitPos;
         }
+        
         return chunks;
     };
 
     // Function to synthesize speech
     const [isPaused, setIsPaused] = useState(false);
-    const [audioSynthesizer, setAudioSynthesizer] = useState(null);
-
     const synthesizeSpeech = async (articles, language) => {
         // Clean the text by removing URLs and special characters
         const cleanedArticles = articles
@@ -508,28 +531,50 @@ const GenAIApp = ({ user, source, grade, subject }) => {
 
                 const audioConfig = speechsdk.AudioConfig.fromDefaultSpeakerOutput();
                 const synthesizer = new speechsdk.SpeechSynthesizer(speechConfig, audioConfig);
-                setAudioSynthesizer(synthesizer);
+
+                // Store synthesizer reference for pause/resume
+                window.currentSynthesizer = synthesizer;
 
                 const chunks = splitMessage(cleanedArticles);
                 for (const chunk of chunks) {
-                    await new Promise((resolve, reject) => {
-                        synthesizer.speakTextAsync(chunk, result => {
-                            if (result.reason === speechsdk.ResultReason.SynthesizingAudioCompleted) {
-                                console.log(`Speech synthesized to speaker for text: [${chunk}]`);
-                                resolve();
-                            } else if (result.reason === speechsdk.ResultReason.Canceled) {
-                                const cancellationDetails = speechsdk.SpeechSynthesisCancellationDetails.fromResult(result);
-                                if (cancellationDetails.reason === speechsdk.CancellationReason.Error) {
-                                    console.error(`Error details: ${cancellationDetails.errorDetails}`);
+                    if (isPaused) {
+                        // Wait until unpaused
+                        await new Promise(resolve => {
+                            const checkPause = setInterval(() => {
+                                if (!isPaused) {
+                                    clearInterval(checkPause);
+                                    resolve();
                                 }
-                                reject();
-                            }
-                        }, error => {
-                            console.error(`Error synthesizing speech: ${error}`);
-                            reject(error);
+                            }, 100);
                         });
+                    }
+
+                    await new Promise((resolve, reject) => {
+                        if (window.currentSynthesizer) {
+                            window.currentSynthesizer.speakTextAsync(chunk, result => {
+                                if (result.reason === speechsdk.ResultReason.SynthesizingAudioCompleted) {
+                                    console.log(`Speech synthesized to speaker for text: [${chunk}]`);
+                                    resolve();
+                                } else if (result.reason === speechsdk.ResultReason.Canceled) {
+                                    const cancellationDetails = speechsdk.SpeechSynthesisCancellationDetails.fromResult(result);
+                                    if (cancellationDetails.reason === speechsdk.CancellationReason.Error) {
+                                        console.error(`Error details: ${cancellationDetails.errorDetails}`);
+                                    }
+                                    reject();
+                                }
+                            }, error => {
+                                console.error(`Error synthesizing speech: ${error}`);
+                                reject(error);
+                            });
+                        }
                     });
+                    //forecefully wait 5 seconds
+                    await new Promise(resolve => setTimeout(resolve, 5000));
                 }
+
+                // Cleanup synthesizer reference
+                window.currentSynthesizer = null;
+
             } catch (error) {
                 console.error(`Error synthesizing speech: ${error}`);
             } finally {
@@ -545,17 +590,13 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     };
 
     const handlePause = () => {
-        if (audioSynthesizer) {
-            audioSynthesizer.pause();
-            setIsPaused(true);
-        }
+        setIsPaused(true);
+        // Also set state to indicate live TTS streaming is paused
+        setIsLiveAudioPlayingPrompt(false);
     };
 
     const handleResume = () => {
-        if (audioSynthesizer) {
-            audioSynthesizer.resume();
-            setIsPaused(false);
-        }
+         setIsPaused(false);
     };
 
     // Function to fetch more data for pagination
@@ -1208,7 +1249,7 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                                     <div style={{ color: "green", fontWeight: "bold" }}>
                                         {item.model !== 'azure-tts' && (
                                             <>
-                                                {(!isiPhone && showPrint && (item.invocationType === 'explain') && (
+                                                {(!isiPhone && showPrint && (item.invocationType !== 'quiz') && (item.invocationType !== 'homeWork') && (
                                                     <button
                                                         className={isLiveAudioPlaying[item.id] ? 'button_selected' : 'button'}
                                                         onClick={async () => {
