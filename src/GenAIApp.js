@@ -1267,7 +1267,7 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                                                 ))}
                                                 {audioUrl && (
                                                     <button
-                                                        className={isPaused ? 'button_selected' : 'button'}
+                                                        className={isPaused ? 'button_selected' : 'signoutbutton'}
                                                         onClick={() => { handlePlayPause(); }}
                                                         style={{ marginLeft: '10px' }}
                                                     >
