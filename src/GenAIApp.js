@@ -563,7 +563,9 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                         }
                     });
                     //forecefully wait 5 seconds
-                    await new Promise(resolve => setTimeout(resolve, 5000));
+                    // get number by multiplying 50 with chunk length
+                    let waitLength = 50 * chunk.length;
+                    await new Promise(resolve => setTimeout(resolve, waitLength));
                 }
 
                 // Cleanup synthesizer reference
