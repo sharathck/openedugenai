@@ -16,11 +16,13 @@ import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
+import { BsWindowSidebar } from "react-icons/bs";
 
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
 const isiPhone = /iPhone/i.test(navigator.userAgent);
 let searchQuery = '';
+let isPaused = false;
 let invocationType = '';
 let searchModel = 'All';
 let userID = '';
@@ -77,6 +79,10 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     const [language, setLanguage] = useState("en");
     const [isLiveAudioPlayingPrompt, setIsLiveAudioPlayingPrompt] = useState(false);
     const [goBack, setGoBack] = useState(false);
+    const audioPlayerRef = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [audioUrl, setAudioUrl] = useState(null);
+    const [isPaused, setIsPaused] = useState(false);
 
     // Authentication state
     const [email, setEmail] = useState('');
@@ -165,7 +171,14 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     // Add new show state variables
     const [showPrint, setShowPrint] = useState(false);
     const [modelCerebras, setModelCerebras] = useState('llama-c');
-
+    // Add cleanup effect
+    useEffect(() => {
+        return () => {
+            if (audioUrl) {
+                URL.revokeObjectURL(audioUrl);
+            }
+        };
+    }, [audioUrl]);
     useEffect(() => {
         temperatureRef.current = temperature;
         top_pRef.current = top_p;
@@ -352,11 +365,11 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                 }
                 if (data.showBackToAppButton !== undefined) {
                     setShowBackToAppButton(data.showBackToAppButton);
-               }
+                }
                 if (data.showPrint !== undefined) {
                     setShowPrint(data.showPrint);
                 }
-             if (data.showDedicatedDownloadButton !== undefined) {
+                if (data.showDedicatedDownloadButton !== undefined) {
                     setShowDedicatedDownloadButton(data.showDedicatedDownloadButton);
                 }
                 if (data.genOpenAIImage !== undefined) {
@@ -458,13 +471,13 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     const [showFullQuestion, setShowFullQuestion] = useState({});
 
     // Helper function to split messages into chunks
-    const splitMessage = (msg, chunkSize = 100) => {
+    const splitMessage = (msg, chunkSize = 2000) => {
         const chunks = [];
         let currentPos = 0;
         while (currentPos < msg.length) {
             let chunk = msg.substr(currentPos, chunkSize);
             let splitPos = chunkSize;
-            
+
             // If we're not at the end, look for last period
             if (currentPos + chunkSize < msg.length) {
                 const lastPeriod = chunk.lastIndexOf('.');
@@ -475,26 +488,30 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                     const lastComma = chunk.lastIndexOf(',');
                     if (lastComma !== -1) {
                         splitPos = lastComma + 1; // Include the comma
-                    } 
+                    }
                     else {
                         const lastSpace = chunk.lastIndexOf(' ');
                         if (lastSpace !== -1) {
                             splitPos = lastSpace + 1; // Include the space
                         }
+                        else {
+                            const lastQuestion = chunk.lastIndexOf('?');
+                            if (lastQuestion !== -1) {
+                                splitPos = lastSpace + 1;
+                            }
+                        }
                     }
                 }
             }
-        
+
             chunk = chunk.substr(0, splitPos);
             chunks.push(chunk.trim());
             currentPos += splitPos;
         }
-        
+
         return chunks;
     };
 
-    // Function to synthesize speech
-    const [isPaused, setIsPaused] = useState(false);
     const synthesizeSpeech = async (articles, language) => {
         // Clean the text by removing URLs and special characters
         const cleanedArticles = articles
@@ -511,65 +528,36 @@ const GenAIApp = ({ user, source, grade, subject }) => {
             try {
                 console.log('Synthesizing speech...' + cleanedArticles);
                 const speechConfig = speechsdk.SpeechConfig.fromSubscription(speechKey, serviceRegion);
-                speechConfig.speechSynthesisVoiceName = voiceName;
-                if (language === "Spanish") {
-                    speechConfig.speechSynthesisVoiceName = "es-MX-DaliaNeural";
-                }
-                if (language === "Hindi") {
-                    speechConfig.speechSynthesisVoiceName = "hi-IN-SwaraNeural";
-                }
-                if (language === "Telugu") {
-                    speechConfig.speechSynthesisVoiceName = "te-IN-ShrutiNeural";
-                }
+                speechConfig.speechSynthesisOutputFormat = speechsdk.SpeechSynthesisOutputFormat.Audio16Khz128KBitRateMonoMp3;
 
                 const audioConfig = speechsdk.AudioConfig.fromDefaultSpeakerOutput();
-                const synthesizer = new speechsdk.SpeechSynthesizer(speechConfig, audioConfig);
+                const synthesizer = new speechsdk.SpeechSynthesizer(speechConfig, null); // No need to pass audioConfig here since we're capturing audio data
 
-                // Store synthesizer reference for pause/resume
-                window.currentSynthesizer = synthesizer;
-
+                // Create chunks and synthesize them sequentially
                 const chunks = splitMessage(cleanedArticles);
+                const audioBlobs = [];
                 for (const chunk of chunks) {
-                    if (isPaused) {
-                        // Wait until unpaused
-                        await new Promise(resolve => {
-                            const checkPause = setInterval(() => {
-                                if (!isPaused) {
-                                    clearInterval(checkPause);
-                                    resolve();
-                                }
-                            }, 100);
-                        });
-                    }
-
                     await new Promise((resolve, reject) => {
-                        if (window.currentSynthesizer) {
-                            window.currentSynthesizer.speakTextAsync(chunk, result => {
+                        synthesizer.speakTextAsync(chunk,
+                            result => {
                                 if (result.reason === speechsdk.ResultReason.SynthesizingAudioCompleted) {
-                                    console.log(`Speech synthesized to speaker for text: [${chunk}]`);
+                                    const audioData = result.audioData;
+                                    const blob = new Blob([audioData], { type: 'audio/mp3' });
+                                    audioBlobs.push(blob);
                                     resolve();
-                                } else if (result.reason === speechsdk.ResultReason.Canceled) {
-                                    const cancellationDetails = speechsdk.SpeechSynthesisCancellationDetails.fromResult(result);
-                                    if (cancellationDetails.reason === speechsdk.CancellationReason.Error) {
-                                        console.error(`Error details: ${cancellationDetails.errorDetails}`);
-                                    }
-                                    reject();
+                                } else {
+                                    reject(new Error('Synthesis failed'));
                                 }
-                            }, error => {
-                                console.error(`Error synthesizing speech: ${error}`);
-                                reject(error);
-                            });
-                        }
+                            },
+                            error => reject(error)
+                        );
                     });
-                    //forecefully wait 5 seconds
-                    // get number by multiplying 50 with chunk length
-                    let waitLength = 50 * chunk.length;
-                    await new Promise(resolve => setTimeout(resolve, waitLength));
                 }
 
-                // Cleanup synthesizer reference
-                window.currentSynthesizer = null;
-
+                if (audioBlobs.length > 0) {
+                    const finalBlob = new Blob(audioBlobs, { type: 'audio/mp3' });
+                    setAudioUrl(URL.createObjectURL(finalBlob));
+                }
             } catch (error) {
                 console.error(`Error synthesizing speech: ${error}`);
             } finally {
@@ -585,15 +573,21 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     };
 
     const handlePause = () => {
-        setIsPaused(true);
-        // Also set state to indicate live TTS streaming is paused
-        setIsLiveAudioPlayingPrompt(false);
+        if (audioPlayerRef.current) {
+            audioPlayerRef.current.pause();
+            setIsPlaying(false);
+            setIsPaused(true);
+            setIsLiveAudioPlayingPrompt(false);
+        }
     };
 
     const handleResume = () => {
-         setIsPaused(false);
+        if (audioPlayerRef.current) {
+            audioPlayerRef.current.play();
+            setIsPlaying(true);
+            setIsPaused(false);
+        }
     };
-
     // Function to fetch more data for pagination
     const fetchMoreData = async () => {
         try {
@@ -1261,13 +1255,19 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                                                             <FaPlay /> Speak
                                                         </label>
                                                     </button>
+
                                                 ))}
-                                                <button className="button" onClick={handlePause}>
-                                                    Pause
-                                                </button>
-                                                <button className="button" onClick={handleResume}>
-                                                    Resume
-                                                </button>
+                                                {audioUrl && (
+                                                 <audio
+                                                    controls
+                                                    style={{ width: '50%', marginLeft: '10px' , marginTop: '10px' }}
+                                                    src={audioUrl} // Add this prop
+                                                    onPlay={() => setIsPlaying(true)}
+                                                    onPause={() => setIsPlaying(false)}
+                                                    onEnded={() => setIsPlaying(false)}
+                                                />
+                                                )
+                                            }
                                             </>
                                         )}
                                     </div>
