@@ -22,7 +22,6 @@ const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
 const isiPhone = /iPhone/i.test(navigator.userAgent);
 let searchQuery = '';
-let isPaused = false;
 let invocationType = '';
 let searchModel = 'All';
 let userID = '';
@@ -61,7 +60,6 @@ let modelQuiz = 'gemini-search';
 let modelQuizChoices = 'gpt-4o';
 let modelHomeWork = 'gemini';
 let modelExplain = 'gpt-4o';
-
 const GenAIApp = ({ user, source, grade, subject }) => {
     // **State Variables**
     const [isGeneratingTTS, setIsGeneratingTTS] = useState(false);
@@ -80,9 +78,8 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     const [isLiveAudioPlayingPrompt, setIsLiveAudioPlayingPrompt] = useState(false);
     const [goBack, setGoBack] = useState(false);
     const audioPlayerRef = useRef(null);
-    const [isPlaying, setIsPlaying] = useState(false);
     const [audioUrl, setAudioUrl] = useState(null);
-    const [isPaused, setIsPaused] = useState(false);
+
 
     // Authentication state
     const [email, setEmail] = useState('');
@@ -155,7 +152,8 @@ const GenAIApp = ({ user, source, grade, subject }) => {
     const storyTellingSpeechRateRef = useRef(storyTellingSpeechRate);
     const storyTellingSpeechSilenceRef = useRef(storyTellingSpeechSilence);
     const promptInputRef = useRef(promptInput);
-
+    const [isPaused, setIsPaused] = useState(false);
+    const isPausedRef = useRef(isPaused);
     // Update refs when state changes
     useEffect(() => {
         youtubeSpeecRateRef.current = youtubeSpeecRate;
@@ -166,19 +164,15 @@ const GenAIApp = ({ user, source, grade, subject }) => {
         speechSilenceRef.current = speechSilence;
         promptInputRef.current = promptInput;
         currentDocIdRef.current = currentDocId;
-    }, [youtubeSpeecRate, youtubeSpeechSilence, storyTellingSpeechRate, storyTellingSpeechSilence, speechRate, speechSilence, promptInput, currentDocId]);
+        isPausedRef.current = isPaused;
+    }, [youtubeSpeecRate, youtubeSpeechSilence, storyTellingSpeechRate, storyTellingSpeechSilence, speechRate, speechSilence, promptInput, currentDocId, isPaused]);
 
     // Add new show state variables
     const [showPrint, setShowPrint] = useState(false);
     const [modelCerebras, setModelCerebras] = useState('llama-c');
     // Add cleanup effect
-    useEffect(() => {
-        return () => {
-            if (audioUrl) {
-                URL.revokeObjectURL(audioUrl);
-            }
-        };
-    }, [audioUrl]);
+
+
     useEffect(() => {
         temperatureRef.current = temperature;
         top_pRef.current = top_p;
@@ -235,6 +229,36 @@ const GenAIApp = ({ user, source, grade, subject }) => {
         }
         else {
             return question.substring(0, questionTrimLength);
+        }
+    };
+    useEffect(() => {
+        console.log('INSIDE audioUrl ', audioUrl);
+        if (audioPlayerRef.current) {
+            // Reload and attempt to play whenever the URL changes
+            audioPlayerRef.current.load();
+            audioPlayerRef.current
+                .play()
+                .catch(err => {
+                    console.warn('Autoplay prevented', err);
+                });
+        }
+    }, [audioUrl]);
+
+    const handlePlayPause = async () => {
+        setIsPaused(!isPaused);
+        console.log('isPaused ', isPaused);
+        console.log('isPausedRef.current.value ', isPausedRef.current);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Check if there's a valid audio element and it's not paused
+        if (audioPlayerRef.current) {
+            if (!isPausedRef.current) {
+                audioPlayerRef.current.play()
+                    .catch(err => console.warn('Playback prevented', err));
+            } else {
+                const currentTime = audioPlayerRef.current.currentTime;
+                audioPlayerRef.current.pause();
+                audioPlayerRef.current.currentTime = currentTime;
+            }
         }
     };
 
@@ -572,22 +596,6 @@ const GenAIApp = ({ user, source, grade, subject }) => {
         }
     };
 
-    const handlePause = () => {
-        if (audioPlayerRef.current) {
-            audioPlayerRef.current.pause();
-            setIsPlaying(false);
-            setIsPaused(true);
-            setIsLiveAudioPlayingPrompt(false);
-        }
-    };
-
-    const handleResume = () => {
-        if (audioPlayerRef.current) {
-            audioPlayerRef.current.play();
-            setIsPlaying(true);
-            setIsPaused(false);
-        }
-    };
     // Function to fetch more data for pagination
     const fetchMoreData = async () => {
         try {
@@ -1258,16 +1266,23 @@ const GenAIApp = ({ user, source, grade, subject }) => {
 
                                                 ))}
                                                 {audioUrl && (
-                                                 <audio
-                                                    controls
-                                                    style={{ width: '50%', marginLeft: '10px' , marginTop: '10px' }}
-                                                    src={audioUrl} // Add this prop
-                                                    onPlay={() => setIsPlaying(true)}
-                                                    onPause={() => setIsPlaying(false)}
-                                                    onEnded={() => setIsPlaying(false)}
-                                                />
+                                                    <button
+                                                        className={isPaused ? 'button_selected' : 'button'}
+                                                        onClick={() => { handlePlayPause(); }}
+                                                        style={{ marginLeft: '10px' }}
+                                                    >
+                                                        {isPaused ? 'Play' : 'Pause'}
+                                                    </button>
+                                                )}
+                                                {audioUrl && (
+                                                    <audio
+                                                        ref={audioPlayerRef}
+                                                        controls
+                                                        style={{ width: '50%', marginLeft: '10px', marginTop: '10px' }}
+                                                        src={audioUrl} // Add this prop
+                                                    />
                                                 )
-                                            }
+                                                }
                                             </>
                                         )}
                                     </div>
