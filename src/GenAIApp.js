@@ -508,12 +508,6 @@ const GenAIApp = ({ user, source, grade, subject }) => {
             //       .replace(/[']/g, '&apos;')
             .trim(); // Remove leading/trailing spaces
 
-        if (isiPhone) {
-            window.scrollTo(0, 0);
-            alert('Please go to top of the page to check status and listen to the audio');
-            callTTSAPI(cleanedArticles, process.env.REACT_APP_TTS_SSML_API_URL);
-            return;
-        }
         try {
             try {
                 console.log('Synthesizing speech...' + cleanedArticles);
@@ -1249,7 +1243,7 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                                     <div style={{ color: "green", fontWeight: "bold" }}>
                                         {item.model !== 'azure-tts' && (
                                             <>
-                                                {(!isiPhone && showPrint && (item.invocationType !== 'quiz') && (item.invocationType !== 'homeWork') && (
+                                                {(showPrint && (item.invocationType !== 'quiz') && (item.invocationType !== 'homeWork') && (
                                                     <button
                                                         className={isLiveAudioPlaying[item.id] ? 'button_selected' : 'button'}
                                                         onClick={async () => {
