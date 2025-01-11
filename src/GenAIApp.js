@@ -20,7 +20,6 @@ import 'react-markdown-editor-lite/lib/index.css';
 const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
 const serviceRegion = 'eastus';
 const isiPhone = /iPhone/i.test(navigator.userAgent);
-console.log(isiPhone);
 let searchQuery = '';
 let invocationType = '';
 let searchModel = 'All';
@@ -1297,7 +1296,7 @@ const GenAIApp = ({ user, source, grade, subject }) => {
                                     )}
                                     {(showPrint || item.invocationType === 'explain') && (
                                         <div style={{ fontSize: '16px' }}>
-                                            {isiPhone &&
+                                            {
                                                 (item.model === 'azure-tts') && (
                                                     <button
                                                         className="button"
