@@ -1,4 +1,4 @@
-export const programmingData = {
+const programmingData = {
   'Core Skills': {
   'Programming - Variables and Data Types': [
     ' Understanding variables and constants',
@@ -652,7 +652,7 @@ export const programmingData = {
     ' Building interactive dashboards to facilitate data-driven decisions'
   ]
 },
-'AI & Machine Learning': [
+'AI & Machine Learning': {
   'Mathematical Foundations - Linear Algebra': [
     ' Understanding scalars, vectors, matrices, and tensors',
     ' Matrix operations including addition, multiplication, and inversion',
@@ -1859,3 +1859,5 @@ Object.keys(programmingData).forEach(key => {
         programmingData[key] = programmingData[key].replace(/\dA/g, ' ');
     }
 });
+
+export { programmingData };
