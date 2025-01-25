@@ -243,6 +243,32 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
         }
     };
 
+    async function copyHomeworkDocs() {
+        try {
+            const homeworkCollection = collection(db, 'genai', 'OaQ7cll4lAbbPFlw1hgryy4gDeF2', 'homework');
+            const q = query(homeworkCollection, where('sourceDocumentID', '==', sourceDocID));
+            const snapshot = await getDocs(q);
+
+            if (!snapshot.empty) {
+                const sharedHomeworkCollection = collection(db, 'homework');
+                const batch = writeBatch(db);
+
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const newDocRef = doc(sharedHomeworkCollection);
+                    batch.set(newDocRef, {
+                        ...data,
+                        sharedCopyDateTime: new Date()
+                    });
+                });
+                await batch.commit();
+                console.log('Copied all homework docs to shared collection');
+            }
+        } catch (error) {
+            console.error("Error copying homework docs:", error);
+        }
+    }
+
     useEffect(() => {
         if (invocationType === 'explain') {
             fetchItemAnswer('OaQ7cll4lAbbPFlw1hgryy4gDeF2', sourceDocumentID);
@@ -390,6 +416,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                             <button
                                 className="button"
                                 onClick={() => {
+                                    copyHomeworkDocs();
                                     const baseUrl = window.location.href.split('?')[0];
                                     const newUrl = `${baseUrl}?h=${sourceDocID}`;
                                     navigator.clipboard.writeText(newUrl)

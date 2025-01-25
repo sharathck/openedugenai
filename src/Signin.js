@@ -71,7 +71,7 @@ function SigninApp() {
             <Practice sourceDocumentID={homeworkParam} />
         );
     }
-    if (user) {
+    if (!user) {
         return (
             <App user={user} />
         );

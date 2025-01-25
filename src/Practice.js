@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import './Practice.css';
 import { collection, getDocs, addDoc, updateDoc, doc, writeBatch, query, where, getDoc } from 'firebase/firestore';
 import { auth, db } from './Firebase';
-import { onAuthStateChanged } from 'firebase/auth';
 import { FaArrowLeft } from 'react-icons/fa';
 
 const Practice = ({sourceDocumentID}) => {
