@@ -5,7 +5,7 @@ git add --all
 git commit -m "first commit"
 git branch -M main
 git remote rm origin
-git remote add origin https://github.com/sharathck/edugenai.git
+git remote add origin https://github.com/sharathck/openedugenai.git
 git push -u origin main
 ```
 # Generative AI Studio
