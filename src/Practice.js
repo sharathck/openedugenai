@@ -4,7 +4,6 @@ import { collection, getDocs, addDoc, updateDoc, doc, writeBatch, query, where, 
 import { auth, db } from './Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FaArrowLeft } from 'react-icons/fa';
-import GenAIApp from './GenAIApp';
 
 const Practice = ({sourceDocumentID}) => {
     // Convert markdown content to JSON
@@ -109,10 +108,6 @@ const Practice = ({sourceDocumentID}) => {
             setShowAnswers(false);
         }
     };
-
-    if (showMainApp) {
-        return <GenAIApp />;
-    }
 
     return (
         <div className="homework-container">

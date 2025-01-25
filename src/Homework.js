@@ -10,9 +10,8 @@ import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import ReactMarkdown from "react-markdown";
-import GenAIApp from "./GenAIApp";
 
-const Homework = ({ user, sourceDocumentID, invocationType, fromApp, source, grade, subject }) => {
+const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, subject }) => {
     // Add new state variables for labels
     const [copyUrlButtonLabel, setCopyUrlButtonLabel] = useState('Copy URL to Share');
     const [printGridButtonLabel, setPrintGridButtonLabel] = useState('Print');
@@ -141,7 +140,7 @@ const Homework = ({ user, sourceDocumentID, invocationType, fromApp, source, gra
 
     const fetchQuestionsFromFirestore = async (userId) => {
         try {
-            const docRef = doc(db, 'genai', user.uid, 'MyGenAI', sourceDocID);
+            const docRef = doc(db, 'genai', 'OaQ7cll4lAbbPFlw1hgryy4gDeF2', 'MyGenAI', sourceDocID);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
@@ -180,19 +179,17 @@ const Homework = ({ user, sourceDocumentID, invocationType, fromApp, source, gra
     };
 
     const loadQuestions = async () => {
-        if (!user?.uid) return;
-
         if (!sourceDocID) {
             return;
         }
 
         // Try to fetch existing questions first
-        const existingQuestions = await fetchInitialQuestions(user.uid);
+        const existingQuestions = await fetchInitialQuestions('OaQ7cll4lAbbPFlw1hgryy4gDeF2');
 
         if (!existingQuestions) {
             // If no existing questions, try to fetch from Firestore
             console.log('No existing questions found. Fetching from Firestore...');
-            const firestoreQuestions = await fetchQuestionsFromFirestore(user.uid);
+            const firestoreQuestions = await fetchQuestionsFromFirestore('OaQ7cll4lAbbPFlw1hgryy4gDeF2');
             if (firestoreQuestions) {
                 console.log('Inside fetched questions from Firestore:', firestoreQuestions);
                 // Initialize homework with Firestore questions
@@ -204,11 +201,15 @@ const Homework = ({ user, sourceDocumentID, invocationType, fromApp, source, gra
                 else {
                     // Extract content between ```json and ``` markers
                     const jsonMatch = cleanContent.match(/```(?:json|JSON)\s*([\s\S]*?)\s*```/);
-                    // Clean and parse the JSON content
-                    jsonContent = jsonMatch[1].trim();
+                    if (jsonMatch && jsonMatch[1]) {
+                        jsonContent = jsonMatch[1].trim();
+                    } else {
+                        console.error('No valid ```json``` block found.');
+                        // ...handle gracefully, e.g., return or parse differently...
+                    }
                 }
-                await initializeHomeworkData(jsonContent, user.uid);
-                await fetchInitialQuestions(user.uid);
+                await initializeHomeworkData(jsonContent, 'OaQ7cll4lAbbPFlw1hgryy4gDeF2');
+                await fetchInitialQuestions('OaQ7cll4lAbbPFlw1hgryy4gDeF2');
             }
         }
     };
@@ -244,7 +245,7 @@ const Homework = ({ user, sourceDocumentID, invocationType, fromApp, source, gra
 
     useEffect(() => {
         if (invocationType === 'explain') {
-            fetchItemAnswer(user.uid, sourceDocumentID);
+            fetchItemAnswer('OaQ7cll4lAbbPFlw1hgryy4gDeF2', sourceDocumentID);
             setShowMainAppButton(true);
         }
         else {
@@ -260,12 +261,10 @@ const Homework = ({ user, sourceDocumentID, invocationType, fromApp, source, gra
             loadQuestions();
             fetchTexts(); // Add this line
         }
-    }, [user, sourceDocumentID, invocationType]);
+    }, [sourceDocumentID, invocationType]);
 
     const handleAnswerChange = async (index, value) => {
         try {
-            if (!user) return;
-
             const problem = problems[index];
             const currentDateTime = new Date();
 
@@ -275,7 +274,7 @@ const Homework = ({ user, sourceDocumentID, invocationType, fromApp, source, gra
             setProblems(newProblems);
 
             // Update Firestore
-            const docRef = doc(db, 'genai', user.uid, 'homework', problem.id);
+            const docRef = doc(db, 'genai', 'OaQ7cll4lAbbPFlw1hgryy4gDeF2', 'homework', problem.id);
             await updateDoc(docRef, {
                 userAnswer: value,
                 modifiedDateTime: currentDateTime
@@ -306,13 +305,7 @@ const Homework = ({ user, sourceDocumentID, invocationType, fromApp, source, gra
     };
 
     if (showMainApp) {
-        if (fromApp === 'GenAIApp') {
-            return <GenAIApp user={user} />;
-        }
-        else
-        {
-        return <App user={user} source={source} grade={grade} subject={subject} />;
-    }
+        return <App  source={source} grade={grade} subject={subject} />;
     }
 
     return (

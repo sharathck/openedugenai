@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import './App.css';
-import { auth, db } from './Firebase';
+import { db } from './Firebase';
 import { collection, doc, where, addDoc, getDocs, getDoc, query, orderBy, startAfter, limit, updateDoc } from 'firebase/firestore';
 import { schoolGradesData } from './data/schoolGradesData';  // Add this import
 import { collegeData } from './data/collegeData';  // Add this import 
@@ -12,8 +12,6 @@ import { gcpCertificationData } from "./data/gcpCertificationData";
 import {programmingData} from "./data/programmingData";
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
-import GenAIApp from './GenAIApp';
-
 let searchQuery = '';
 let searchModel = 'All';
 let userID = '';
@@ -63,14 +61,14 @@ let advanced_features = 'More options';
 let sourceData = '';
 
 
-function App({ user, source, grade, subject }) {  // Add user prop
+function App({ source, grade, subject }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(grade);
   const [invocationType, setInvocationType] = useState('');
   const [selectedSubject, setSelectedSubject] = useState(subject);
   const [generatedContent, setGeneratedContent] = useState('');
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [topicExplanation, setTopicExplanation] = useState('');
-  const [uid, setUid] = useState(user.uid);
+  const uid = 'OaQ7cll4lAbbPFlw1hgryy4gDeF2';
   const [isGeneratingGeminiSearch, setIsGeneratingGeminiSearch] = useState(false);
   const [temperature, setTemperature] = useState(0.7);
   const temperatureRef = useRef(temperature);
@@ -130,14 +128,6 @@ function App({ user, source, grade, subject }) {  // Add user prop
     };
     initializeApp();
   }, []);
-
-  const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
 
 
   const fetchTexts = async () => {
@@ -269,6 +259,7 @@ function App({ user, source, grade, subject }) {  // Add user prop
     console.log('quizMultipleChoicesInput:', quizMultipleChoicesInput);
     await callAPI(modelQuizChoices, promptInput, 'quiz_with_choices');
   };
+
   const callAPI = async (modelName, promptText, invocationType = 'GenAI') => {
     console.log(' modelName ' + modelName + '   ****** Calling API with URL: ' + process.env.REACT_APP_GENAI_API_URL, ' invocationType: ', invocationType, '  promptText:', promptText);
     try {
@@ -296,7 +287,7 @@ function App({ user, source, grade, subject }) {  // Add user prop
       console.log('temp:', temperatureRef.current.valueOf(), 'top_p:', top_pRef.current.valueOf());
       console.log('promptText:', promptText);
       console.log('invocationType:', invocationType);
-      console.log('uid:', uid);
+      console.log('uid:', 'OaQ7cll4lAbbPFlw1hgryy4gDeF2');
       // Single API call with the determined promptText
       response = await fetch(process.env.REACT_APP_GENAI_API_URL, {
         method: 'POST',
@@ -306,7 +297,7 @@ function App({ user, source, grade, subject }) {  // Add user prop
         body: JSON.stringify({
           prompt: promptText,
           model: modelName,
-          uid: uid,
+          uid: "OaQ7cll4lAbbPFlw1hgryy4gDeF2",
           temperature: temperatureRef.current.valueOf(),
           top_p: top_pRef.current.valueOf(),
           invocationType: invocationType
@@ -363,16 +354,6 @@ function App({ user, source, grade, subject }) {  // Add user prop
     </div>
   );
 
-  if (showGenAIApp) {
-    console.log('calling GenAI App showGenAIApp:', showGenAIApp, ' grade ', selectedGrade, 'subject ', selectedSubject);
-    console.log('  source ', sourceData);
-    return <GenAIApp
-      user={user}
-      source={sourceData}
-      grade={selectedGrade}
-      subject={selectedSubject}
-    />;
-  }
 
   const SubjectContent = ({ grade, subject }) => {
     // Add defensive check
@@ -382,7 +363,6 @@ function App({ user, source, grade, subject }) {  // Add user prop
     if (showhomeWorkApp) {  // Add this block
       return (
         <Homework
-          user={user}
           onBack={() => setShowhomeWorkApp(false)}
           sourceDocumentID={currentDocId}
           invocationType={invocationType}
@@ -404,10 +384,6 @@ function App({ user, source, grade, subject }) {  // Add user prop
           }}
         >
           Previous Page
-        </button>
-        &nbsp;
-        <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
-          More options
         </button>
         <h2> <span style={{ color: 'darkBlue' }}>{grade}</span> - <span style={{ color: 'darkGreen' }}>{subject}</span></h2>
         <div className="topics-container">
@@ -521,13 +497,7 @@ function App({ user, source, grade, subject }) {  // Add user prop
             <option value="gcpCertificationData">GCP Certifications</option>
             <option value="automationTestingData">Automation Testing</option>
           </select>
-          <button className="signupbutton" onClick={() => setShowGenAIApp(true)}>
-          More options
-          </button>
           &nbsp;&nbsp;&nbsp;
-          <button className="signoutbutton" onClick={handleSignOut}>
-             <FaSignOutAlt />
-          </button>
           <div className="grades-container">
             {Object.keys(gradesData).map(grade => (
               <GradeBox key={grade} grade={grade} />
