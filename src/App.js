@@ -87,7 +87,12 @@ function App({ source, grade, subject }) {  // Add user prop
   const [quizButtonLabel, setQuizButtonLabel] = useState('');
   const [showGenAIApp, setShowGenAIApp] = useState(false);
   const [gradesData, setGradesData] = useState(schoolGradesData);
+  const didMountRef = useRef(false);
+
   useEffect(() => {
+    if (didMountRef.current) return;
+    didMountRef.current = true;
+
     const initializeApp = async () => {
       const params = new URLSearchParams(window.location.search);
       sourceData = 'schoolGradesData';

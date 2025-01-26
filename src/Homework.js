@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './Homework.css';
 import { collection, getDocs, addDoc, updateDoc, doc, writeBatch, query, where, getDoc } from 'firebase/firestore';
 import { auth, db } from './Firebase';
@@ -27,6 +27,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
     const [itemAnswer, setItemAnswer] = useState('');
     const CORRECT_PIN = '463859';
     const mdParser = new MarkdownIt(/* Markdown-it options */);
+    const didMountRef = useRef(false);
 
     const initializeHomeworkData = async (firestoreData, userId) => {
         try {
@@ -270,22 +271,25 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
     }
 
     useEffect(() => {
-        if (invocationType === 'explain') {
-            fetchItemAnswer('OaQ7cll4lAbbPFlw1hgryy4gDeF2', sourceDocumentID);
-            setShowMainAppButton(true);
-        }
-        else {
-            const urlParams = new URLSearchParams(window.location.search);
-            const homeworkParam = urlParams.get('g');
-            if (homeworkParam && homeworkParam.length > 5) {
-                setShowMainAppButton(false);
-            }
-            else {
+        if (!didMountRef.current) {
+            didMountRef.current = true;
+            if (invocationType === 'explain') {
+                fetchItemAnswer('OaQ7cll4lAbbPFlw1hgryy4gDeF2', sourceDocumentID);
                 setShowMainAppButton(true);
             }
-            console.log('Source Document ID:', sourceDocumentID);
-            loadQuestions();
-            fetchTexts(); // Add this line
+            else {
+                const urlParams = new URLSearchParams(window.location.search);
+                const homeworkParam = urlParams.get('g');
+                if (homeworkParam && homeworkParam.length > 5) {
+                    setShowMainAppButton(false);
+                }
+                else {
+                    setShowMainAppButton(true);
+                }
+                console.log('Source Document ID:', sourceDocumentID);
+                loadQuestions();
+                fetchTexts(); // Add this line
+            }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
