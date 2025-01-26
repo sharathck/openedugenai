@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './Practice.css';
-import { collection, getDocs, addDoc, updateDoc, doc, writeBatch, query, where, getDoc } from 'firebase/firestore';
+import { collection, getDocs, updateDoc, doc, query, where, getDoc } from 'firebase/firestore';
 import { auth, db } from './Firebase';
 import { FaArrowLeft } from 'react-icons/fa';
 
 const Practice = ({sourceDocumentID}) => {
+    const didMountRef = useRef(false);
     // Convert markdown content to JSON
     const [problems, setProblems] = useState([]);
     const [showMainApp, setShowMainApp] = useState(false);
@@ -55,17 +56,12 @@ const Practice = ({sourceDocumentID}) => {
 
     };
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const homeworkParam = urlParams.get('h');
-        if (homeworkParam && homeworkParam.length > 5) {
-            setShowMainAppButton(false);
+        if (!didMountRef.current) {
+            didMountRef.current = true;
+            console.log('Source Document ID:', sourceDocumentID);
+            loadQuestions();
         }
-        else {
-            setShowMainAppButton(true);
-        }
-        console.log('Source Document ID:', sourceDocumentID);
-        loadQuestions();
-    }, [sourceDocumentID]);
+    }, []);
 
     const handleAnswerChange = async (index, value) => {
         try {

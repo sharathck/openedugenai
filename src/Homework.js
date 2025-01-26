@@ -244,11 +244,12 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
         }
     };
 
-    async function copyHomeworkDocs() {
+    const  copyHomeworkDocs = async () => {
         try {
             const homeworkCollection = collection(db, 'genai', 'OaQ7cll4lAbbPFlw1hgryy4gDeF2', 'homework');
             const q = query(homeworkCollection, where('sourceDocumentID', '==', sourceDocID));
             const snapshot = await getDocs(q);
+            console.log('Copying homework docs to shared collection...', sourceDocID);
 
             if (!snapshot.empty) {
                 const sharedHomeworkCollection = collection(db, 'homework');
@@ -421,7 +422,6 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                             <button
                                 className="button"
                                 onClick={() => {
-                                    copyHomeworkDocs();
                                     const baseUrl = window.location.href.split('?')[0];
                                     const newUrl = `${baseUrl}?h=${sourceDocID}`;
                                     navigator.clipboard.writeText(newUrl)
