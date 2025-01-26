@@ -53,10 +53,10 @@ let explainInput = '';
 let explainPrompt = '';
 let lyricsInput = '';
 let lyricsPrompt = '';
-let modelQuiz = 'groq';
-let modelQuizChoices = 'groq';
-let modelHomeWork = 'groq';
-let modelExplain = 'groq';
+let modelQuiz = 'gemini-flash-fast';
+let modelQuizChoices = 'gemini-flash-fast';
+let modelHomeWork = 'gemini-flash-fast';
+let modelExplain = 'gemini-flash-fast';
 let advanced_features = 'More options';
 let sourceData = '';
 
