@@ -62,7 +62,7 @@ let modelExplain = 'gemini-flash-fast';
 let advanced_features = 'More options';
 let sourceData = '';
 let vertexAIModelName = 'gemini-1.5-flash';
-  // valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206, gemini-1.5-falsh-002.
+  // valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206.
 
 function App({ source, grade, subject }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(grade);
