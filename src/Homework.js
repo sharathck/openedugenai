@@ -287,7 +287,8 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
             loadQuestions();
             fetchTexts(); // Add this line
         }
-    }, [sourceDocumentID, invocationType]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleAnswerChange = async (index, value) => {
         try {
