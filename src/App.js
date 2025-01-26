@@ -354,24 +354,25 @@ function App({ source, grade, subject }) {  // Add user prop
     </div>
   );
 
-
+  if (showhomeWorkApp) {  // Add this block
+    return (
+      <Homework
+        onBack={() => setShowhomeWorkApp(false)}
+        sourceDocumentID={currentDocId}
+        invocationType={invocationType}
+        source={sourceData}
+        grade={selectedGrade}
+        subject={selectedSubject}
+      />
+    );
+  }
+  
   const SubjectContent = ({ grade, subject }) => {
     // Add defensive check
     if (!grade || !subject || !gradesData[grade] || !gradesData[grade][subject]) {
       return <div>Loading...</div>;
     }
-    if (showhomeWorkApp) {  // Add this block
-      return (
-        <Homework
-          onBack={() => setShowhomeWorkApp(false)}
-          sourceDocumentID={currentDocId}
-          invocationType={invocationType}
-          source={sourceData}
-          grade={selectedGrade}
-          subject={selectedSubject}
-        />
-      );
-    }
+
     return (
       <div className="subject-content">
         <button className="subject-button"
