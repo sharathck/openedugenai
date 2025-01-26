@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import './App.css';
-import { db } from './Firebase';
+import { app, db, vertexAI, model } from './Firebase';
 import { collection, doc, where, addDoc, getDocs, getDoc, query, orderBy, startAfter, limit, updateDoc } from 'firebase/firestore';
 import { schoolGradesData } from './data/schoolGradesData';  // Add this import
 import { collegeData } from './data/collegeData';  // Add this import 
@@ -9,9 +9,10 @@ import { mastersData } from './data/mastersData';
 import { awsCertificationData } from './data/awsCertificationData';
 import { azureCertificationData } from "./data/azureCertificationsData";
 import { gcpCertificationData } from "./data/gcpCertificationData";
-import {programmingData} from "./data/programmingData";
+import { programmingData } from "./data/programmingData";
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
+
 let searchQuery = '';
 let searchModel = 'All';
 let userID = '';
@@ -127,7 +128,7 @@ function App({ source, grade, subject }) {  // Add user prop
         setGradesData(gcpCertificationData);
       }
       if (sourceData === 'programmingData') {
-        setGradesData(programmingData); 
+        setGradesData(programmingData);
       }
       await fetchTexts();
     };
@@ -253,11 +254,10 @@ function App({ source, grade, subject }) {  // Add user prop
     await callAPI(modelQuizChoices, promptInput, 'quiz_with_choices');
   };
 
-  const callAPI = async (modelName, promptText, invocationType = 'GenAI') => {
-    console.log(' modelName ' + modelName + '   ****** Calling API with URL: ' + process.env.REACT_APP_GENAI_API_URL, ' invocationType: ', invocationType, '  promptText:', promptText);
+
+
+  async function callAPI(modelName, promptText, invocationType = 'GenAI') {
     try {
-      let response;
-      // Determine promptText based on invocation type
       switch (invocationType) {
         case 'homeWork':
           promptText = homeWorkInput;
@@ -277,58 +277,29 @@ function App({ source, grade, subject }) {  // Add user prop
         default:
           break;
       }
-      console.log('temp:', temperatureRef.current.valueOf(), 'top_p:', top_pRef.current.valueOf());
-      console.log('promptText:', promptText);
-      console.log('invocationType:', invocationType);
-      console.log('uid:', 'OaQ7cll4lAbbPFlw1hgryy4gDeF2');
-      // Single API call with the determined promptText
-      response = await fetch(process.env.REACT_APP_GENAI_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          prompt: promptText,
-          model: modelName,
-          uid: "OaQ7cll4lAbbPFlw1hgryy4gDeF2",
-          temperature: temperatureRef.current.valueOf(),
-          top_p: top_pRef.current.valueOf(),
-          invocationType: invocationType
-        })
+      const result = await model.generateContent(promptText);
+      const text = await result.response.text();
+      const now = new Date();
+      const formattedDateTime = now.toISOString();
+      const docRef = await addDoc(collection(db, "genai", "OaQ7cll4lAbbPFlw1hgryy4gDeF2", "MyGenAI"), {
+        question: promptText,
+        answer: text,
+        model: modelName,
+        createdDateTime: formattedDateTime,
+        invocationType: invocationType
       });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        alert(errorData.error + 'Failed to generate content');
-        throw new Error(errorData.error || 'Failed to generate content.');
-      }
-
-      let data;
-      data = await response.json();
-      generatedDocID = data[0].results[0].docID;
-      console.log('Generated Doc ID:', generatedDocID, '  invocationType:', invocationType);
+      generatedDocID = docRef.id;
       setInvocationType(invocationType);
       setCurrentDocId(generatedDocID);
-      console.log('currenDocID:', currentDocId);
       setShowhomeWorkApp(true);
-      //console.log('Response:', data);
     } catch (error) {
       console.error('Error generating content:', error);
-      alert(`Error: ${error.message}`);
-    } finally {
-      // click refresh button
-      searchQuery = '';
-      invocationType = '';
-      searchModel = 'All';
-      youtubeSelected = false;
-      imageSelected = false;
-      console.log('Fetching data after generating content');
-      console.log('isGeneratingGeminiSearch:', isGeneratingGeminiSearch);
+      alert(error.message);
     }
-  };
+  }
+
   const GradeBox = ({ grade }) => (
     <div className="grade-box">
-
       <h3>{grade}</h3>
       <div className="subjects-container">
         {Object.keys(gradesData[grade]).map(subject => (
@@ -359,7 +330,7 @@ function App({ source, grade, subject }) {  // Add user prop
       />
     );
   }
-  
+
   const SubjectContent = ({ grade, subject }) => {
     // Add defensive check
     if (!grade || !subject || !gradesData[grade] || !gradesData[grade][subject]) {
@@ -438,7 +409,7 @@ function App({ source, grade, subject }) {  // Add user prop
         <SubjectContent grade={selectedGrade} subject={selectedSubject} />
       ) : (
         <div>
-                    <select
+          <select
             className="data-source-select"
             onChange={(e) => {
               const source = e.target.value;
