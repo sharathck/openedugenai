@@ -355,6 +355,14 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                                 Previous Page
                             </button>
                         )}
+                        <button 
+                            className="button"
+                            onClick={() => {
+                                window.print();
+                            }}
+                        >
+                            Print
+                        </button>
                         <MdEditor
                             value={itemAnswer}
                             renderHTML={text => mdParser.render(text || '')}
@@ -417,7 +425,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                                     printWindow.print();
                                 }}
                             >
-                                {printGridButtonLabel}
+                                Print
                             </button>
                             <button
                                 className="button"
