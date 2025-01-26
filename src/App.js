@@ -62,6 +62,7 @@ let modelExplain = 'gemini-flash-fast';
 let advanced_features = 'More options';
 let sourceData = '';
 let vertexAIModelName = 'gemini-1.5-flash';
+let inputPrompt = '';
   // valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206.
 
 function App({ source, grade, subject }) {  // Add user prop
@@ -283,6 +284,23 @@ function App({ source, grade, subject }) {  // Add user prop
         default:
           break;
       }
+      // Check if a document with the same inputPrompt already exists
+      const promptQuery = query(
+        collection(db, "genai", "OaQ7cll4lAbbPFlw1hgryy4gDeF2", "MyGenAI"), 
+        where("inputPrompt", "==", inputPrompt + ' ' + invocationType),
+        limit(1)
+      );
+
+      const querySnapshot = await getDocs(promptQuery);
+      if (!querySnapshot.empty) {
+        // Document exists, get its ID and set homework page
+        const existingDoc = querySnapshot.docs[0];
+        generatedDocID = existingDoc.id;
+        setInvocationType(invocationType);
+        setCurrentDocId(generatedDocID);
+        setShowhomeWorkApp(true);
+        return;
+      }
       const result = await model.generateContent(promptText);
       const text = await result.response.text();
       const now = new Date();
@@ -290,6 +308,7 @@ function App({ source, grade, subject }) {  // Add user prop
       console.log('Model Name :', vertexAIModelName, );
       const docRef = await addDoc(collection(db, "genai", "OaQ7cll4lAbbPFlw1hgryy4gDeF2", "MyGenAI"), {
         question: promptText,
+        inputPrompt: inputPrompt + ' ' + invocationType,
         answer: text,
         model: modelName,
         createdDateTime: formattedDateTime,
@@ -366,6 +385,7 @@ function App({ source, grade, subject }) {  // Add user prop
               <button
                 onClick={async () => {
                   setIsExplain(prev => ({ ...prev, [index]: true }));
+                  inputPrompt = grade + ' : ' + subject + ' : ' + topic;
                   await handleExplain(grade + ' : ' + subject + ' : ' + topic);
                   setIsExplain(prev => ({ ...prev, [index]: false }));
                 }}
@@ -379,6 +399,7 @@ function App({ source, grade, subject }) {  // Add user prop
               <button
                 onClick={async () => {
                   setIshomeWork(prev => ({ ...prev, [index]: true }));
+                  inputPrompt = grade + ' : ' + subject + ' : ' + topic;
                   await handlehomeWork(grade + ' : ' + subject + ' : ' + topic, 'homeWork');
                   setIshomeWork(prev => ({ ...prev, [index]: false }));
                 }}
@@ -392,6 +413,7 @@ function App({ source, grade, subject }) {  // Add user prop
               <button
                 onClick={async () => {
                   setIsQuiz(prev => ({ ...prev, [index]: true }));
+                  inputPrompt = grade + ' : ' + subject + ' : ' + topic;
                   await handleQuiz(grade + ' : ' + subject + ' : ' + topic, 'quiz');
                   setIsQuiz(prev => ({ ...prev, [index]: false }));
                 }}
