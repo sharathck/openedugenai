@@ -71,7 +71,7 @@ function SigninApp() {
             <Practice sourceDocumentID={homeworkParam} />
         );
     }
-    if (!user) {
+    if (!user || !user.emailVerified ||(1 === 1)) {
         return (
             <App user={user} />
         );
