@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { getVertexAI, getGenerativeModel } from "firebase/vertexai";
+import { getVertexAI } from "firebase/vertexai";
 
 // Firebase configuration (replace with your environment configs)
 const firebaseConfig = {
@@ -18,5 +18,4 @@ const firebaseConfig = {
   export const db = getFirestore(app);
   export const auth = getAuth(app);
   export const vertexAI = getVertexAI(app);
-  export const model = getGenerativeModel(vertexAI, { model: "gemini-1.5-flash" });
   // valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206, gemini-1.5-falsh-002.

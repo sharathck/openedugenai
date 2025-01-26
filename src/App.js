@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import './App.css';
-import { app, db, vertexAI, model } from './Firebase';
+import { app, db, vertexAI } from './Firebase';
 import { collection, doc, where, addDoc, getDocs, getDoc, query, orderBy, startAfter, limit, updateDoc } from 'firebase/firestore';
 import { schoolGradesData } from './data/schoolGradesData';  // Add this import
 import { collegeData } from './data/collegeData';  // Add this import 
@@ -12,6 +12,7 @@ import { gcpCertificationData } from "./data/gcpCertificationData";
 import { programmingData } from "./data/programmingData";
 import { FaPlay, FaReadme, FaArrowLeft, FaSignOutAlt, FaSpinner, FaCloudDownloadAlt, FaEdit, FaMarkdown, FaEnvelopeOpenText, FaHeadphones, FaYoutube, FaPrint } from 'react-icons/fa';
 import Homework from "./Homework";
+import { getGenerativeModel } from "firebase/vertexai";
 
 let searchQuery = '';
 let searchModel = 'All';
@@ -60,7 +61,8 @@ let modelHomeWork = 'gemini-flash-fast';
 let modelExplain = 'gemini-flash-fast';
 let advanced_features = 'More options';
 let sourceData = '';
-
+let vertexAIModelName = 'gemini-1.5-flash';
+  // valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206, gemini-1.5-falsh-002.
 
 function App({ source, grade, subject }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(grade);
@@ -177,6 +179,9 @@ function App({ source, grade, subject }) {  // Add user prop
           case 'advanced_features':
             advanced_features = data.fullText;
             break;
+          case 'vertexAIModelName':
+            vertexAIModelName = data.fullText;
+            break;
           default:
             break;
         }
@@ -258,6 +263,7 @@ function App({ source, grade, subject }) {  // Add user prop
 
   async function callAPI(modelName, promptText, invocationType = 'GenAI') {
     try {
+      const model = getGenerativeModel(vertexAI, { model: vertexAIModelName });
       switch (invocationType) {
         case 'homeWork':
           promptText = homeWorkInput;
@@ -281,6 +287,7 @@ function App({ source, grade, subject }) {  // Add user prop
       const text = await result.response.text();
       const now = new Date();
       const formattedDateTime = now.toISOString();
+      console.log('Model Name :', vertexAIModelName, );
       const docRef = await addDoc(collection(db, "genai", "OaQ7cll4lAbbPFlw1hgryy4gDeF2", "MyGenAI"), {
         question: promptText,
         answer: text,
