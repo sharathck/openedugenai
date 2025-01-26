@@ -53,10 +53,10 @@ let explainInput = '';
 let explainPrompt = '';
 let lyricsInput = '';
 let lyricsPrompt = '';
-let modelQuiz = 'llama-c';
-let modelQuizChoices = 'llama-c';
-let modelHomeWork = 'llama-c';
-let modelExplain = 'llama-c';
+let modelQuiz = 'groq';
+let modelQuizChoices = 'groq';
+let modelHomeWork = 'groq';
+let modelExplain = 'groq';
 let advanced_features = 'More options';
 let sourceData = '';
 
