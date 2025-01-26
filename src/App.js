@@ -53,10 +53,10 @@ let explainInput = '';
 let explainPrompt = '';
 let lyricsInput = '';
 let lyricsPrompt = '';
-let modelQuiz = 'gemini-search';
-let modelQuizChoices = 'gpt-4o';
-let modelHomeWork = 'gemini';
-let modelExplain = 'gpt-4o';
+let modelQuiz = 'llama-c';
+let modelQuizChoices = 'llama-c';
+let modelHomeWork = 'llama-c';
+let modelExplain = 'llama-c';
 let advanced_features = 'More options';
 let sourceData = '';
 
@@ -172,18 +172,6 @@ function App({ source, grade, subject }) {  // Add user prop
             break;
           case 'explain':
             explainPrompt = data.fullText;
-            break;
-          case 'modelQuiz':
-            modelQuiz = data.fullText;
-            break;
-          case 'modelQuizChoices':
-            modelQuizChoices = data.fullText;
-            break;
-          case 'modelHomeWork':
-            modelHomeWork = data.fullText;
-            break;
-          case 'modelExplain':
-            modelExplain = data.fullText;
             break;
           case 'advanced_features':
             advanced_features = data.fullText;
