@@ -126,8 +126,8 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 const fetchedProblems = snapshot.docs.map(doc => ({
                     id: doc.id,
                     question: doc.data().question,
-                    correctAnswer: doc.data().correctAnswer,
-                    userAnswer: doc.data().userAnswer || '',
+                    correctAnswer: '',   // blank out
+                    userAnswer: '',      // blank out
                 }));
                 setProblems(fetchedProblems);
                 return true;
