@@ -3011,7 +3011,7 @@ export const schoolGradesData = {
     ]
   },
   'High School - Mathematics': { // Additional category for higher education
-    Integrated_Math_1: [
+    'Integrated Math-1': [
       'Solving Linear Equations and Inequalities',
       'Functions and Their Representations',
       'Linear Functions and Graphs',
@@ -3038,7 +3038,7 @@ export const schoolGradesData = {
       'Properties of Real Numbers',
       'Simplifying Algebraic Expressions'
     ],
-    Integrated_Math_2: [
+    'Integrated Math-2': [
       'Quadratic Functions and Equations',
       'Complex Numbers',
       'Polynomials and Factoring',
@@ -3065,7 +3065,7 @@ export const schoolGradesData = {
       'Systems of Equations and Inequalities (Linear and Quadratic)',
       'Modeling Periodic Phenomena'
     ],
-    Integrated_Math_3: [
+    'Integrated Math-3': [
       'Polynomial Functions and Equations',
       'Rational Functions and Asymptotes',
       'Exponential and Logarithmic Functions',
@@ -3093,7 +3093,7 @@ export const schoolGradesData = {
       'Modeling Periodic Phenomena',
       'Law of Sines and Cosines'
     ],
-    Algebra_Basics: [
+    'Algebra Basics': [
       'Order of Operations (PEMDAS)',
       'Basic Properties of Numbers (Associative, Commutative, Distributive)',
       'Simplifying Algebraic Expressions',
@@ -3120,7 +3120,7 @@ export const schoolGradesData = {
       'Translating Words to Equations',
       'Basic Data Interpretation (Mean, Median, Mode)'
     ],
-    Trigonometry: [
+    'Trigonometry': [
       'Trigonometric Ratios (Sine, Cosine, Tangent)',
       'Unit Circle',
       'Graphs of Trigonometric Functions',
@@ -3148,7 +3148,7 @@ export const schoolGradesData = {
       'Solving Right and Oblique Triangles',
       'Polar Form of Complex Numbers'
     ],
-    Statistics_And_Probability: [
+    'Statistics And Probability': [
       'Descriptive Statistics (Measures of Center and Spread)',
       'Probability Foundations and Axioms',
       'Random Variables (Discrete and Continuous)',
@@ -3177,7 +3177,7 @@ export const schoolGradesData = {
       'Bootstrap Methods',
       'Time Series Analysis (Basic Concepts)'
     ],
-    College_Algebra: [
+    'College Algebra': [
       'Functions and Their Properties',
       'Polynomial and Rational Functions',
       'Exponential and Logarithmic Functions',
@@ -3206,7 +3206,7 @@ export const schoolGradesData = {
       'Polynomial Division',
       'Systems of Inequalities'
     ],
-    Multivariable_Calculus: [
+    'Multivariable Calculus': [
       'Vectors and Vector-Valued Functions',
       'Multivariable Functions and Their Graphs',
       'Partial Derivatives and Gradient Vectors',
@@ -3235,7 +3235,7 @@ export const schoolGradesData = {
       'Surface Integrals and Flux',
       'Parametric Equations for Surfaces'
     ],
-    Differential_Equations: [
+    'Differential Equations': [
       'First-Order Differential Equations',
       'Separable Equations',
       'Linear Differential Equations',
@@ -3264,7 +3264,7 @@ export const schoolGradesData = {
       'Applications to Population Dynamics',
       'Chaos and Nonlinear Systems (Introduction)'
     ],
-    Linear_Algebra: [
+    'Linear Algebra': [
       'Systems of Linear Equations',
       'Matrices and Matrix Operations',
       'Determinants and Their Properties',
@@ -4888,30 +4888,5 @@ export const schoolGradesData = {
       'Fission, Fusion, and Nuclear Decay',
       'Types of Radioactive Decay'
     ]
-  },
-  'AP -  Environmental Science': {
-
-  },
-  'AP - Psychology': {
-
-  },
-  'AP - US History': {
-
-  },
-  'AP - World History': {
-
-  },
-  'AP - Human Geography': {
-
-  },
-  'AP - Macroeconomics': {
-
-  },
-  'AP - Microeconomics': {
-
-  },
-  'AP - United States Government and Politics': {
-
-  },
-
+  }
 };

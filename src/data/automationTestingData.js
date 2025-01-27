@@ -42,8 +42,7 @@ export const automationTestingData = {
         ],
     },
     'Programming & DevOps': {
-
-        ProgrammingLanguages: [
+        'Programming Languages': [
             'Java (OOP Programming Language)',
             'JavaScript',
             'TypeScript',
@@ -51,37 +50,37 @@ export const automationTestingData = {
             'C#', // Added popular language for QA automation
             'Ruby', // Additional language commonly used in test automation
         ],
-        CodeQualityAndMonitoring: [
+        'Code Quality And Monitoring': [
             'SonarQube',
             'AppDynamics',
             'Dynatrace',
             'DataDog',
             'New Relic',
         ],
-        SCM_VersionControl: [
+        'SCM Version Control': [
             'GitHub (SCM – Source Code Management or Version Control System and Code Hosting for CI/CD)',
             'Bitbucket by Atlassian',
             'Azure DevOps Repos or TFS (Team Foundation Server)',
             'GitLab',
         ],
-        CICD_Pipelines: [
+        'CI CD Pipelines': [
             'Azure Pipelines (CI/CD Pipeline, Workflow, Build and Deploy tool)',
             'Jenkins',
         ],
     },
     'Processes & Methodologies': {
-        ProjectManagement_IssueTracking: [
+        'Project Management IssueTracking': [
             'Jira (Agile Scrum Project / Task Management and Issue Tracking Tool) - 6 years',
             'Azure DevOps Boards or TFS (Team Foundation Server) - 1 year',
         ],
-        TestManagement: [
+        'Test Management': [
             'SmartBear Zephyr for Jira (Jira Plug-in for Test Case Management System) - 6 years',
             'Azure DevOps Test Plans – 1 year',
             'QMetry for Jira',
             'TestRail for Jira',
             'Katalon TestOps',
         ],
-        QA_AutomationSubjects: [
+        'QA Automation Subjects': [
             'Software Testing Principles and Concepts',
             'Automated Test Case Design',
             'Advanced Selenium Techniques',
@@ -102,11 +101,11 @@ export const automationTestingData = {
     },
     
     'Frameworks and AutomationTools': {
-        SeleniumGridAndAppiumServer: [
+        'Selenium Grid And Appium Server': [
             'Execute Selenium Test Scripts across browsers, OSs, and versions',
             'Execute Native Mobile Apps across Android and iPhone',
         ],
-        CloudHostedTools: [
+        'Cloud Hosted Tools': [
             'BrowserStack',
             'Perfecto',
             'Sauce Labs',
@@ -114,13 +113,13 @@ export const automationTestingData = {
             'AWS Device Farm',
             'Katalon Test Cloud',
         ],
-        APITestingTools: [
+        'API TestingTools': [
             'Rest Assured',
             'Postman (free)',
             'SmartBear ReadyAPI (previously SoapUI Pro)',
             'Charles Proxy (Web Debugger for all APIs and Microservices)',
         ],
-        AutomationFrameworks: [
+        'Automation Frameworks': [
             'Test Driven Development (TDD)',
             'Behavior Driven Development (BDD)',
             'Page Object Model (POM)',
@@ -156,7 +155,7 @@ export const automationTestingData = {
             'Soft Skills: Communication, Teamwork, Adaptability',
         ],
     
-        PopularTestingSubjects: [
+        'Popular Testing Subjects': [
             'Exploratory Testing',
             'Regression Testing',
             'Acceptance Testing',
@@ -165,7 +164,7 @@ export const automationTestingData = {
             'Smoke Testing',
             'Sanity Testing',
         ],
-        AdditionalTools: [
+        'Additional Tools': [
             'Katalon Studio',
             'Robot Framework',
             'Cypress.io',

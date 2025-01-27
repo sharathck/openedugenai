@@ -8,7 +8,7 @@ export const gcpCertificationData = {
       'Cloud Run: Serverless execution of containerized applications, stateless HTTP containers',
       'Preemptible VMs: Cost-effective VMs for fault-tolerant workloads, limitations, use cases'
     ],
-    StorageAndDatabases: [
+    'Storage And Databases': [
       'Cloud Storage: Object storage, buckets, lifecycle management, versioning, storage classes',
       'Persistent Disk: Block storage for VM instances, SSD and HDD options, snapshots',
       'Filestore: Managed file storage, network-attached storage (NAS), performance tiers',
@@ -27,7 +27,7 @@ export const gcpCertificationData = {
       'Cloud VPN: Secure site-to-site connectivity, IPsec tunnels, HA VPN',
       'Network Service Tiers: Premium and Standard tiers, routing features, pricing differences'
     ],
-    SecurityIdentityCompliance: [
+    'Security Identity Compliance': [
       'Identity and Access Management (IAM): Roles, permissions, service accounts, least privilege',
       'Cloud Identity: Identity management, single sign-on (SSO), multi-factor authentication (MFA)',
       'Cloud Key Management Service (KMS): Create and manage cryptographic keys, key rings',
@@ -37,7 +37,7 @@ export const gcpCertificationData = {
       'Cloud Audit Logs: Audit trails for admin activity, data access, and system events',
       'Data Loss Prevention API: Sensitive data classification, redaction, de-identification'
     ],
-    OperationsManagement: [
+    'Operations Management': [
       'Cloud Monitoring: Metrics collection, dashboards, uptime checks, alerting policies',
       'Cloud Logging: Centralized log management, log sinks, export options',
       'Cloud Trace: Distributed tracing, latency analysis, performance optimization',
@@ -46,7 +46,7 @@ export const gcpCertificationData = {
       'Deployment Manager: Infrastructure as code, templates, configuration files, repeatable deployments',
       'Cloud Scheduler: Managed cron service, job automation, retry policies'
     ],
-    ApplicationDevelopment: [
+    'Application Development': [
       'Cloud Build: Continuous integration, build triggers, container builds',
       'Artifact Registry: Secure storage for container images and language packages, vulnerability scanning',
       'Cloud Source Repositories: Hosted Git repositories, code management, integration with other tools',
@@ -55,7 +55,7 @@ export const gcpCertificationData = {
       'Cloud Endpoints: API management, authentication, monitoring, developer portals',
       'API Gateway: Managed gateway for serverless backends, API exposure, security enforcement'
     ],
-    DataAnalyticsAndBigData: [
+    'Data Analytics And BigData': [
       'BigQuery: Serverless data warehouse, SQL queries, data analytics at scale',
       'Dataflow: Stream and batch data processing, Apache Beam SDK, unified programming model',
       'Dataproc: Managed Hadoop and Spark clusters, cost-effective data processing',
@@ -64,7 +64,7 @@ export const gcpCertificationData = {
       'Composer: Managed Apache Airflow service, workflow orchestration, dependency management',
       'Pub/Sub: Messaging service for event-driven systems, real-time data streaming'
     ],
-    MachineLearningAndAI: [
+    'Machine Learning And AI': [
       'AI Platform: End-to-end machine learning workflows, training and prediction services',
       'AutoML: Automated model training, custom machine learning models with minimal code',
       'TensorFlow Enterprise: Optimized for GCP, long-term version support, performance tuning',
@@ -74,7 +74,7 @@ export const gcpCertificationData = {
       'Translation API: Neural machine translation, language detection, glossary support',
       'Dialogflow: Building conversational interfaces, chatbots, voice assistants'
     ],
-    HybridAndMultiCloud: [
+    'Hybrid And Multi Cloud': [
       'Anthos: Hybrid and multi-cloud application platform, consistent operations across environments',
       'Migrate for Compute Engine: Automated migration of VMs from on-premises or other clouds',
       'Cloud Run for Anthos: Serverless container deployment on GKE, Knative integration',
@@ -82,7 +82,7 @@ export const gcpCertificationData = {
       'Traffic Director: Service mesh management, global load balancing for microservices',
       'BigQuery Omni: Analyze data across clouds using standard SQL queries'
     ],
-    ManagementTools: [
+    'Management Tools': [
       'Cloud Console and Mobile App: Web and mobile interfaces for resource management',
       'Cloud Shell: Command-line access in the browser, pre-configured environment',
       'Cloud SDK: Command-line tools for interacting with GCP services, scripting automation',
@@ -90,7 +90,7 @@ export const gcpCertificationData = {
       'Resource Manager: Organization hierarchy, projects, folders, access control',
       'Service Catalogue: Curated set of approved services, self-service provisioning, standardization'
     ],
-    HighAvailabilityAndResilience: [
+    'High Availability And Resilience': [
       'Designing Distributed Systems: Fault-tolerant architectures, failure domains, redundancy',
       'Multi-zonal and Multi-regional Deployments: Data replication, high availability strategies',
       'Managed Instance Groups: Automated instance healing, autoscaling policies, regional MIGs',
@@ -98,7 +98,7 @@ export const gcpCertificationData = {
       'Disaster Recovery Planning: RTO and RPO considerations, backup strategies, failover mechanisms',
       'Data Replication Services: Cloud SQL replication, Cloud Spanner multi-region configurations'
     ],
-    CostOptimization: [
+    'Cost Optimization': [
       'Sustained Use Discounts: Automatic savings for sustained resource usage',
       'Committed Use Contracts: Discounts in exchange for usage commitments, custom machine types',
       'Right-Sizing Resources: Selecting appropriate VM sizes, resource allocation',
@@ -106,7 +106,7 @@ export const gcpCertificationData = {
       'Storage Cost Management: Choosing storage classes, lifecycle policies, data retention',
       'Network Egress Optimization: Data transfer costs, content caching with Cloud CDN'
     ],
-    MigrationPlanning: [
+    'Migration Planning': [
       'Cloud Adoption Framework: Assessing readiness, defining migration strategies',
       'Application Modernization: Refactoring applications for cloud-native environments',
       'Data Migration: Transferring databases, migrating data warehouses to BigQuery',
@@ -114,7 +114,7 @@ export const gcpCertificationData = {
       'Change Management: Training, stakeholder engagement, updating operational processes',
       'Migration Tools: Velostrata, Transfer Appliance, Database Migration Service'
     ],
-    ArchitectureBestPractices: [
+    'Architecture Best Practices': [
       'Well-Architected Framework: Reliability, security, cost optimization, performance efficiency, operational excellence',
       'Microservices and Containerization: Designing scalable and maintainable applications',
       'Event-Driven Architectures: Utilizing Pub/Sub and Cloud Functions for decoupled systems',
@@ -122,7 +122,7 @@ export const gcpCertificationData = {
       'Network Design: Subnetting strategies, VPC peering, shared VPCs, service controls',
       'Monitoring and Logging: Implementing observability, leveraging Stackdriver suite effectively'
     ],
-    CaseStudiesAndScenarios: [
+    'Case Studies And Scenarios': [
       'Analyzing Business Requirements: Translating business needs into technical solutions',
       'Trade-offs and Decision Making: Evaluating options for scalability, cost, and complexity',
       'Regulatory Compliance: Understanding compliance requirements (e.g., GDPR, HIPAA) in design',

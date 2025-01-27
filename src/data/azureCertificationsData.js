@@ -26,7 +26,7 @@ export const azureCertificationData = {
       'Azure Virtual WAN: Unified network connectivity, branch to cloud connectivity',
       'Azure Firewall: Managed, cloud-based network security service'
     ],
-    SecurityAndIdentity: [
+    'Security And Identity': [
       'Azure Active Directory (Azure AD): Identity and access management, conditional access',
       'Azure Key Vault: Secure key management, secrets management, certificate management',
       'Azure Security Center: Unified security management, threat protection',
@@ -34,7 +34,7 @@ export const azureCertificationData = {
       'Azure Information Protection: Classify and protect documents and emails',
       'Azure Sentinel: Cloud-native SIEM for intelligent security analytics'
     ],
-    DataManagement: [
+    'Data Management': [
       'Azure SQL Database: Managed relational database, scaling, security features',
       'Azure Cosmos DB: Globally distributed, multi-model database, consistency levels',
       'Azure SQL Managed Instance: Fully managed instance of SQL Server',
@@ -43,7 +43,7 @@ export const azureCertificationData = {
       'Azure Cache for Redis: In-memory data store, caching strategies, data persistence',
       'Azure Data Factory: Data integration service, ETL pipelines, data movement'
     ],
-    MonitoringAndManagement: [
+    'Monitoring And Management': [
       'Azure Monitor: Collect, analyze, and act on telemetry data',
       'Azure Log Analytics: Query and analyze logs, create dashboards',
       'Azure Automation: Process automation, configuration management, update management',
@@ -52,7 +52,7 @@ export const azureCertificationData = {
       'Azure Cost Management: Monitor and control Azure spending and cost allocation',
       'Azure Policy: Enforce organizational standards and assess compliance at-scale'
     ],
-    ApplicationIntegration: [
+    'Application Integration': [
       'Azure Service Bus: Messaging service, queues, topics, subscriptions',
       'Azure Event Grid: Event routing service, event handlers, custom topics',
       'Azure Logic Apps: Automated workflows, integration with SaaS and enterprise applications',
@@ -60,7 +60,7 @@ export const azureCertificationData = {
       'Azure Event Hubs: Big data streaming platform and event ingestion service',
       'Azure Functions: Serverless compute, event-driven execution'
     ],
-    DeploymentAndProvisioning: [
+    'Deployment And Provisioning': [
       'Azure Resource Manager Templates: Infrastructure as code, JSON templates',
       'Azure DevOps: Continuous integration and delivery, pipelines, repos, artifacts',
       'Azure CLI and PowerShell: Command-line tools for managing Azure resources',
@@ -68,7 +68,7 @@ export const azureCertificationData = {
       'Azure Automation State Configuration: Manage configuration across environments',
       'Azure Site Recovery: Disaster recovery service for on-premises and Azure workloads'
     ],
-    MonitoringAndLogging: [
+    'Monitoring And Logging' : [
       'Azure Monitor Logs: Centralized log collection and analysis',
       'Azure Application Insights: Application performance management and monitoring',
       'Azure Activity Log: Subscription-level events and operations',
@@ -76,7 +76,7 @@ export const azureCertificationData = {
       'Azure Network Watcher: Network performance monitoring and diagnostics',
       'Azure Service Health: Personalized guidance and support when issues in Azure services affect you'
     ],
-    CostManagement: [
+    'Cost Management': [
       'Azure Pricing Calculator: Estimate the cost of Azure products and services',
       'Azure Cost Management and Billing: Monitor and control spending, set budgets',
       'Azure Reservations: Cost-saving options for compute and data services',
@@ -84,7 +84,7 @@ export const azureCertificationData = {
       'Azure Spot Instances: Leverage unused capacity at deep discounts',
       'Azure Cost Alerts: Notifications based on cost thresholds'
     ],
-    HighAvailabilityAndDisasterRecovery: [
+    'High Availability And Disaster Recovery': [
       'Availability Sets and Zones: Improve VM uptime, fault domains, update domains',
       'Azure Site Recovery: Business continuity and disaster recovery strategies',
       'Geo-Redundancy: Data replication across regions for recovery',
@@ -92,7 +92,7 @@ export const azureCertificationData = {
       'Load Balancing: Distribute workloads across multiple resources',
       'Designing for Scalability and Elasticity: Scale Up/Down, Scale Out/In strategies'
     ],
-    ArchitectureDesignPrinciples: [
+    'Architecture Design Principles': [
       'Azure Well-Architected Framework: Pillars of reliability, security, cost optimization, operational excellence, and performance efficiency',
       'Design Patterns: Implementing best practices for cloud applications',
       'Microservices Architecture: Building applications as a suite of small services',
@@ -100,14 +100,14 @@ export const azureCertificationData = {
       'Designing for Performance and Scalability: Auto-scaling, resource optimization',
       'Designing for Security: Implementing secure architectures, threat modeling'
     ],
-    Migration: [
+    'Migration': [
       'Azure Migrate: Assessment and migration of on-premises workloads',
       'Database Migration: Strategies for migrating databases to Azure',
       'Migration of VMs and Applications: Tools and services for migrating workloads',
       'Data Box and Data Box Heavy: Offline data transfer devices',
       'Cloud Adoption Framework: Guidance for implementing cloud technologies'
     ],
-    Analytics: [
+    'Analytics': [
       'Azure Synapse Analytics: Unified analytics platform, data warehousing',
       'Azure Databricks: Collaborative Apache Spark-based analytics platform',
       'Azure Data Lake Analytics: Distributed analytics service, U-SQL',
@@ -115,7 +115,7 @@ export const azureCertificationData = {
       'Azure HDInsight: Managed Hadoop service for big data processing',
       'Power BI: Business analytics service for data visualization and reporting'
     ],
-    ArtificialIntelligenceAndMachineLearning: [
+    'Artificial Intelligence And Machine Learning': [
       'Azure Machine Learning: Build, train, and deploy machine learning models',
       'Azure Cognitive Services: Pre-built AI capabilities (Vision, Speech, Language, Decision)',
       'Azure Bot Service: Intelligent, serverless bot service',
@@ -123,7 +123,7 @@ export const azureCertificationData = {
       'Azure Databricks: Scalable analytics with Apache Spark',
       'Azure Machine Learning Studio: Collaborative, drag-and-drop tool for building models'
     ],
-    IoTAndEdgeComputing: [
+    'IoT And Edge Computing': [
       'Azure IoT Hub: Central message hub for bi-directional communication',
       'Azure IoT Edge: Extend cloud intelligence to edge devices',
       'Azure Sphere: Secure, connected MCU devices',
@@ -131,7 +131,7 @@ export const azureCertificationData = {
       'Azure Time Series Insights: IoT data exploration and telemetry analysis',
       'Azure Maps: Geospatial services, mapping APIs'
     ],
-    GovernanceAndCompliance: [
+    'Governance And Compliance': [
       'Azure Policy: Enforce standards and assess compliance',
       'Azure Blueprints: Define repeatable sets of governance tools and resources',
       'Role-Based Access Control (RBAC): Fine-grained access management for Azure resources',
@@ -248,7 +248,7 @@ export const azureCertificationData = {
             'Azure Cosmos DB: Globally distributed multi-model database service'
         ]
   },
-  'Azure-MachineLearningEngineer': {
+  'Azure Machine Learning Engineer': {
     'CoreDataScienceConcepts': [
       'Understanding of statistical concepts: Probability distributions, hypothesis testing, regression analysis.',
       'Knowledge of machine learning algorithms: Supervised, unsupervised, and reinforcement learning.',
@@ -259,7 +259,7 @@ export const azureCertificationData = {
       'Regularization techniques: L1 and L2 regularization, dropout.',
       'Understanding the ethical implications of AI and machine learning.'
      ],
-    'AzureMachineLearningService': [
+    'Azure Machine Learning Service': [
        'Workspace management: Creating, configuring, and managing Azure Machine Learning workspaces.',
        'Compute resources: Creating and managing compute instances, clusters, and serverless compute.',
        'Data management: Registering datasets, creating datastores, and working with different data types.',
@@ -274,7 +274,7 @@ export const azureCertificationData = {
        'Implementing security best practices for Azure Machine Learning resources.',
         'Cost management for Azure Machine Learning resources using Azure Cost Management.'
     ],
-    'ModelTraining': [
+    'Model Training': [
       'Choosing appropriate algorithms for different machine learning tasks: classification, regression, clustering, etc.',
       'Implementing custom training scripts and models.',
       'Using pre-built models and algorithms from Azure Machine Learning.',
@@ -283,7 +283,7 @@ export const azureCertificationData = {
        'Using automated machine learning (AutoML) to train models.',
         'Understanding and mitigating overfitting and underfitting.'
     ],
-    'ModelDeployment': [
+    'Model Deployment': [
       'Deploying models as web services using Azure Container Instances (ACI) and Azure Kubernetes Service (AKS).',
        'Deploying models to edge devices using Azure IoT Edge.',
       'Batch deployment: Deploying models for batch scoring.',
@@ -294,7 +294,7 @@ export const azureCertificationData = {
       'Implementing A/B testing for deployed models.',
        'Implementing security best practices for deployed models.'
     ],
-     'MLOps': [
+     'ML Ops': [
       'Implementing CI/CD pipelines for machine learning using Azure DevOps or GitHub Actions.',
       'Automating model training and deployment processes.',
       'Version control for machine learning models, datasets, and code.',
