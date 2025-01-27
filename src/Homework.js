@@ -502,72 +502,73 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                                 style={{ marginLeft: '10px' }}
                             >
                                 {isPaused ? 'Play' : 'Pause'}
+                            </button>
                         )}
-                                <button
-                                    className="button"
-                                    onClick={() => {
-                                        window.print();
-                                    }}
-                                >
-                                    Print
-                                </button>
-                                {audioUrl && (
-                                    <div>
-                                        <br />
-                                        <audio
-                                            ref={audioPlayerRef}
-                                            controls
-                                            style={{ width: '80%', marginLeft: '5px', marginTop: '10px' }}
-                                            src={audioUrl} // Add this prop
-                                        />
-                                    </div>
-                                )
-                                }
-                                <MdEditor
-                                    value={itemAnswer}
-                                    renderHTML={text => mdParser.render(text || '')}
-                                    readOnly={true}
-                                    config={{
-                                        view: {
-                                            menu: false,
-                                            md: false,
-                                            html: true
-                                        },
-                                        canView: {
-                                            menu: false,
-                                            md: false,
-                                            html: true,
-                                            fullScreen: false,
-                                            hideMenu: true
-                                        }
-                                    }}
+                        <button
+                            className="button"
+                            onClick={() => {
+                                window.print();
+                            }}
+                        >
+                            Print
+                        </button>
+                        {audioUrl && (
+                            <div>
+                                <br />
+                                <audio
+                                    ref={audioPlayerRef}
+                                    controls
+                                    style={{ width: '80%', marginLeft: '5px', marginTop: '10px' }}
+                                    src={audioUrl} // Add this prop
                                 />
                             </div>
-                        ) : (
-                        <>
-                            <div className="source-doc-container">
-                                <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
-                                    Previous Page
-                                </button>
-                                {!audioUrl && (<button onClick={synthesizeSpeech}>                                    {isLiveAudioPlaying
-                                    ? (<FaSpinner className="spinning" />)
-                                    : (<FaVolumeUp />)}</button>)}
-                                {audioUrl && (
-                                    <button
-                                        className={isPaused ? 'button_selected' : 'signoutbutton'}
-                                        onClick={() => { handlePlayPause(); }}
-                                        style={{ marginLeft: '10px' }}
-                                    >
-                                        {isPaused ? 'Play' : 'Pause'}
-                                    </button>
-                                )}
+                        )
+                        }
+                        <MdEditor
+                            value={itemAnswer}
+                            renderHTML={text => mdParser.render(text || '')}
+                            readOnly={true}
+                            config={{
+                                view: {
+                                    menu: false,
+                                    md: false,
+                                    html: true
+                                },
+                                canView: {
+                                    menu: false,
+                                    md: false,
+                                    html: true,
+                                    fullScreen: false,
+                                    hideMenu: true
+                                }
+                            }}
+                        />
+                    </div>
+                ) : (
+                    <>
+                        <div className="source-doc-container">
+                            <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
+                                Previous Page
+                            </button>
+                            {!audioUrl && (<button onClick={synthesizeSpeech}>                                    {isLiveAudioPlaying
+                                ? (<FaSpinner className="spinning" />)
+                                : (<FaVolumeUp />)}</button>)}
+                            {audioUrl && (
                                 <button
-                                    className="button"
-                                    onClick={() => {
-                                        const printWindow = window.open('', '', 'height=500,width=800');
-                                        printWindow.document.write('<html><head><title>Homework</title>');
-                                        printWindow.document.write('<style>');
-                                        printWindow.document.write(`
+                                    className={isPaused ? 'button_selected' : 'signoutbutton'}
+                                    onClick={() => { handlePlayPause(); }}
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    {isPaused ? 'Play' : 'Pause'}
+                                </button>
+                            )}
+                            <button
+                                className="button"
+                                onClick={() => {
+                                    const printWindow = window.open('', '', 'height=500,width=800');
+                                    printWindow.document.write('<html><head><title>Homework</title>');
+                                    printWindow.document.write('<style>');
+                                    printWindow.document.write(`
                                 body { font-family: Arial, sans-serif; margin: 20px; }
                                 .grid { width: 100%; border-collapse: collapse; }
                                 .grid th, .grid td { 
@@ -577,144 +578,144 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                                 }
                                 .grid th { background-color: #f2f2f2; }
                             `);
-                                        printWindow.document.write('</style></head><body>');
+                                    printWindow.document.write('</style></head><body>');
 
-                                        let tableHtml = '<table class="grid"><tr><th>Question</th>';
+                                    let tableHtml = '<table class="grid"><tr><th>Question</th>';
+                                    if (showAnswers) {
+                                        tableHtml += '<th>Correct Answer</th>';
+                                    }
+                                    tableHtml += '<th>Student Answer</th></tr>';
+
+                                    problems.forEach(problem => {
+                                        tableHtml += `<tr><td>${problem.question}</td>`;
                                         if (showAnswers) {
-                                            tableHtml += '<th>Correct Answer</th>';
+                                            tableHtml += `<td>${problem.correctAnswer}</td>`;
                                         }
-                                        tableHtml += '<th>Student Answer</th></tr>';
+                                        tableHtml += `<td>${problem.userAnswer}</td></tr>`;
+                                    });
+                                    tableHtml += '</table>';
 
-                                        problems.forEach(problem => {
-                                            tableHtml += `<tr><td>${problem.question}</td>`;
-                                            if (showAnswers) {
-                                                tableHtml += `<td>${problem.correctAnswer}</td>`;
-                                            }
-                                            tableHtml += `<td>${problem.userAnswer}</td></tr>`;
+                                    printWindow.document.write(tableHtml);
+                                    printWindow.document.write('</body></html>');
+                                    printWindow.document.close();
+                                    printWindow.print();
+                                }}
+                            >
+                                Print
+                            </button>
+                            <button
+                                className="button"
+                                onClick={() => {
+                                    const baseUrl = window.location.href.split('?')[0];
+                                    const newUrl = `${baseUrl}?h=${sourceDocID}`;
+                                    navigator.clipboard.writeText(newUrl)
+                                        .then(() => {
+                                            const notification = document.createElement('div');
+                                            notification.textContent = 'URL copied';
+                                            notification.style.cssText = 'position: fixed; right: 20px; top: 20px; background: rgba(0,0,0,0.7); color: white; padding: 10px 20px; border-radius: 4px; animation: fadeOut 2s forwards;';
+                                            document.body.appendChild(notification);
+                                            setTimeout(() => notification.remove(), 2000);
+                                        })
+                                        .catch(err => {
+                                            console.error('Failed to copy URL:', err);
+                                            alert('Failed to copy URL');
                                         });
-                                        tableHtml += '</table>';
+                                }}
+                            >
+                                {copyUrlButtonLabel}
+                            </button>
+                            <button
+                                className='show-answers-button'
+                                onClick={handleShowAnswers}
+                            >
+                                {showAnswers ? 'Hide Answers' : 'Answers'}
+                            </button>                        </div>
 
-                                        printWindow.document.write(tableHtml);
-                                        printWindow.document.write('</body></html>');
-                                        printWindow.document.close();
-                                        printWindow.print();
-                                    }}
-                                >
-                                    Print
-                                </button>
-                                <button
-                                    className="button"
-                                    onClick={() => {
-                                        const baseUrl = window.location.href.split('?')[0];
-                                        const newUrl = `${baseUrl}?h=${sourceDocID}`;
-                                        navigator.clipboard.writeText(newUrl)
-                                            .then(() => {
-                                                const notification = document.createElement('div');
-                                                notification.textContent = 'URL copied';
-                                                notification.style.cssText = 'position: fixed; right: 20px; top: 20px; background: rgba(0,0,0,0.7); color: white; padding: 10px 20px; border-radius: 4px; animation: fadeOut 2s forwards;';
-                                                document.body.appendChild(notification);
-                                                setTimeout(() => notification.remove(), 2000);
-                                            })
-                                            .catch(err => {
-                                                console.error('Failed to copy URL:', err);
-                                                alert('Failed to copy URL');
-                                            });
-                                    }}
-                                >
-                                    {copyUrlButtonLabel}
-                                </button>
-                                <button
-                                    className='show-answers-button'
-                                    onClick={handleShowAnswers}
-                                >
-                                    {showAnswers ? 'Hide Answers' : 'Answers'}
-                                </button>                        </div>
-
-                        </>
-                )}
-                    </div>
-            {(invocationType !== 'explain') && (<div className="info-text" style={{
-                    fontSize: '12px',
-                    color: '#666',
-                    marginTop: '5px',
-                }}>
-                    {practiceNote}
-                    {audioUrl && (
-                        <div>
-                            <br />
-                            <audio
-                                ref={audioPlayerRef}
-                                controls
-                                style={{ width: '80%', marginLeft: '5px', marginTop: '10px' }}
-                                src={audioUrl} // Add this prop
-                            />
-                        </div>
-                    )
-                    }
-                </div>
-
-                )}
-                {showPinModal && (
-                    <div className="pin-modal">
-                        <div className="pin-modal-content">
-                            <h3>Enter PIN to view answers</h3>
-                            <input
-                                type="password"
-                                value={pinInput}
-                                onChange={(e) => setPinInput(e.target.value)}
-                                placeholder="Enter PIN"
-                            />
-                            <button onClick={handlePinSubmit}>Submit</button>
-                            <button onClick={() => setShowPinModal(false)}>Cancel</button>
-                        </div>
-                    </div>
-                )}
-
-                {(invocationType !== 'explain') && (<div className="homework-grid">
-                    <div className="grid-header">
-                        <div className="question-col">Question</div>
-                        {showAnswers && <div className="answer-col">Correct Answer</div>}
-                        <div className="user-answer-col">Your Answer</div>
-                    </div>
-                    {problems.map((problem, index) => (
-                        <div key={index} className="grid-row">
-                            <div className="question-col">{problem.question}</div>
-                            {showAnswers &&
-                                <div className="answer-col correct-answer">{problem.correctAnswer}</div>}
-                            <div className="user-answer-col">
-                                <input
-                                    type="text"
-                                    value={problem.userAnswer}
-                                    onChange={(e) => handleAnswerChange(index, e.target.value)}
-                                    placeholder="Enter your answer"
-                                />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                )}
-                {showAnswers && (
-                    <>
-                        <input
-                            type="text"
-                            className="source-doc-input"
-                            value={sourceDocID}
-                            onChange={(e) => setSourceDocID(e.target.value)}
-                            onBlur={handleSourceDocIDChange}
-                            onKeyPress={(e) => e.key === 'Enter' && handleSourceDocIDChange(e)}
-                            placeholder="Enter Source Document ID"
-                        />
-                        <button
-                            className="fetch-button"
-                            onClick={() => loadQuestions(sourceDocID)}
-                        >
-                            Fetch Questions
-                        </button>
                     </>
                 )}
-
             </div>
-            );
+            {(invocationType !== 'explain') && (<div className="info-text" style={{
+                fontSize: '12px',
+                color: '#666',
+                marginTop: '5px',
+            }}>
+                {practiceNote}
+                {audioUrl && (
+                    <div>
+                        <br />
+                        <audio
+                            ref={audioPlayerRef}
+                            controls
+                            style={{ width: '80%', marginLeft: '5px', marginTop: '10px' }}
+                            src={audioUrl} // Add this prop
+                        />
+                    </div>
+                )
+                }
+            </div>
+
+            )}
+            {showPinModal && (
+                <div className="pin-modal">
+                    <div className="pin-modal-content">
+                        <h3>Enter PIN to view answers</h3>
+                        <input
+                            type="password"
+                            value={pinInput}
+                            onChange={(e) => setPinInput(e.target.value)}
+                            placeholder="Enter PIN"
+                        />
+                        <button onClick={handlePinSubmit}>Submit</button>
+                        <button onClick={() => setShowPinModal(false)}>Cancel</button>
+                    </div>
+                </div>
+            )}
+
+            {(invocationType !== 'explain') && (<div className="homework-grid">
+                <div className="grid-header">
+                    <div className="question-col">Question</div>
+                    {showAnswers && <div className="answer-col">Correct Answer</div>}
+                    <div className="user-answer-col">Your Answer</div>
+                </div>
+                {problems.map((problem, index) => (
+                    <div key={index} className="grid-row">
+                        <div className="question-col">{problem.question}</div>
+                        {showAnswers &&
+                            <div className="answer-col correct-answer">{problem.correctAnswer}</div>}
+                        <div className="user-answer-col">
+                            <input
+                                type="text"
+                                value={problem.userAnswer}
+                                onChange={(e) => handleAnswerChange(index, e.target.value)}
+                                placeholder="Enter your answer"
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+            )}
+            {showAnswers && (
+                <>
+                    <input
+                        type="text"
+                        className="source-doc-input"
+                        value={sourceDocID}
+                        onChange={(e) => setSourceDocID(e.target.value)}
+                        onBlur={handleSourceDocIDChange}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSourceDocIDChange(e)}
+                        placeholder="Enter Source Document ID"
+                    />
+                    <button
+                        className="fetch-button"
+                        onClick={() => loadQuestions(sourceDocID)}
+                    >
+                        Fetch Questions
+                    </button>
+                </>
+            )}
+
+        </div>
+    );
 };
 
-            export default Homework;
+export default Homework;
