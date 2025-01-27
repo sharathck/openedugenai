@@ -75,7 +75,7 @@ const Practice = ({sourceDocumentID}) => {
             setProblems(newProblems);
 
             // Update Firestore
-            const docRef = doc(db, 'homework', problem.id);
+            const docRef = doc(db, 'genai', 'OaQ7cll4lAbbPFlw1hgryy4gDeF2', 'homework', problem.id);
             await updateDoc(docRef, {
                 userAnswer: value,
                 modifiedDateTime: currentDateTime
