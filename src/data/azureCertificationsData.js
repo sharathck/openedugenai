@@ -304,7 +304,7 @@ export const azureCertificationData = {
       'Managing machine learning infrastructure as code (IaC).',
         'Implementing data versioning for machine learning projects.'
     ],
-    'SpecializedMachineLearningTasks': [
+    'Specialized Machine Learning Tasks': [
         'Natural Language Processing (NLP): Using pre-trained models and building custom NLP models.',
        'Computer Vision: Using pre-trained models and building custom computer vision models.',
         'Time series forecasting: Using machine learning models for time series data.',

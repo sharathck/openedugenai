@@ -69,7 +69,7 @@ export const automationTestingData = {
         ],
     },
     'Processes & Methodologies': {
-        'Project Management IssueTracking': [
+        'Project Management Issue Tracking': [
             'Jira (Agile Scrum Project / Task Management and Issue Tracking Tool) - 6 years',
             'Azure DevOps Boards or TFS (Team Foundation Server) - 1 year',
         ],
