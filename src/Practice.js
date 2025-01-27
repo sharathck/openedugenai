@@ -18,7 +18,8 @@ const Practice = ({sourceDocumentID}) => {
 
     const fetchInitialQuestions = async () => {
         try {
-            const homeworkCollection = collection(db, 'homework');
+
+            const homeworkCollection = collection(db, 'genai', 'OaQ7cll4lAbbPFlw1hgryy4gDeF2', 'homework');
             const q = query(homeworkCollection, where('sourceDocumentID', '==', sourceDocID));
             const snapshot = await getDocs(q);
 
@@ -27,7 +28,7 @@ const Practice = ({sourceDocumentID}) => {
                     id: doc.id,
                     question: doc.data().question,
                     correctAnswer: doc.data().correctAnswer,
-                    userAnswer: doc.data().userAnswer || '',
+                    userAnswer:  '',
                 }));
                 setProblems(fetchedProblems);
                 return true;

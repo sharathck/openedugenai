@@ -93,23 +93,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 });
             });
             await batch.commit();
-            console.log('Personal Homework data initialized successfully');
-            const sharedHomeworkCollection = collection(db, 'homework');
-            const sharedbatch = writeBatch(db);
-            questions.forEach((question) => {
-                const docRef = doc(sharedHomeworkCollection);
-                sharedbatch.set(docRef, {
-                    question: question.Question || question.question,
-                    correctAnswer: question.Answer || question.answer || question.correctAnswer,
-                    userAnswer: '',
-                    createdDateTime: currentDateTime,
-                    modifiedDateTime: currentDateTime,
-                    sourceDocumentID: sourceDocID,
-                    sourceDocumentIDCreatedDateTime: currentDateTime
-                });
-            });
-            await sharedbatch.commit();
-            console.log('Shared Homework data initialized successfully');
+            console.log('Public Homework data initialized successfully');
         } catch (error) {
             console.error("Error initializing homework data:", error);
             console.log("Firestore Data received:", firestoreData);
@@ -126,7 +110,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 const fetchedProblems = snapshot.docs.map(doc => ({
                     id: doc.id,
                     question: doc.data().question,
-                    correctAnswer: '',   // blank out
+                    correctAnswer: doc.data().correctAnswer,   // blank out
                     userAnswer: '',      // blank out
                 }));
                 setProblems(fetchedProblems);
