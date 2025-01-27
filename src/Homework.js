@@ -507,15 +507,6 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                                 </button>
                             </div>
                         )}
-                        {audioUrl && (
-                            <audio
-                                ref={audioPlayerRef}
-                                controls
-                                style={{ width: '30%', marginLeft: '10px', marginTop: '10px' }}
-                                src={audioUrl} // Add this prop
-                            />
-                        )
-                        }
                         <button
                             className="button"
                             onClick={() => {
@@ -524,6 +515,18 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                         >
                             Print
                         </button>
+                        {audioUrl && (
+                            <div>
+                                <br />
+                                <audio
+                                    ref={audioPlayerRef}
+                                    controls
+                                    style={{ width: '80%', marginLeft: '5px', marginTop: '10px' }}
+                                    src={audioUrl} // Add this prop
+                                />
+                            </div>
+                        )
+                        }
                         <MdEditor
                             value={itemAnswer}
                             renderHTML={text => mdParser.render(text || '')}
@@ -550,21 +553,9 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                             <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
                                 Previous Page
                             </button>
-                            {<button onClick={synthesizeSpeech}>                                    {isLiveAudioPlaying
+                            {!audioUrl && (<button onClick={synthesizeSpeech}>                                    {isLiveAudioPlaying
                                 ? (<FaSpinner className="spinning" />)
-                                : (<FaVolumeUp />)}</button>}
-                            {audioUrl && (
-                                <div>
-                                    <br />
-                                    <audio
-                                        ref={audioPlayerRef}
-                                        controls
-                                        style={{ width: '50%', marginLeft: '5px', marginTop: '10px' }}
-                                        src={audioUrl} // Add this prop
-                                    />
-                                </div>
-                            )
-                            }
+                                : (<FaVolumeUp />)}</button>)}
                             {audioUrl && (
                                 <button
                                     className={isPaused ? 'button_selected' : 'signoutbutton'}
@@ -636,13 +627,13 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                             >
                                 {copyUrlButtonLabel}
                             </button>
-                        </div>
-                        <button
-                            className='show-answers-button'
-                            onClick={handleShowAnswers}
-                        >
-                            {showAnswers ? 'Hide Answers' : 'Answers'}
-                        </button>
+                            <button
+                                className='show-answers-button'
+                                onClick={handleShowAnswers}
+                            >
+                                {showAnswers ? 'Hide Answers' : 'Answers'}
+                            </button>                        </div>
+
                     </>
                 )}
             </div>
@@ -652,7 +643,20 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 marginTop: '5px',
             }}>
                 {practiceNote}
+                {audioUrl && (
+                    <div>
+                        <br />
+                        <audio
+                            ref={audioPlayerRef}
+                            controls
+                            style={{ width: '80%', marginLeft: '5px', marginTop: '10px' }}
+                            src={audioUrl} // Add this prop
+                        />
+                    </div>
+                )
+                }
             </div>
+
             )}
             {showPinModal && (
                 <div className="pin-modal">
