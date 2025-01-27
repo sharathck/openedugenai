@@ -662,6 +662,16 @@ button:hover {
   box-shadow: 2px 2px 2px rgba(167, 154, 154, 0.912);
   font-size: 16px;
 }
+.topic-item-running {
+  padding: 1px;
+  border-radius: 1px;
+  margin: 2px 0;
+  border: 3px solid #110101;
+  box-shadow: 6px 6px 6px rgba(23, 0, 0, 0.912);
+  font-size: 16px;
+  background-color: blanchedalmond;
+}
+
 
 /* ...existing styles... */
 

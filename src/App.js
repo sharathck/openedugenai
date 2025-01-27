@@ -224,43 +224,6 @@ function App({ source, grade, subject }) {  // Add user prop
     console.log('explainInput:', explainInput);
     await callAPI(modelExplain, promptInput, 'explain');
   };
-  // Add handleQuiz function after handlehomeWork
-  const handleQuiz = async (message) => {
-    promptInput = message;
-    console.log('promptInput:', promptInput);
-    if (!message.trim()) {
-      alert('Please enter a message.');
-      return;
-    }
-    console.log('handleQuiz:', message);
-    setTemperature(0.3);
-    setTop_p(0.5);
-    // Need to wait for state updates to be applied
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    // Append the prompt to promptInput
-    quizInput = message + quizPrompt;
-    console.log('quizInput:', quizInput);
-    await callAPI(modelQuiz, promptInput, 'quiz');
-  };
-
-  // Add the handler function for multiple choice quiz
-  const handleMultipleChoiceQuiz = async (message) => {
-    promptInput = message;
-    if (!message.trim()) {
-      alert('Please enter a message.');
-      return;
-    }
-    setTemperature(0.3);
-    setTop_p(0.5);
-    await fetchTexts();
-    // Append the prompt to promptInput
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    quizMultipleChoicesInput = message + quizMultipleChoicesPrompt;
-    console.log('quizMultipleChoicesInput:', quizMultipleChoicesInput);
-    await callAPI(modelQuizChoices, promptInput, 'quiz_with_choices');
-  };
-
-
 
   async function callAPI(modelName, promptText, invocationType = 'GenAI') {
     try {
@@ -372,18 +335,18 @@ function App({ source, grade, subject }) {  // Add user prop
             setGeneratedContent('');
             setSelectedTopic(null);
             setTopicExplanation('');
-          }}
-        >
-          Previous Page
-        </button>
-        <h2> <span style={{ color: 'darkBlue' }}>{grade}</span> - <span style={{ color: 'darkGreen' }}>{subject}</span></h2>
-        <div className="topics-container">
-          {gradesData[grade][subject].map((topic, index) => (
-            <div key={index} className="topic-item">
+            }}
+          >
+            Previous Page
+          </button>
+          <h2> <span style={{ color: 'darkBlue' }}>{grade}</span> - <span style={{ color: 'darkGreen' }}>{subject}</span></h2>
+          <div className="topics-container">
+            {gradesData[grade][subject].map((topic, index) => (
+            <div key={index} className={isExplain[index] || ishomeWork[index] ? "topic-item-running" : "topic-item"}>
               <span>{topic}</span>
               &nbsp;&nbsp;
               <button
-                onClick={async () => {
+              onClick={async () => {
                   setIsExplain(prev => ({ ...prev, [index]: true }));
                   inputPrompt = grade + ' : ' + subject + ' : ' + topic;
                   await handleExplain(grade + ' : ' + subject + ' : ' + topic);
@@ -409,20 +372,6 @@ function App({ source, grade, subject }) {  // Add user prop
                 {ishomeWork[index]
                   ? (<FaSpinner className="spinning" />)
                   : 'Practice Questions'}
-              </button>
-              <button
-                onClick={async () => {
-                  setIsQuiz(prev => ({ ...prev, [index]: true }));
-                  inputPrompt = grade + ' : ' + subject + ' : ' + topic;
-                  await handleQuiz(grade + ' : ' + subject + ' : ' + topic, 'quiz');
-                  setIsQuiz(prev => ({ ...prev, [index]: false }));
-                }}
-                className="button"
-                style={{ backgroundColor: 'lightblue', fontSize: '12px', color: 'black', marginLeft: '10px' }}
-              >
-                {isQuiz[index]
-                  ? (<FaSpinner className="spinning" />)
-                  : 'Quiz'}
               </button>
               <br />
             </div>
