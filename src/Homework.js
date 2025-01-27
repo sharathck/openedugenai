@@ -17,7 +17,7 @@ let textToSpeak = '';
 
 const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, subject }) => {
     // Add new state variables for labels
-    const [copyUrlButtonLabel, setCopyUrlButtonLabel] = useState('Copy URL to Share');
+    const [copyUrlButtonLabel, setCopyUrlButtonLabel] = useState('Share');
     const [printGridButtonLabel, setPrintGridButtonLabel] = useState('Print');
     const [practiceNote, setPracticeNote] = useState('The student URL copied above does not require App Login. Students can access from any device without signing up.');
     // Convert markdown content to JSON
@@ -555,6 +555,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                                 : (<FaVolumeUp />)}</button>}
                             {audioUrl && (
                                 <div>
+                                    <br />
                                     <audio
                                         ref={audioPlayerRef}
                                         controls
@@ -640,7 +641,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                             className='show-answers-button'
                             onClick={handleShowAnswers}
                         >
-                            {showAnswers ? 'Hide Answers' : 'Show Answers'}
+                            {showAnswers ? 'Hide Answers' : 'Answers'}
                         </button>
                     </>
                 )}
