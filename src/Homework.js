@@ -10,6 +10,10 @@ import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import ReactMarkdown from "react-markdown";
+import * as speechsdk from 'microsoft-cognitiveservices-speech-sdk';
+import { FaSpinner, FaNotesMedical, FaCheckDouble, FaClock, FaAlignJustify, FaBrain, FaConfluence, FaVolumeUp, FaNewspaper } from 'react-icons/fa';
+
+let textToSpeak = '';
 
 const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, subject }) => {
     // Add new state variables for labels
@@ -28,6 +32,30 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
     const CORRECT_PIN = '463859';
     const mdParser = new MarkdownIt(/* Markdown-it options */);
     const didMountRef = useRef(false);
+    const [isLiveAudioPlaying, setIsLiveAudioPlaying] = useState(false);
+    const [audioUrl, setAudioUrl] = useState('');
+    const audioPlayerRef = useRef(null);
+    const [isPaused, setIsPaused] = useState(false);
+    const isPausedRef = useRef(isPaused);
+    const speechKey = process.env.REACT_APP_AZURE_SPEECH_API_KEY;
+    const serviceRegion = 'eastus';
+    const voiceName = "en-US-EvelynMultilingualNeural";
+
+    useEffect(() => {
+        isPausedRef.current = isPaused;
+    }, [isPaused]);
+    useEffect(() => {
+        console.log('INSIDE audioUrl ', audioUrl);
+        if (audioPlayerRef.current) {
+            // Reload and attempt to play whenever the URL changes
+            audioPlayerRef.current.load();
+            audioPlayerRef.current
+                .play()
+                .catch(err => {
+                    console.warn('Autoplay prevented', err);
+                });
+        }
+    }, [audioUrl]);
 
     const initializeHomeworkData = async (firestoreData, userId) => {
         try {
@@ -100,6 +128,129 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
         }
     };
 
+    // Helper function to split messages into chunks
+    const splitMessage = (msg, chunkSize = 2000) => {
+        const chunks = [];
+        let currentPos = 0;
+        while (currentPos < msg.length) {
+            let chunk = msg.substr(currentPos, chunkSize);
+            let splitPos = chunkSize;
+
+            // If we're not at the end, look for last period
+            if (currentPos + chunkSize < msg.length) {
+                const lastPeriod = chunk.lastIndexOf('.');
+                if (lastPeriod !== -1) {
+                    splitPos = lastPeriod + 1; // Include the period
+                }
+                else {
+                    const lastComma = chunk.lastIndexOf(',');
+                    if (lastComma !== -1) {
+                        splitPos = lastComma + 1; // Include the comma
+                    }
+                    else {
+                        const lastSpace = chunk.lastIndexOf(' ');
+                        if (lastSpace !== -1) {
+                            splitPos = lastSpace + 1; // Include the space
+                        }
+                        else {
+                            const lastQuestion = chunk.lastIndexOf('?');
+                            if (lastQuestion !== -1) {
+                                splitPos = lastSpace + 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            chunk = chunk.substr(0, splitPos);
+            chunks.push(chunk.trim());
+            currentPos += splitPos;
+        }
+
+        return chunks;
+    };
+
+    const synthesizeSpeech = async () => {
+        setIsLiveAudioPlaying(!isLiveAudioPlaying);
+        // Clean the text by removing URLs and special characters
+        const cleanedArticles = textToSpeak
+            .replace(/https?:\/\/[^\s]+/g, '') // Remove URLs
+            .replace(/http?:\/\/[^\s]+/g, '') // Remove URLs
+            .replace(/[#:\-*]/g, ' ')
+            .replace(/[&]/g, ' and ')
+            .replace(/[<>]/g, ' ')
+            //       .replace(/["]/g, '&quot;')
+            //       .replace(/[']/g, '&apos;')
+            .trim(); // Remove leading/trailing spaces
+
+        try {
+            try {
+                console.log('Synthesizing speech...' + cleanedArticles);
+                const speechConfig = speechsdk.SpeechConfig.fromSubscription(speechKey, serviceRegion);
+                speechConfig.speechSynthesisOutputFormat = speechsdk.SpeechSynthesisOutputFormat.Audio16Khz128KBitRateMonoMp3;
+
+                speechConfig.speechSynthesisVoiceName = voiceName;
+                console.log('Voice name:', voiceName);
+                const audioConfig = speechsdk.AudioConfig.fromDefaultSpeakerOutput();
+                const synthesizer = new speechsdk.SpeechSynthesizer(speechConfig, null); // No need to pass audioConfig here since we're capturing audio data
+
+                // Create chunks and synthesize them sequentially
+                const chunks = splitMessage(cleanedArticles);
+                const audioBlobs = [];
+                for (const chunk of chunks) {
+                    await new Promise((resolve, reject) => {
+                        synthesizer.speakTextAsync(chunk,
+                            result => {
+                                if (result.reason === speechsdk.ResultReason.SynthesizingAudioCompleted) {
+                                    const audioData = result.audioData;
+                                    const blob = new Blob([audioData], { type: 'audio/mp3' });
+                                    audioBlobs.push(blob);
+                                    resolve();
+                                } else {
+                                    reject(new Error('Synthesis failed'));
+                                }
+                            },
+                            error => reject(error)
+                        );
+                    });
+                }
+
+                if (audioBlobs.length > 0) {
+                    const finalBlob = new Blob(audioBlobs, { type: 'audio/mp3' });
+                    setAudioUrl(URL.createObjectURL(finalBlob));
+                }
+            } catch (error) {
+                console.error(`Error synthesizing speech: ${error}`);
+            } finally {
+                setIsLiveAudioPlaying(false);
+            }
+        }
+        catch (error) {
+            console.error(`Error synthesizing speech: ${error}`);
+        }
+        finally {
+            setIsLiveAudioPlaying(false);
+        }
+    };
+
+    const handlePlayPause = async () => {
+        setIsPaused(!isPaused);
+        console.log('isPaused ', isPaused);
+        console.log('isPausedRef.current.value ', isPausedRef.current);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Check if there's a valid audio element and it's not paused
+        if (audioPlayerRef.current) {
+            if (!isPausedRef.current) {
+                audioPlayerRef.current.play()
+                    .catch(err => console.warn('Playback prevented', err));
+            } else {
+                const currentTime = audioPlayerRef.current.currentTime;
+                audioPlayerRef.current.pause();
+                audioPlayerRef.current.currentTime = currentTime;
+            }
+        }
+    };
+
     const fetchInitialQuestions = async (userId) => {
         try {
             const homeworkCollection = collection(db, 'genai', userId, 'homework');
@@ -114,6 +265,11 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                     userAnswer: '',      // blank out
                 }));
                 setProblems(fetchedProblems);
+                // update textToSpeak with questions from fetchedProblems
+                textToSpeak = '';
+                fetchedProblems.forEach(problem => {
+                    textToSpeak += problem.question + ' . ';
+                });
                 return true;
             }
             return false;
@@ -148,7 +304,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
             if (docSnap.exists()) {
                 const data = docSnap.data().answer;
                 setItemAnswer(data);
-
+                textToSpeak = data;
             }
         } catch (error) {
             console.error("Error fetching item answer:", error);
@@ -228,7 +384,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
         }
     };
 
-    const  copyHomeworkDocs = async () => {
+    const copyHomeworkDocs = async () => {
         try {
             const homeworkCollection = collection(db, 'genai', 'OaQ7cll4lAbbPFlw1hgryy4gDeF2', 'homework');
             const q = query(homeworkCollection, where('sourceDocumentID', '==', sourceDocID));
@@ -276,7 +432,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 fetchTexts(); // Add this line
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleAnswerChange = async (index, value) => {
@@ -321,17 +477,12 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
     };
 
     if (showMainApp) {
-        return <App  source={source} grade={grade} subject={subject} />;
+        return <App source={source} grade={grade} subject={subject} />;
     }
 
     return (
         <div className="homework-container">
             <div className="homework-header">
-                {showMainAppButton && (invocationType !== 'explain') && (
-                    <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
-                        Previous Page
-                    </button>
-                )}
                 {(invocationType === 'explain') ? (
                     <div>
                         {showMainAppButton && (
@@ -339,7 +490,33 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                                 Previous Page
                             </button>
                         )}
-                        <button 
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        {<button onClick={synthesizeSpeech}>                                    {isLiveAudioPlaying
+                            ? (<FaSpinner className="spinning" />)
+                            : (<FaVolumeUp />)}</button>}
+
+                        {audioUrl && (
+                            <div>
+                                <br />
+                                <button
+                                    className={isPaused ? 'button_selected' : 'signoutbutton'}
+                                    onClick={() => { handlePlayPause(); }}
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    {isPaused ? 'Play' : 'Pause'}
+                                </button>
+                            </div>
+                        )}
+                        {audioUrl && (
+                            <audio
+                                ref={audioPlayerRef}
+                                controls
+                                style={{ width: '30%', marginLeft: '10px', marginTop: '10px' }}
+                                src={audioUrl} // Add this prop
+                            />
+                        )
+                        }
+                        <button
                             className="button"
                             onClick={() => {
                                 window.print();
@@ -370,6 +547,32 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 ) : (
                     <>
                         <div className="source-doc-container">
+                            <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
+                                Previous Page
+                            </button>
+                            {<button onClick={synthesizeSpeech}>                                    {isLiveAudioPlaying
+                                ? (<FaSpinner className="spinning" />)
+                                : (<FaVolumeUp />)}</button>}
+                            {audioUrl && (
+                                <div>
+                                    <audio
+                                        ref={audioPlayerRef}
+                                        controls
+                                        style={{ width: '50%', marginLeft: '5px', marginTop: '10px' }}
+                                        src={audioUrl} // Add this prop
+                                    />
+                                </div>
+                            )
+                            }
+                            {audioUrl && (
+                                <button
+                                    className={isPaused ? 'button_selected' : 'signoutbutton'}
+                                    onClick={() => { handlePlayPause(); }}
+                                    style={{ marginLeft: '10px' }}
+                                >
+                                    {isPaused ? 'Play' : 'Pause'}
+                                </button>
+                            )}
                             <button
                                 className="button"
                                 onClick={() => {
