@@ -1,5 +1,5 @@
 export const azureCertificationData = {
-  'Azure-SolutionArchitect': {
+  'Azure - SolutionArchitect': {
     Compute: [
       'Azure Virtual Machines: VM sizing, scaling, availability sets, and availability zones',
       'Azure App Service: Web Apps, API Apps, Mobile Apps, scaling, deployment slots',
@@ -140,7 +140,7 @@ export const azureCertificationData = {
       'Management Groups: Organize subscriptions for unified policy and access management'
     ]
   },
-  'Azure-DataScientist': {
+  'Azure - Data Scientist': {
     'Core Data Science Concepts': [
       'Understanding the data science lifecycle: From problem definition to deployment',
       'Exploratory data analysis (EDA): Techniques for summarizing and visualizing data',

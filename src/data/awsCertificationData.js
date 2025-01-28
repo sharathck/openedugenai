@@ -1,5 +1,5 @@
 export const awsCertificationData = {
-  'AWS-SolutionsArchitect': {
+  'AWS - Solutions Architect': {
     Compute: [
       'Amazon EC2: Instance types, pricing models, Auto Scaling, Load Balancing',
       'AWS Lambda: Serverless compute, Function as a Service, Event triggers',
@@ -206,7 +206,7 @@ export const awsCertificationData = {
        'Reproducibility: Ensuring the reproducibility of results'
      ]
   },
-  'AWS-MachineLearningEngineer': {
+  'AWS - Machine Learning Engineer': {
     'Data Engineering': [
         'Data Collection and Ingestion: Strategies for gathering data from various sources including databases, APIs, and streaming platforms, and methods for ingesting this data into AWS services like S3, Kinesis, and Glue.',
         'Data Storage and Management: Utilizing S3 for scalable object storage, designing optimal data lake architectures, implementing data lifecycle management policies, and understanding different storage formats such as Parquet and ORC.',

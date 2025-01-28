@@ -1,5 +1,5 @@
 export const gcpCertificationData = {
-  'Google-Cloud-Professional-Cloud-Architect': {
+  'Google Cloud Professional Cloud Architect': {
     Compute: [
       'Compute Engine: Virtual machine instances, machine types, autoscaling, load balancing',
       'Google Kubernetes Engine (GKE): Managed Kubernetes service, cluster management, node pools',
@@ -131,7 +131,7 @@ export const gcpCertificationData = {
       'Cost-Benefit Analysis: Justifying architectural decisions based on business value'
     ]
   },
-  'GoogleCloud-DataScientist': {
+  'Google Cloud - Data Scientist': {
     "Data Engineering and Infrastructure": [
        "BigQuery: Querying, loading, and exporting data; managing datasets and tables; optimizing query performance; understanding cost management.",
        "Cloud Storage: Storing and managing data; working with different storage classes; using lifecycle management; data transfer options.",
@@ -190,7 +190,7 @@ export const gcpCertificationData = {
            "Presentation Skills: Presenting findings to technical and non-technical audiences; using visualizations and storytelling."
       ]
   },
-  'GCP-MachineLearningEngineer': {
+  'GCP - Machine Learning Engineer': {
     'Machine Learning Concepts and Principles': [
       'Understanding of core ML concepts: supervised, unsupervised, and reinforcement learning',
       'Model evaluation metrics: accuracy, precision, recall, F1-score, AUC-ROC',
