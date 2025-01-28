@@ -1,6 +1,6 @@
 export const mastersData = {
-  'Masters-ComputerScience': {
-    CoreSubjects: [
+  'Masters - Computer Science': {
+    'Core Subjects': [
       'Advanced Algorithms',
       'Distributed Systems',
       'Advanced Operating Systems',
@@ -12,7 +12,7 @@ export const mastersData = {
       'Cloud Computing',
       'Computer Security'
     ],
-    Specializations: [
+    'Specializations': [
       'Machine Learning',
       'Data Science',
       'Computer Vision',
@@ -24,14 +24,14 @@ export const mastersData = {
       'Embedded Systems',
       'Quantum Computing'
     ],
-    Research: [
+    'Research': [
       'Research Methodologies in Computer Science',
       'Thesis Research',
       'Seminar in Computer Science',
       'Capstone Project',
       'Publication and Presentation Skills'
     ],
-    Electives: [
+    'Electives': [
       'Advanced Topics in Artificial Intelligence',
       'Robotics',
       'Blockchain Technologies',
@@ -43,8 +43,8 @@ export const mastersData = {
       'Parallel Computing'
     ]
   },
-  'Masters-DataScience': {
-    CoreSubjects: [
+  'Masters - Data Science': {
+    'Core Subjects': [
       'Statistical Learning',
       'Big Data Analytics',
       'Data Mining',
@@ -56,14 +56,14 @@ export const mastersData = {
       'Database Systems',
       'Machine Learning'
     ],
-    ProgrammingLanguages: [
+    'Programming Languages': [
       'Python for Data Science',
       'R Programming',
       'SQL and NoSQL Databases',
       'Statistical Computation in MATLAB',
       'Scala and Spark'
     ],
-    ToolsAndTechnologies: [
+    'Tools And Technologies': [
       'Hadoop Ecosystem',
       'Apache Spark',
       'Tableau',
@@ -72,7 +72,7 @@ export const mastersData = {
       'Docker and Kubernetes',
       'Data Warehousing'
     ],
-    Electives: [
+    'Electives': [
       'Time Series Analysis',
       'Reinforcement Learning',
       'Anomaly Detection',
@@ -83,15 +83,15 @@ export const mastersData = {
       'Text Analytics',
       'Graphical Models'
     ],
-    Capstone: [
+    'Capstone': [
       'Industry Data Science Project',
       'Research Thesis',
       'Internship in Data Science',
       'Seminar on Data Ethics and Law'
     ]
   },
-  'Masters-MechanicalEngineering': {
-    CoreSubjects: [
+  'Masters - Mechanical Engineering': {
+    'Core Subjects': [
       'Advanced Mechanics of Materials',
       'Computational Fluid Dynamics',
       'Finite Element Analysis',
@@ -103,7 +103,7 @@ export const mastersData = {
       'Design Optimization',
       'Engineering Materials'
     ],
-    Specializations: [
+    'Specializations': [
       'Aerospace Engineering',
       'Automotive Engineering',
       'Biomechanics and Biomedical Engineering',
@@ -114,7 +114,7 @@ export const mastersData = {
       'Renewable Energy',
       'Advanced Manufacturing'
     ],
-    Electives: [
+    'Electives': [
       'Theory of Elasticity',
       'Fracture Mechanics',
       'Tribology',
@@ -125,15 +125,15 @@ export const mastersData = {
       'Microfluidics',
       'Additive Manufacturing Technologies'
     ],
-    Research: [
+    'Research': [
       'Research in Mechanical Engineering',
       'Thesis',
       'Capstone Project',
       'Industry Internship'
     ]
   },
-  'Masters-ElectricalEngineering': {
-    CoreSubjects: [
+  'Masters - Electrical Engineering': {
+    'Core Subjects': [
       'Advanced Electromagnetics',
       'Digital Signal Processing',
       'Analog Integrated Circuit Design',
@@ -145,7 +145,7 @@ export const mastersData = {
       'Photonics',
       'Embedded Systems Design'
     ],
-    Specializations: [
+    'Specializations': [
       'Renewable Energy Systems',
       'VLSI Design',
       'Power Electronics',
@@ -156,7 +156,7 @@ export const mastersData = {
       'Artificial Intelligence in Electrical Engineering',
       'Smart Grid Technologies'
     ],
-    Electives: [
+    'Electives': [
       'Nanoelectronics',
       'Optical Communications',
       'Radar Systems',
@@ -167,14 +167,14 @@ export const mastersData = {
       'Advanced Topics in Power Systems',
       'Digital Image Processing'
     ],
-    Research: [
+    'Research': [
       'Research Methods in Electrical Engineering',
       'Thesis Work',
       'Project in Electrical Engineering'
     ]
   },
-  'Masters-BusinessAdministration': {
-    CoreSubjects: [
+  'Masters - Business Administration': {
+    'Core Subjects': [
       'Accounting for Managers',
       'Financial Management',
       'Marketing Management',
@@ -186,7 +186,7 @@ export const mastersData = {
       'Business Ethics and Law',
       'Economics for Managers'
     ],
-    Specializations: [
+    'Specializations': [
       'Finance',
       'Marketing',
       'Human Resources',
@@ -197,7 +197,7 @@ export const mastersData = {
       'Healthcare Management',
       'International Business'
     ],
-    Electives: [
+    'Electives': [
       'Investment Analysis',
       'Consumer Behavior',
       'Project Management',
@@ -208,15 +208,15 @@ export const mastersData = {
       'Risk Management',
       'Innovation Management'
     ],
-    Capstone: [
+    'Capstone': [
       'Business Strategy Project',
       'Entrepreneurial Project',
       'Industry Internship',
       'International Business Experience'
     ]
   },
-  'Masters-CivilEngineering': {
-    CoreSubjects: [
+  'Masters - Civil Engineering': {
+    'Core Subjects': [
       'Advanced Structural Analysis',
       'Finite Element Method',
       'Advanced Soil Mechanics',
@@ -228,7 +228,7 @@ export const mastersData = {
       'Structural Dynamics',
       'Earthquake Engineering'
     ],
-    Specializations: [
+    'Specializations': [
       'Structural Engineering',
       'Geotechnical Engineering',
       'Transportation Engineering',
@@ -238,7 +238,7 @@ export const mastersData = {
       'Urban Planning',
       'Sustainable Infrastructure Engineering'
     ],
-    Electives: [
+    'Electives': [
       'Bridge Engineering',
       'Advanced Foundation Engineering',
       'Pavement Design',
@@ -249,15 +249,15 @@ export const mastersData = {
       'Coastal Engineering',
       'Renewable Energy Systems in Civil Engineering'
     ],
-    Research: [
+    'Research': [
       'Research Methods in Civil Engineering',
       'Thesis Work',
       'Capstone Design Project',
       'Industry Collaboration Project'
     ]
   },
-  'Masters-CyberSecurity': {
-    CoreSubjects: [
+  'Masters - Cyber Security': {
+    'Core Subjects': [
       'Network Security',
       'Cryptography',
       'Cybersecurity Principles',
@@ -269,7 +269,7 @@ export const mastersData = {
       'Incident Response and Recovery',
       'Cloud Security'
     ],
-    ToolsAndTechnologies: [
+    'Tools And Technologies': [
       'Cybersecurity Tools and Techniques',
       'Malware Analysis',
       'Intrusion Detection Systems',
@@ -277,7 +277,7 @@ export const mastersData = {
       'Security Information and Event Management (SIEM)',
       'Blockchain Security Applications'
     ],
-    Electives: [
+    'Electives': [
       'Mobile Security',
       'Cyber Threat Intelligence',
       'Advanced Cryptographic Techniques',
@@ -287,15 +287,15 @@ export const mastersData = {
       'Security in Wireless Networks',
       'Privacy Enhancing Technologies'
     ],
-    Capstone: [
+    'Capstone': [
       'Cybersecurity Capstone Project',
       'Internship in Cybersecurity',
       'Research Thesis',
       'Cybersecurity Policy and Management Seminar'
     ]
   },
-  'Masters-ArtificialIntelligence': {
-    CoreSubjects: [
+  'Masters - Artificial Intelligence': {
+    'Core Subjects': [
       'Fundamentals of Artificial Intelligence',
       'Machine Learning Theory and Applications',
       'Deep Learning',
@@ -307,14 +307,14 @@ export const mastersData = {
       'Probabilistic Graphical Models',
       'Cognitive Computing'
     ],
-    ProgrammingAndTools: [
+    'Programming And Tools': [
       'Python Programming for AI',
       'TensorFlow and PyTorch',
       'AI Software Development',
       'Data Structures for AI',
       'High-Performance Computing for AI'
     ],
-    Electives: [
+    'Electives': [
       'Advanced Robotics',
       'AI Ethics and Society',
       'Human-Robot Interaction',
@@ -325,7 +325,7 @@ export const mastersData = {
       'AI in Healthcare',
       'Conversational AI and Chatbots'
     ],
-    Research: [
+    'Research': [
       'AI Research Methods',
       'Thesis in Artificial Intelligence',
       'AI Capstone Project',

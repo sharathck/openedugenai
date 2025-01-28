@@ -1,6 +1,6 @@
 export const collegeData = {
-  'Bachelors-ComputerScience': {
-    CoreSubjects: [
+  'Bachelors - Computer Science': {
+    'Core Subjects': [
       'Introduction to Programming',
       'Data Structures and Algorithms',
       'Computer Architecture',
@@ -12,14 +12,14 @@ export const collegeData = {
       'Artificial Intelligence',
       'Machine Learning'
     ],
-    Mathematics: [
+    'Mathematics': [
       'Calculus I, II, and III',
       'Linear Algebra',
       'Discrete Mathematics',
       'Probability and Statistics',
       'Differential Equations'
     ],
-    Programming: [
+    'Programming': [
       'Introduction to Programming Languages (Python, Java, C++)',
       'Object-Oriented Programming',
       'Data Structures and Algorithms',
@@ -30,7 +30,7 @@ export const collegeData = {
       'Concurrent Programming',
       'Functional Programming Concepts'
     ],
-    Systems: [
+    'Systems': [
       'Computer Architecture and Organization',
       'Operating Systems',
       'Database Management Systems',
@@ -41,7 +41,7 @@ export const collegeData = {
       'Compiler Design',
       'Embedded Systems'
     ],
-    Theory: [
+    'Theory': [
       'Discrete Mathematics',
       'Automata Theory',
       'Computational Complexity',
@@ -52,7 +52,7 @@ export const collegeData = {
       'Quantum Computing Basics',
       'Bioinformatics'
     ],
-    Electives: [
+    'Electives': [
       'Artificial Intelligence',
       'Machine Learning',
       'Human-Computer Interaction',
@@ -64,8 +64,8 @@ export const collegeData = {
       'Blockchain Technology'
     ]
   },
-  'Bachelors-MechanicalEngineering': {
-     CoreSubjects: [
+  'Bachelors - Mechanical Engineering': {
+    'Core Subjects': [
       'Engineering Mechanics',
       'Thermodynamics',
       'Fluid Mechanics',
@@ -77,7 +77,7 @@ export const collegeData = {
       'Instrumentation and Measurement',
       'CAD/CAM'
     ],
-    AppliedEngineering: [
+    'Applied Engineering': [
       'Computer-Aided Design (CAD)',
       'Industrial Automation',
       'Robotics Engineering',
@@ -88,7 +88,7 @@ export const collegeData = {
       'Sustainable Engineering Practices',
       'Mechatronics'
     ],
-    Mathematics: [
+    'Mathematics': [
       'Calculus I, II, III',
       'Differential Equations',
       'Linear Algebra',
@@ -99,7 +99,7 @@ export const collegeData = {
       'Applied Mathematics for Engineers',
       'Optimization Techniques'
     ],
-    Electives: [
+    'Electives': [
       'Biomechanics',
       'Nanotechnology',
       'Advanced Thermodynamics',
@@ -111,174 +111,174 @@ export const collegeData = {
       'Marine Engineering Basics'
     ]
   },
-    'Bachelors-BusinessAdministration': {
-        CoreSubjects: [
-            'Principles of Management',
-            'Financial Accounting',
-            'Marketing Management',
-            'Organizational Behavior',
-            'Business Law',
-            'Economics',
-            'Business Statistics',
-            'Operations Management',
-            'Strategic Management',
-            'Business Ethics'
-        ],
-        RelatedSubjects: [
-            'Mathematics',
-            'Communication',
-            'Psychology',
-            'Sociology'
-        ]
-    },
-    'Bachelors-Nursing': {
-        CoreSubjects: [
-            'Anatomy and Physiology',
-            'Microbiology',
-            'Pharmacology',
-            'Health Assessment',
-            'Adult Health Nursing',
-            'Pediatric Nursing',
-            'Maternal Child Nursing',
-            'Psychiatric Nursing',
-            'Community Health Nursing',
-            'Nursing Research'
-        ],
-         RelatedSubjects: [
-            'Chemistry',
-            'Biology',
-            'Psychology',
-            'Sociology',
-            'Nutrition'
-        ]
-    },
-    'Bachelors-Psychology': {
-       CoreSubjects: [
-            'Introduction to Psychology',
-            'Research Methods in Psychology',
-            'Statistics for Psychology',
-            'Cognitive Psychology',
-            'Developmental Psychology',
-            'Abnormal Psychology',
-            'Social Psychology',
-            'Personality Psychology',
-            'Biological Psychology',
-            'Psychological Testing and Measurement'
-        ],
-        RelatedSubjects: [
-            'Biology',
-            'Sociology',
-            'Anthropology',
-            'Philosophy'
-        ]
-    },
-     'Bachelors-ElectricalEngineering': {
-        CoreSubjects: [
-            'Circuit Analysis',
-            'Electromagnetics',
-            'Electronics',
-            'Signals and Systems',
-            'Digital Logic Design',
-            'Control Systems',
-            'Power Systems',
-            'Communication Systems',
-            'Microprocessors',
-             'Renewable Energy'
-        ],
-        Mathematics: [
-            'Calculus I, II, and III',
-            'Differential Equations',
-            'Linear Algebra',
-            'Complex Variables',
-            'Probability and Statistics'
-        ],
-         RelatedSubjects: [
-            'Physics',
-            'Computer Science Fundamentals',
-            'Materials Science'
-        ]
-    },
-    'Bachelors-CivilEngineering': {
-        CoreSubjects: [
-            'Structural Analysis',
-            'Fluid Mechanics',
-            'Geotechnical Engineering',
-            'Transportation Engineering',
-            'Environmental Engineering',
-            'Construction Management',
-            'Surveying',
-            'Materials Engineering',
-            'Hydrology',
-            'Engineering Drawing'
-        ],
-        Mathematics: [
-            'Calculus I, II, and III',
-            'Differential Equations',
-            'Linear Algebra',
-            'Numerical Methods',
-            'Probability and Statistics'
-        ],
-        RelatedSubjects: [
-            'Physics',
-            'Chemistry',
-            'Geology'
-        ]
-    },
-    'Bachelors-Biology': {
-      CellularBiology: [
-        'Cell Structure and Function',
-        'Genetics',
-        'Molecular Biology',
-        'Cellular Metabolism',
-        'DNA Replication and Repair',
-        'Gene Expression',
-        'Cell Signaling',
-        'Stem Cell Biology',
-        'Cell Cycle and Cancer Biology'
-      ],
-      OrganismalBiology: [
-        'Human Anatomy and Physiology',
-        'Plant Biology',
-        'Zoology',
-        'Ecology',
-        'Evolutionary Biology',
-        'Microbiology',
-        'Entomology',
-        'Marine Biology',
-        'Comparative Physiology'
-      ],
-      Biochemistry: [
-        'Metabolic Pathways',
-        'Protein Structure and Function',
-        'Enzymology',
-        'Lipid and Carbohydrate Metabolism',
-        'Nucleic Acids',
-        'Bioenergetics',
-        'Signal Transduction',
-        'Molecular Genetics',
-        'Biochemical Techniques'
-      ],
-      ResearchMethods: [
-        'Experimental Design in Biology',
-        'Statistical Methods for Biological Research',
-        'Laboratory Techniques',
-        'Field Research Methods',
-        'Data Analysis in Biology',
-        'Bioinformatics',
-        'Scientific Writing and Communication',
-        'Grant Writing for Biologists',
-        'Ethics in Biological Research'
-      ],
-      Electives: [
-        'Neurobiology',
-        'Immunology',
-        'Biotechnology',
-        'Environmental Biology',
-        'Structural Biology',
-        'Developmental Biology',
-        'Biophysics',
-        'Marine Ecology',
-        'Pharmacology Basics'
-      ]
-    },
+  'Bachelors - Business Administration': {
+    'Core Subjects': [
+      'Principles of Management',
+      'Financial Accounting',
+      'Marketing Management',
+      'Organizational Behavior',
+      'Business Law',
+      'Economics',
+      'Business Statistics',
+      'Operations Management',
+      'Strategic Management',
+      'Business Ethics'
+    ],
+    'Related Subjects': [
+      'Mathematics',
+      'Communication',
+      'Psychology',
+      'Sociology'
+    ]
+  },
+  'Bachelors - Nursing': {
+    'Core Subjects': [
+      'Anatomy and Physiology',
+      'Microbiology',
+      'Pharmacology',
+      'Health Assessment',
+      'Adult Health Nursing',
+      'Pediatric Nursing',
+      'Maternal Child Nursing',
+      'Psychiatric Nursing',
+      'Community Health Nursing',
+      'Nursing Research'
+    ],
+    'Related Subjects': [
+      'Chemistry',
+      'Biology',
+      'Psychology',
+      'Sociology',
+      'Nutrition'
+    ]
+  },
+  'Bachelors - Psychology': {
+    'Core Subjects': [
+      'Introduction to Psychology',
+      'Research Methods in Psychology',
+      'Statistics for Psychology',
+      'Cognitive Psychology',
+      'Developmental Psychology',
+      'Abnormal Psychology',
+      'Social Psychology',
+      'Personality Psychology',
+      'Biological Psychology',
+      'Psychological Testing and Measurement'
+    ],
+    'Related Subjects': [
+      'Biology',
+      'Sociology',
+      'Anthropology',
+      'Philosophy'
+    ]
+  },
+  'Bachelors - Electrical Engineering': {
+    'Core Subjects': [
+      'Circuit Analysis',
+      'Electromagnetics',
+      'Electronics',
+      'Signals and Systems',
+      'Digital Logic Design',
+      'Control Systems',
+      'Power Systems',
+      'Communication Systems',
+      'Microprocessors',
+      'Renewable Energy'
+    ],
+    'Mathematics': [
+      'Calculus I, II, and III',
+      'Differential Equations',
+      'Linear Algebra',
+      'Complex Variables',
+      'Probability and Statistics'
+    ],
+    'Related Subjects': [
+      'Physics',
+      'Computer Science Fundamentals',
+      'Materials Science'
+    ]
+  },
+  'Bachelors - Civil Engineering': {
+    'Core Subjects': [
+      'Structural Analysis',
+      'Fluid Mechanics',
+      'Geotechnical Engineering',
+      'Transportation Engineering',
+      'Environmental Engineering',
+      'Construction Management',
+      'Surveying',
+      'Materials Engineering',
+      'Hydrology',
+      'Engineering Drawing'
+    ],
+    'Mathematics': [
+      'Calculus I, II, and III',
+      'Differential Equations',
+      'Linear Algebra',
+      'Numerical Methods',
+      'Probability and Statistics'
+    ],
+    'Related Subjects': [
+      'Physics',
+      'Chemistry',
+      'Geology'
+    ]
+  },
+  'Bachelors - Biology': {
+    'Cellular Biology': [
+      'Cell Structure and Function',
+      'Genetics',
+      'Molecular Biology',
+      'Cellular Metabolism',
+      'DNA Replication and Repair',
+      'Gene Expression',
+      'Cell Signaling',
+      'Stem Cell Biology',
+      'Cell Cycle and Cancer Biology'
+    ],
+    'Organismal Biology': [
+      'Human Anatomy and Physiology',
+      'Plant Biology',
+      'Zoology',
+      'Ecology',
+      'Evolutionary Biology',
+      'Microbiology',
+      'Entomology',
+      'Marine Biology',
+      'Comparative Physiology'
+    ],
+    'Biochemistry': [
+      'Metabolic Pathways',
+      'Protein Structure and Function',
+      'Enzymology',
+      'Lipid and Carbohydrate Metabolism',
+      'Nucleic Acids',
+      'Bioenergetics',
+      'Signal Transduction',
+      'Molecular Genetics',
+      'Biochemical Techniques'
+    ],
+    'Research Methods': [
+      'Experimental Design in Biology',
+      'Statistical Methods for Biological Research',
+      'Laboratory Techniques',
+      'Field Research Methods',
+      'Data Analysis in Biology',
+      'Bioinformatics',
+      'Scientific Writing and Communication',
+      'Grant Writing for Biologists',
+      'Ethics in Biological Research'
+    ],
+    'Electives': [
+      'Neurobiology',
+      'Immunology',
+      'Biotechnology',
+      'Environmental Biology',
+      'Structural Biology',
+      'Developmental Biology',
+      'Biophysics',
+      'Marine Ecology',
+      'Pharmacology Basics'
+    ]
+  }
 };
