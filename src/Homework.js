@@ -15,7 +15,7 @@ import { FaSpinner, FaNotesMedical, FaCheckDouble, FaClock, FaAlignJustify, FaBr
 
 let textToSpeak = '';
 
-const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, subject }) => {
+const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, subject, onBack }) => {
     // Add new state variables for labels
     const [copyUrlButtonLabel, setCopyUrlButtonLabel] = useState('Share');
     const [printGridButtonLabel, setPrintGridButtonLabel] = useState('Print');
@@ -411,6 +411,15 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
         }
     }
 
+    // Add handler for previous page button
+    const handlePreviousPage = () => {
+        if (fromApp && onBack) {
+            onBack(); // Use the callback if provided
+        } else {
+            setShowMainApp(true); // Default behavior
+        }
+    };
+
     useEffect(() => {
         if (!didMountRef.current) {
             didMountRef.current = true;
@@ -486,7 +495,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 {(invocationType === 'explain') ? (
                     <div>
                         {showMainAppButton && (
-                            <button className='previous-button' onClick={() => setShowMainApp(!showMainApp)}>
+                            <button className='previous-button' onClick={handlePreviousPage}>
                                 Previous Page
                             </button>
                         )}
@@ -547,7 +556,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 ) : (
                     <>
                         <div className="source-doc-container">
-                            <button className='previous-button' onClick={() => setShowMainApp(!showMainApp)}>
+                            <button className='previous-button' onClick={handlePreviousPage}>
                                 Previous Page
                             </button>
                             {!audioUrl && (<button onClick={synthesizeSpeech}>                                    {isLiveAudioPlaying

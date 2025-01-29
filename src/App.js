@@ -410,12 +410,16 @@ function App({ source, grade, subject }) {  // Add user prop
     );
   };
 
-  if (showhomeWorkApp) {  // Add this block
+  if (showhomeWorkApp) {
     return (
       <Homework
-        onBack={() => setShowhomeWorkApp(false)}
+        onBack={() => {
+          setShowhomeWorkApp(false);
+          // State is already preserved since we're not clearing selectedGrade or selectedSubject
+        }}
         sourceDocumentID={currentDocId}
         invocationType={invocationType}
+        fromApp={true}
         source={sourceData}
         grade={selectedGrade}
         subject={selectedSubject}
