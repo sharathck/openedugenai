@@ -19,3 +19,4 @@ const firebaseConfig = {
   export const auth = getAuth(app);
   export const vertexAI = getVertexAI(app);
   // valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206, gemini-1.5-falsh-002.
+  

@@ -63,7 +63,7 @@ let advanced_features = 'More options';
 let sourceData = '';
 let vertexAIModelName = 'gemini-1.5-flash';
 let inputPrompt = '';
-  // valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206.
+// valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206.
 
 function App({ source, grade, subject }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(grade);
@@ -103,7 +103,7 @@ function App({ source, grade, subject }) {  // Add user prop
       const params = new URLSearchParams(window.location.search);
       const showAll = params.get('showall') === 'y';
       setShowAllOptions(showAll);
-      
+
       // Rest of your existing initialization code
       sourceData = 'schoolGradesData';
       if (source) {
@@ -233,7 +233,13 @@ function App({ source, grade, subject }) {  // Add user prop
 
   async function callAPI(modelName, promptText, invocationType = 'GenAI') {
     try {
-      const model = getGenerativeModel(vertexAI, { model: vertexAIModelName });
+
+      const generationConfig = {
+        temperature: 0.4,
+        top_p: 0.3
+      };
+
+      const model = getGenerativeModel(vertexAI, { model: vertexAIModelName, generationConfig });
       switch (invocationType) {
         case 'homeWork':
           promptText = homeWorkInput;
@@ -255,7 +261,7 @@ function App({ source, grade, subject }) {  // Add user prop
       }
       // Check if a document with the same inputPrompt already exists
       const promptQuery = query(
-        collection(db, "genai", "OaQ7cll4lAbbPFlw1hgryy4gDeF2", "MyGenAI"), 
+        collection(db, "genai", "OaQ7cll4lAbbPFlw1hgryy4gDeF2", "MyGenAI"),
         where("inputPrompt", "==", inputPrompt + ' ' + invocationType),
         limit(1)
       );
@@ -274,7 +280,7 @@ function App({ source, grade, subject }) {  // Add user prop
       const text = await result.response.text();
       const now = new Date();
       const formattedDateTime = now.toISOString();
-      console.log('Model Name :', vertexAIModelName, );
+      console.log('Model Name :', vertexAIModelName,);
       const docRef = await addDoc(collection(db, "genai", "OaQ7cll4lAbbPFlw1hgryy4gDeF2", "MyGenAI"), {
         question: promptText,
         inputPrompt: inputPrompt + ' ' + invocationType,
@@ -319,7 +325,7 @@ function App({ source, grade, subject }) {  // Add user prop
 
     return (
       <div className="grade-content">
-        <button 
+        <button
           className="previous-button"
           onClick={handlePreviousPage}
         >
@@ -356,7 +362,7 @@ function App({ source, grade, subject }) {  // Add user prop
 
     return (
       <div className="subject-content">
-        <button 
+        <button
           className="previous-button"
           onClick={handlePreviousPage}
         >
@@ -365,44 +371,44 @@ function App({ source, grade, subject }) {  // Add user prop
         <h2> <span style={{ color: 'darkBlue' }}>{grade}</span> - <span style={{ color: 'darkGreen' }}>{subject}</span></h2>
         <div className="topics-container">
           {gradesData[grade][subject].map((topic, index) => (
-          <div key={index} className={isExplain[index] || ishomeWork[index] ? "topic-item-running" : "topic-item"}>
-            <span>{topic}</span>
-            &nbsp;&nbsp;
-            <button
-            onClick={async () => {
-                setIsExplain(prev => ({ ...prev, [index]: true }));
-                inputPrompt = grade + ' : ' + subject + ' : ' + topic;
-                await handleExplain(grade + ' : ' + subject + ' : ' + topic);
-                setIsExplain(prev => ({ ...prev, [index]: false }));
-              }}
-              className="button"
-              style={{ backgroundColor: '#90EE90', fontSize: '12px', color: 'black', marginLeft: '10px' }}
-            >
-              {isExplain[index]
-                ? (<FaSpinner className="spinning" />)
-                : 'Explain'}
-            </button>
-            <button
-              onClick={async () => {
-                setIshomeWork(prev => ({ ...prev, [index]: true }));
-                inputPrompt = grade + ' : ' + subject + ' : ' + topic;
-                await handlehomeWork(grade + ' : ' + subject + ' : ' + topic, 'homeWork');
-                setIshomeWork(prev => ({ ...prev, [index]: false }));
-              }}
-              className="button"
-              style={{ backgroundColor: 'darkBlue', fontSize: '12px', color: 'white', marginLeft: '10px' }}
-            >
-              {ishomeWork[index]
-                ? (<FaSpinner className="spinning" />)
-                : 'Practice Questions'}
-            </button>
-            <br />
-          </div>
-        ))}
+            <div key={index} className={isExplain[index] || ishomeWork[index] ? "topic-item-running" : "topic-item"}>
+              <span>{topic}</span>
+              &nbsp;&nbsp;
+              <button
+                onClick={async () => {
+                  setIsExplain(prev => ({ ...prev, [index]: true }));
+                  inputPrompt = grade + ' : ' + subject + ' : ' + topic;
+                  await handleExplain(grade + ' : ' + subject + ' : ' + topic);
+                  setIsExplain(prev => ({ ...prev, [index]: false }));
+                }}
+                className="button"
+                style={{ backgroundColor: '#90EE90', fontSize: '12px', color: 'black', marginLeft: '10px' }}
+              >
+                {isExplain[index]
+                  ? (<FaSpinner className="spinning" />)
+                  : 'Explain'}
+              </button>
+              <button
+                onClick={async () => {
+                  setIshomeWork(prev => ({ ...prev, [index]: true }));
+                  inputPrompt = grade + ' : ' + subject + ' : ' + topic;
+                  await handlehomeWork(grade + ' : ' + subject + ' : ' + topic, 'homeWork');
+                  setIshomeWork(prev => ({ ...prev, [index]: false }));
+                }}
+                className="button"
+                style={{ backgroundColor: 'darkBlue', fontSize: '12px', color: 'white', marginLeft: '10px' }}
+              >
+                {ishomeWork[index]
+                  ? (<FaSpinner className="spinning" />)
+                  : 'Practice Questions'}
+              </button>
+              <br />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
   if (showhomeWorkApp) {  // Add this block
     return (
