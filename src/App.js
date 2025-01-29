@@ -93,6 +93,7 @@ function App({ source, grade, subject }) {  // Add user prop
   const [gradesData, setGradesData] = useState(schoolGradesData);
   const didMountRef = useRef(false);
   const [showGradeContent, setShowGradeContent] = useState(false);
+  const [showAllOptions, setShowAllOptions] = useState(false);
 
   useEffect(() => {
     if (didMountRef.current) return;
@@ -100,6 +101,10 @@ function App({ source, grade, subject }) {  // Add user prop
 
     const initializeApp = async () => {
       const params = new URLSearchParams(window.location.search);
+      const showAll = params.get('showall') === 'y';
+      setShowAllOptions(showAll);
+      
+      // Rest of your existing initialization code
       sourceData = 'schoolGradesData';
       if (source) {
         sourceData = source;
@@ -421,59 +426,61 @@ function App({ source, grade, subject }) {  // Add user prop
         <GradeContent grade={selectedGrade} />
       ) : (
         <div>
-          <select
-            className="data-source-select"
-            onChange={(e) => {
-              const source = e.target.value;
-              switch (source) {
-                case 'schoolGradesData':
-                  setGradesData(schoolGradesData);
-                  sourceData = 'schoolGradesData';
-                  break;
-                case 'collegeData':
-                  setGradesData(collegeData);
-                  sourceData = 'collegeData';
-                  break;
-                case 'automationTestingData':
-                  setGradesData(automationTestingData);
-                  sourceData = 'automationTestingData';
-                  break;
-                case 'mastersData':
-                  setGradesData(mastersData);
-                  sourceData = 'mastersData';
-                  break;
-                case 'awsCertificationData':
-                  setGradesData(awsCertificationData);
-                  sourceData = 'awsCertificationData';
-                  break;
-                case 'azureCertificationData':
-                  setGradesData(azureCertificationData);
-                  sourceData = 'azureCertificationData';
-                  break;
-                case 'gcpCertificationData':
-                  setGradesData(gcpCertificationData);
-                  sourceData = 'gcpCertificationData';
-                  break;
-                case 'programmingData':
-                  setGradesData(programmingData);
-                  sourceData = 'programmingData';
-                  break;
-                default:
-                  setGradesData(schoolGradesData);
-                  sourceData = 'schoolGradesData';
-              }
-            }}
-          >
-            <option value="">Select Category</option>
-            <option value="schoolGradesData">School Grades</option>
-            <option value="collegeData">Bachelors</option>
-            <option value="mastersData">Masters</option>
-            <option value="programmingData">Programming</option>
-            <option value="awsCertificationData">AWS Certifications</option>
-            <option value="azureCertificationData">Azure Certifications</option>
-            <option value="gcpCertificationData">GCP Certifications</option>
-            <option value="automationTestingData">Automation Testing</option>
-          </select>
+          {showAllOptions && (
+            <select
+              className="data-source-select"
+              onChange={(e) => {
+                const source = e.target.value;
+                switch (source) {
+                  case 'schoolGradesData':
+                    setGradesData(schoolGradesData);
+                    sourceData = 'schoolGradesData';
+                    break;
+                  case 'collegeData':
+                    setGradesData(collegeData);
+                    sourceData = 'collegeData';
+                    break;
+                  case 'automationTestingData':
+                    setGradesData(automationTestingData);
+                    sourceData = 'automationTestingData';
+                    break;
+                  case 'mastersData':
+                    setGradesData(mastersData);
+                    sourceData = 'mastersData';
+                    break;
+                  case 'awsCertificationData':
+                    setGradesData(awsCertificationData);
+                    sourceData = 'awsCertificationData';
+                    break;
+                  case 'azureCertificationData':
+                    setGradesData(azureCertificationData);
+                    sourceData = 'azureCertificationData';
+                    break;
+                  case 'gcpCertificationData':
+                    setGradesData(gcpCertificationData);
+                    sourceData = 'gcpCertificationData';
+                    break;
+                  case 'programmingData':
+                    setGradesData(programmingData);
+                    sourceData = 'programmingData';
+                    break;
+                  default:
+                    setGradesData(schoolGradesData);
+                    sourceData = 'schoolGradesData';
+                }
+              }}
+            >
+              <option value="">Select Category</option>
+              <option value="schoolGradesData">School Grades</option>
+              <option value="collegeData">Bachelors</option>
+              <option value="mastersData">Masters</option>
+              <option value="programmingData">Programming</option>
+              <option value="awsCertificationData">AWS Certifications</option>
+              <option value="azureCertificationData">Azure Certifications</option>
+              <option value="gcpCertificationData">GCP Certifications</option>
+              <option value="automationTestingData">Automation Testing</option>
+            </select>
+          )}
           &nbsp;&nbsp;&nbsp;
           <div className="grades-container">
             {Object.keys(gradesData).map(grade => (
