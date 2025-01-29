@@ -486,7 +486,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 {(invocationType === 'explain') ? (
                     <div>
                         {showMainAppButton && (
-                            <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
+                            <button className='previous-button' onClick={() => setShowMainApp(!showMainApp)}>
                                 Previous Page
                             </button>
                         )}
@@ -547,7 +547,7 @@ const Homework = ({ sourceDocumentID, invocationType, fromApp, source, grade, su
                 ) : (
                     <>
                         <div className="source-doc-container">
-                            <button className='subject-button' onClick={() => setShowMainApp(!showMainApp)}>
+                            <button className='previous-button' onClick={() => setShowMainApp(!showMainApp)}>
                                 Previous Page
                             </button>
                             {!audioUrl && (<button onClick={synthesizeSpeech}>                                    {isLiveAudioPlaying

@@ -594,8 +594,8 @@ button:hover {
 
 .subject-button {
   padding: 5px;
-  background-color: #007bff;
-  color: white;
+  background-color: #d9e3ed;
+  color: rgb(23, 1, 1);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -604,6 +604,17 @@ button:hover {
   transition: background-color 0.3s;
 }
 
+.previous-button {
+  padding: 5px;
+  background-color: #215487;
+  color: rgb(235, 239, 246);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+  font-size: 16px; /* make the button text extremely small */
+  transition: background-color 0.3s;
+}
 .subject-button:hover {
   background-color: #628bb6;
 }
@@ -720,3 +731,28 @@ button:hover {
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 /* ...rest of existing styles... */
+
+.grade-button {
+  padding: 5px 5px;
+  margin: 10px;
+  font-size: 18px;
+  border: 3px solid #062032;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 6px 6px 6px rgba(112, 136, 167, 0.912);
+  color: #154461;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.grade-button:hover {
+  background-color: #3498db;
+  color: white;
+}
+
+.grade-content {
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}

@@ -92,6 +92,7 @@ function App({ source, grade, subject }) {  // Add user prop
   const [showGenAIApp, setShowGenAIApp] = useState(false);
   const [gradesData, setGradesData] = useState(schoolGradesData);
   const didMountRef = useRef(false);
+  const [showGradeContent, setShowGradeContent] = useState(false);
 
   useEffect(() => {
     if (didMountRef.current) return;
@@ -287,25 +288,116 @@ function App({ source, grade, subject }) {  // Add user prop
     }
   }
 
+  // Modify GradeBox to show just the grade button
   const GradeBox = ({ grade }) => (
-    <div className="grade-box">
-      <h3>{grade}</h3>
-      <div className="subjects-container">
-        {Object.keys(gradesData[grade]).map(subject => (
-          <button
-            key={subject}
-            className="subject-button"
-            onClick={() => {
-              setSelectedGrade(grade); // Add this line to set the selected grade
-              setSelectedSubject(subject);
-            }}
-          >
-            {subject}
-          </button>
+    <button
+      className="grade-button"
+      onClick={() => {
+        setSelectedGrade(grade);
+        setShowGradeContent(true);
+      }}
+    >
+      {grade}
+    </button>
+  );
+
+  // New component to show topics for selected grade
+  const GradeContent = ({ grade }) => {
+    const handlePreviousPage = () => {
+      setSelectedGrade(null);
+      setShowGradeContent(false);
+    };
+
+    if (!grade || !gradesData[grade]) {
+      return null;
+    }
+
+    return (
+      <div className="grade-content">
+        <button 
+          className="previous-button"
+          onClick={handlePreviousPage}
+        >
+          Previous Page
+        </button>
+        <h2><span style={{ color: 'darkBlue' }}>{grade}</span></h2>
+        <div className="subjects-container">
+          {Object.keys(gradesData[grade]).map(subject => (
+            <button
+              key={subject}
+              className="subject-button"
+              onClick={() => setSelectedSubject(subject)}
+            >
+              {subject}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const SubjectContent = ({ grade, subject }) => {
+    const handlePreviousPage = () => {
+      setSelectedSubject(null);
+      setGeneratedContent('');
+      setSelectedTopic(null);
+      setTopicExplanation('');
+    };
+
+    // Add defensive check
+    if (!grade || !subject || !gradesData[grade] || !gradesData[grade][subject]) {
+      return <div>Loading...</div>;
+    }
+
+    return (
+      <div className="subject-content">
+        <button 
+          className="previous-button"
+          onClick={handlePreviousPage}
+        >
+          Previous Page
+        </button>
+        <h2> <span style={{ color: 'darkBlue' }}>{grade}</span> - <span style={{ color: 'darkGreen' }}>{subject}</span></h2>
+        <div className="topics-container">
+          {gradesData[grade][subject].map((topic, index) => (
+          <div key={index} className={isExplain[index] || ishomeWork[index] ? "topic-item-running" : "topic-item"}>
+            <span>{topic}</span>
+            &nbsp;&nbsp;
+            <button
+            onClick={async () => {
+                setIsExplain(prev => ({ ...prev, [index]: true }));
+                inputPrompt = grade + ' : ' + subject + ' : ' + topic;
+                await handleExplain(grade + ' : ' + subject + ' : ' + topic);
+                setIsExplain(prev => ({ ...prev, [index]: false }));
+              }}
+              className="button"
+              style={{ backgroundColor: '#90EE90', fontSize: '12px', color: 'black', marginLeft: '10px' }}
+            >
+              {isExplain[index]
+                ? (<FaSpinner className="spinning" />)
+                : 'Explain'}
+            </button>
+            <button
+              onClick={async () => {
+                setIshomeWork(prev => ({ ...prev, [index]: true }));
+                inputPrompt = grade + ' : ' + subject + ' : ' + topic;
+                await handlehomeWork(grade + ' : ' + subject + ' : ' + topic, 'homeWork');
+                setIshomeWork(prev => ({ ...prev, [index]: false }));
+              }}
+              className="button"
+              style={{ backgroundColor: 'darkBlue', fontSize: '12px', color: 'white', marginLeft: '10px' }}
+            >
+              {ishomeWork[index]
+                ? (<FaSpinner className="spinning" />)
+                : 'Practice Questions'}
+            </button>
+            <br />
+          </div>
         ))}
       </div>
     </div>
   );
+};
 
   if (showhomeWorkApp) {  // Add this block
     return (
@@ -320,71 +412,13 @@ function App({ source, grade, subject }) {  // Add user prop
     );
   }
 
-  const SubjectContent = ({ grade, subject }) => {
-    // Add defensive check
-    if (!grade || !subject || !gradesData[grade] || !gradesData[grade][subject]) {
-      return <div>Loading...</div>;
-    }
-
-    return (
-      <div className="subject-content">
-        <button className="subject-button"
-          onClick={() => {
-            setSelectedGrade(null);
-            setSelectedSubject(null);
-            setGeneratedContent('');
-            setSelectedTopic(null);
-            setTopicExplanation('');
-            }}
-          >
-            Previous Page
-          </button>
-          <h2> <span style={{ color: 'darkBlue' }}>{grade}</span> - <span style={{ color: 'darkGreen' }}>{subject}</span></h2>
-          <div className="topics-container">
-            {gradesData[grade][subject].map((topic, index) => (
-            <div key={index} className={isExplain[index] || ishomeWork[index] ? "topic-item-running" : "topic-item"}>
-              <span>{topic}</span>
-              &nbsp;&nbsp;
-              <button
-              onClick={async () => {
-                  setIsExplain(prev => ({ ...prev, [index]: true }));
-                  inputPrompt = grade + ' : ' + subject + ' : ' + topic;
-                  await handleExplain(grade + ' : ' + subject + ' : ' + topic);
-                  setIsExplain(prev => ({ ...prev, [index]: false }));
-                }}
-                className="button"
-                style={{ backgroundColor: '#90EE90', fontSize: '12px', color: 'black', marginLeft: '10px' }}
-              >
-                {isExplain[index]
-                  ? (<FaSpinner className="spinning" />)
-                  : 'Explain'}
-              </button>
-              <button
-                onClick={async () => {
-                  setIshomeWork(prev => ({ ...prev, [index]: true }));
-                  inputPrompt = grade + ' : ' + subject + ' : ' + topic;
-                  await handlehomeWork(grade + ' : ' + subject + ' : ' + topic, 'homeWork');
-                  setIshomeWork(prev => ({ ...prev, [index]: false }));
-                }}
-                className="button"
-                style={{ backgroundColor: 'darkBlue', fontSize: '12px', color: 'white', marginLeft: '10px' }}
-              >
-                {ishomeWork[index]
-                  ? (<FaSpinner className="spinning" />)
-                  : 'Practice Questions'}
-              </button>
-              <br />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
+  // Modified return statement to handle new navigation
   return (
     <div className="App">
       {selectedSubject ? (
         <SubjectContent grade={selectedGrade} subject={selectedSubject} />
+      ) : showGradeContent ? (
+        <GradeContent grade={selectedGrade} />
       ) : (
         <div>
           <select
