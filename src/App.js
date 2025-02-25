@@ -20,48 +20,18 @@ let userID = '';
 let dataLimit = 21;
 let youtubeContentInput = '';
 let generatedDocID = '';
-let ttsGeneratedDocID = '';
-let imageGenerationPrompt = '';
-let imagePromptsGenerationInput = '';
-let promptSuggestion = 'NA';
-let autoPromptInput = '';
-let youtubePromptInput = '';
-let youtubeDescriptionPromptInput = '';
 let googleSearchPromptInput = '';
 let youtubeSelected = false;
 let imageGenerationPromptInput = '';
 let promptInput = '';
-let fullPromptInput = '';
-let autoPromptSeparator = '### all the text from below is strictly for reference and prompt purpose to answer the question asked above this line. ######### '
-let questionTrimLength = 200;
-let appendPrompt = ' ';
-let imagePromptInput = '';
-let imageSelected = false;
 let homeWorkInput = '';
 let quizInput = '';
 let quizMultipleChoicesInput = '';
-let chunk_size = 4000;
-let silence_break = 900;
-let YouTubePrompt = '';
 let intelligentQuestionsPrompt = '';
-let quizPrompt = '';
-let practicePrompt = '';
-let quizMultipleChoicesPrompt = '';
-let adminUser = false;
-let quiz_Multiple_Choices_Label = '';
-let bedtime_stories_content_input = '';
-let story_teller_prompt = '';
 let explainInput = '';
 let explainPrompt = '';
-let lyricsInput = '';
-let lyricsPrompt = '';
-let modelQuiz = 'gemini-flash-fast';
-let modelQuizChoices = 'gemini-flash-fast';
-let modelHomeWork = 'gemini-flash-fast';
-let modelExplain = 'gemini-flash-fast';
-let advanced_features = 'More options';
 let sourceData = '';
-let vertexAIModelName = 'gemini-1.5-flash';
+let vertexAIModelName = 'gemini-2.0-flash-thinking-exp-01-21';
 let inputPrompt = '';
 // valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206.
 
@@ -210,7 +180,7 @@ function App({ source, grade, subject }) {  // Add user prop
     // Append the prompt to promptInput
     homeWorkInput = message + intelligentQuestionsPrompt;
     console.log('homeWorkInput: ', homeWorkInput);
-    await callAPI(modelHomeWork, promptInput, 'homeWork');
+    await callAPI(vertexAIModelName, promptInput, 'homeWork');
   };
 
   // Add handler function after handlehomeWork
@@ -228,7 +198,7 @@ function App({ source, grade, subject }) {  // Add user prop
     // Append the prompt to promptInput
     explainInput = message + explainPrompt;
     console.log('explainInput:', explainInput);
-    await callAPI(modelExplain, promptInput, 'explain');
+    await callAPI(vertexAIModelName, promptInput, 'explain');
   };
 
   async function callAPI(modelName, promptText, invocationType = 'GenAI') {
