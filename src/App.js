@@ -34,6 +34,13 @@ let sourceData = '';
 let vertexAIModelName = 'gemini-2.0-flash-thinking-exp-01-21';
 let inputPrompt = '';
 // valid values are gemini-1.5-flash, gemini-2.0-flash-exp, gemini-exp-1206.
+let autoPromptSeparator = '';
+let quizPrompt = '';
+let quizMultipleChoicesPrompt = '';
+let quiz_Multiple_Choices_Label = '';
+let story_teller_prompt = '';
+let advanced_features = '';
+
 
 function App({ source, grade, subject }) {  // Add user prop
   const [selectedGrade, setSelectedGrade] = useState(grade);
