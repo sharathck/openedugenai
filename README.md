@@ -135,7 +135,7 @@ git push -u origin main
     "name": "Gen AI Studio",
     "icons": [
       {
-        "src": "ai.avif"
+        "src": "ai.jpg"
       }
     ],
     "start_url": ".",
