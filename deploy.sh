@@ -11,9 +11,9 @@ npm run build
 npm run deploy
 
 #echo "Deploying to Firebase..."
-firebase deploy
+#firebase deploy
 
-echo "Deployment complete!"
+#echo "Deployment complete!"
 
 # Run the script, git add, commit and push the changes
 echo "Running the script to add stage all changes..."
